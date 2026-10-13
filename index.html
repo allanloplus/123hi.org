@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ISMS 普拉斯 2026</title>
-<meta name="description" content="Allan 幫客戶整理及分享的資安知識庫：每月資安內外部情資蒐集紀錄、課程動畫與教學資源。">
+<meta name="description" content="Allan 幫客戶整理及分享的資安知識庫：每月資安內外部情資、課程動畫、課後測驗與教學資源。">
 <base target="_blank">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +13,7 @@
 :root{
   --navy:#14213d; --navy-2:#1d2f57; --ink:#1b2335; --muted:#5b6577;
   --teal:#18a6b5; --teal-2:#0f7f8c; --cyan:#5ee6f2; --gold:#d9a93b; --yellow:#ffd23f;
-  --paper:#f6f8fc; --card:#ffffff; --line:#e3e8f1;
-  --red:#e5484d; --amber:#f59f00; --green:#2f9e44;
+  --paper:#f6f8fc; --line:#e3e8f1; --red:#e5484d; --amber:#f59f00;
   --radius:20px; --shadow:0 10px 30px rgba(20,33,61,.12);
 }
 *{box-sizing:border-box}
@@ -24,6 +23,11 @@ img{max-width:100%;display:block}
 a{color:inherit}
 button{font-family:inherit}
 .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+section{padding:64px 0}
+.sec-head{text-align:center;margin-bottom:30px}
+.sec-head .eyebrow{display:inline-block;font-weight:900;font-size:13px;letter-spacing:.14em;color:var(--teal-2);background:#e3f7f9;padding:3px 12px;border-radius:999px}
+.sec-head h2{margin:10px 0 4px;font-size:clamp(26px,3.4vw,40px);font-weight:900;line-height:1.25}
+.sec-head p{margin:0;color:var(--muted)}
 
 /* ============ HERO ============ */
 .hero{position:relative;overflow:hidden;color:#fff;padding:56px 0 0;background:radial-gradient(1200px 500px at 50% -10%,#2b4a8a 0%,transparent 60%),linear-gradient(160deg,#0d1730 0%,#14213d 55%,#0e2a3a 100%)}
@@ -45,14 +49,12 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .contact{font-size:14px;opacity:.85;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .contact a{color:#cfe9ff}
 .hero-cta{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
 .char{position:relative;display:flex;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .char img{filter:drop-shadow(0 18px 24px rgba(0,0,0,.45));transform-origin:bottom center}
 .char.allan img{width:auto;height:min(400px,58vh);max-width:100%;object-fit:contain;animation:sway 5s ease-in-out infinite}
 .char.arale img{width:auto;height:min(370px,54vh);max-width:100%;object-fit:contain;animation:hop 3.2s ease-in-out infinite}
 @keyframes sway{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(1.5deg) translateY(-6px)}}
 @keyframes hop{0%,100%{transform:translateY(0)}20%{transform:translateY(-14px) rotate(-1deg)}40%{transform:translateY(0)}}
-.char:active img{transform:scale(.97)}
 .bubble{position:absolute;top:-6px;background:#fff;color:var(--ink);font-weight:700;font-size:15px;padding:10px 14px;border-radius:16px;box-shadow:var(--shadow);min-width:150px;max-width:220px;z-index:2;line-height:1.45}
 .bubble::after{content:"";position:absolute;bottom:-10px;width:18px;height:18px;background:#fff;transform:rotate(45deg);border-radius:3px}
 .allan .bubble{left:58%}.allan .bubble::after{left:22px}
@@ -61,7 +63,7 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 @keyframes blink{50%{opacity:0}}
 .hero-wave{display:block;width:100%;height:60px;margin-top:-1px}
 
-/* ============ BUTTONS / CHIPS ============ */
+/* ============ BUTTONS ============ */
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-size:16px;transition:transform .15s ease,box-shadow .15s ease}
 .btn:hover{transform:translateY(-2px)}
 .btn-gold{background:linear-gradient(135deg,#ffd23f,#f0a92b);color:#3a2600;box-shadow:0 8px 20px rgba(240,169,43,.45)}
@@ -70,9 +72,6 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .btn-white{background:#fff;color:var(--navy);border:2px solid var(--line)}
 .pulse{animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{box-shadow:0 8px 20px rgba(240,169,43,.45),0 0 0 0 rgba(255,210,63,.6)}50%{box-shadow:0 8px 20px rgba(240,169,43,.45),0 0 0 12px rgba(255,210,63,0)}}
-.chip{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:700;background:#eef2f8;color:var(--navy-2);white-space:nowrap}
-.c-vuln{background:#fff0e0;color:#b45309}.c-event{background:#e7f5ff;color:#1864ab}.c-threat{background:#f3e8ff;color:#7048b6}.c-advice{background:#e6fcf5;color:#087f5b}
-.lv-high{background:#ffe3e3;color:#c92a2a}.lv-mid{background:#fff3bf;color:#8a6200}.lv-low{background:#e7f5ff;color:#1c7ed6}.lv-ok{background:#d3f9d8;color:#2b8a3e}
 
 /* ============ TICKER ============ */
 .ticker{background:var(--navy);color:#fff;display:flex;align-items:center;overflow:hidden;font-size:14px}
@@ -83,129 +82,107 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .ticker .tsrc{color:var(--yellow);font-weight:700;margin-right:6px}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ============ SECTIONS ============ */
-section{padding:56px 0}
-.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-.sec-head h2{margin:0;font-size:clamp(24px,3vw,34px);font-weight:900;line-height:1.25}
-.sec-head p{margin:2px 0 0;color:var(--muted)}
-.sec-head img{width:72px;height:72px;object-fit:contain;flex:none}
-
-/* ============ INTEL (主角) ============ */
-.intel{padding-top:40px}
-.intel-card{position:relative;background:linear-gradient(135deg,#ffffff 0%,#eefbfd 100%);border:3px solid var(--teal);border-radius:28px;box-shadow:0 20px 50px rgba(15,127,140,.18);padding:30px 30px 30px 250px}
-.intel-card .ribbon{position:absolute;top:-16px;left:24px;background:var(--red);color:#fff;font-weight:900;padding:6px 16px;border-radius:999px;font-size:14px;box-shadow:0 6px 14px rgba(229,72,77,.35);animation:wiggle 3s ease-in-out infinite}
+/* ============ INTEL BANNER ============ */
+.intel{padding:44px 0 20px}
+.intel-card{position:relative;display:grid;grid-template-columns:200px 1fr 1fr;gap:26px;align-items:center;background:linear-gradient(135deg,#fff 0%,#eefbfd 100%);border:3px solid var(--teal);border-radius:28px;box-shadow:0 20px 50px rgba(15,127,140,.18);padding:28px 30px}
+.intel-card .ribbon{position:absolute;top:-16px;right:24px;background:var(--red);color:#fff;font-weight:900;padding:6px 16px;border-radius:999px;font-size:14px;box-shadow:0 6px 14px rgba(229,72,77,.35);animation:wiggle 3s ease-in-out infinite}
 @keyframes wiggle{0%,90%,100%{transform:rotate(0)}93%{transform:rotate(-4deg)}96%{transform:rotate(4deg)}}
-.intel-card .mascot{position:absolute;left:10px;top:60px;width:230px;animation:hop 3.2s ease-in-out infinite;pointer-events:none}
-.intel-card h2{margin:6px 0 6px;font-size:clamp(24px,3.4vw,38px);font-weight:900;color:var(--navy);line-height:1.25}
-.intel-card h2 .file{display:inline-block;background:var(--navy);color:var(--yellow);padding:2px 12px;border-radius:10px;font-family:ui-monospace,Consolas,monospace;font-size:.78em;letter-spacing:.02em;margin-left:4px}
-.intel-card .lead{color:var(--muted);margin:0 0 18px;font-size:16px}
+.intel-card .mascot{width:190px;margin:-70px 0 -30px;animation:hop 3.2s ease-in-out infinite}
 .month-pill{display:inline-flex;align-items:center;gap:6px;background:#fff4cc;color:#7a5300;border:1px solid #ffd23f;padding:4px 12px;border-radius:999px;font-weight:700;font-size:14px}
-.intel-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
-.intel-actions .btn{font-size:17px;padding:14px 22px}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 8px;text-align:center}
-.stat b{display:block;font-size:28px;font-weight:900;color:var(--teal-2);line-height:1.15}
-.stat span{font-size:13px;color:var(--muted)}
-.stat.hot b{color:var(--red)}.stat.warm b{color:#d97706}
+.intel-card h2{margin:8px 0 6px;font-size:clamp(22px,2.6vw,32px);font-weight:900;color:var(--navy);line-height:1.25}
+.intel-card h2 .file{display:inline-block;background:var(--navy);color:var(--yellow);padding:1px 10px;border-radius:10px;font-family:ui-monospace,Consolas,monospace;font-size:.78em;margin-left:4px}
+.intel-card .lead{color:var(--muted);margin:0 0 16px;font-size:15px}
+.intel-actions{display:flex;gap:10px;flex-wrap:wrap}
+.focus{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.focus h3{margin:0 0 8px;font-size:16px;display:flex;align-items:center;gap:8px}
+.focus h3 .live{width:8px;height:8px;border-radius:50%;background:var(--red);animation:ping 1.8s infinite;box-shadow:0 0 0 0 rgba(229,72,77,.6)}
+.focus a{display:block;padding:8px 10px;border-radius:10px;text-decoration:none;font-size:14px;line-height:1.45;transition:background .15s ease}
+.focus a:hover{background:#e7f8fa}
+.focus a small{display:block;color:var(--muted);font-size:12px}
+.focus .ph{color:var(--muted);font-size:14px;padding:8px 10px}
+.viewer{margin-top:16px}
+.viewer summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--teal-2);padding:8px 16px;border-radius:999px;background:#fff;border:2px dashed var(--teal)}
+.viewer summary::-webkit-details-marker{display:none}
+.viewer[open] summary{border-style:solid}
+.viewer iframe{display:block;width:100%;height:600px;border:0;margin-top:14px;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
 
-.cal-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:22px 0 10px;flex-wrap:wrap}
-.cal-head h3{margin:0;font-size:18px;color:var(--navy)}
-.cal-head small{color:var(--muted)}
-.cal{display:grid;grid-template-columns:repeat(12,1fr);gap:8px}
-.mon{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:112px;padding:6px 2px 8px;background:#fff;border:2px solid var(--line);border-radius:14px;cursor:pointer;transition:transform .15s ease,border-color .15s ease;overflow:hidden}
-.mon:hover{transform:translateY(-3px);border-color:var(--teal)}
-.mon .fill{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,rgba(24,166,181,.18),rgba(24,166,181,.35));transition:height 1s cubic-bezier(.2,.8,.2,1)}
-.mon b{position:relative;font-size:20px;font-weight:900;color:var(--navy)}
-.mon span{position:relative;font-size:12px;color:var(--muted)}
-.mon.on{border-color:var(--navy);background:var(--navy)}
-.mon.on b,.mon.on span{color:#fff}.mon.on .fill{background:linear-gradient(180deg,rgba(255,210,63,.25),rgba(255,210,63,.5))}
-.mon.empty{opacity:.45;cursor:default}.mon.empty:hover{transform:none;border-color:var(--line)}
-.mon .new{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;font-size:10px;font-weight:900;padding:0 5px;border-radius:6px}
+/* ============ PORTALS ============ */
+.portals{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.portal{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:250px;padding:18px;border-radius:24px;color:#fff;text-decoration:none;overflow:hidden;background:var(--bg);box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.portal::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(255,255,255,.25),transparent 55%)}
+.portal img{position:absolute;right:-6px;top:10px;width:120px;transform:translateY(16px) rotate(6deg);transition:transform .3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+.portal:hover{transform:translateY(-8px)}
+.portal:hover img{transform:translateY(-6px) rotate(-4deg) scale(1.08)}
+.portal .emo{position:relative;font-size:30px}
+.portal b{position:relative;font-size:20px;font-weight:900}
+.portal span{position:relative;font-size:13px;opacity:.9;line-height:1.45}
+.portal .go{position:relative;margin-top:10px;font-size:13px;font-weight:700;background:rgba(255,255,255,.2);border-radius:999px;padding:3px 10px;align-self:flex-start}
 
-.tabs-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;align-items:center}
-.tabs-row .lbl{font-size:13px;color:var(--muted);font-weight:700;margin-right:2px}
-.tablink{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);text-decoration:none;font-size:14px;font-weight:700;color:var(--navy-2);transition:background .15s ease}
-.tablink:hover{background:#e7f8fa;border-color:var(--teal)}
+/* ============ COURSES (posters) ============ */
+.courses{background:linear-gradient(180deg,#0f1a33,#14213d);color:#fff}
+.courses .sec-head .eyebrow{background:rgba(255,210,63,.15);color:var(--yellow)}
+.courses .sec-head p{color:#b9c4dc}
+.rail-wrap{position:relative}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:250px;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 4px 22px;scrollbar-width:thin;scrollbar-color:#3b4f7a transparent}
+.poster{position:relative;scroll-snap-align:start;height:350px;border-radius:22px;overflow:hidden;text-decoration:none;color:#fff;background:var(--bg);box-shadow:0 14px 30px rgba(0,0,0,.35);display:flex;flex-direction:column;padding:18px;transition:transform .25s ease}
+.poster:hover{transform:translateY(-8px) rotate(-.6deg)}
+.poster .badge{align-self:flex-start;font-size:12px;font-weight:900;background:rgba(0,0,0,.25);padding:2px 10px;border-radius:999px;letter-spacing:.06em}
+.poster .big{font-size:38px;font-weight:900;line-height:1;margin-top:14px;letter-spacing:.02em;text-shadow:0 4px 14px rgba(0,0,0,.25)}
+.poster .name{font-weight:700;margin-top:8px;font-size:16px;line-height:1.35}
+.poster img{position:absolute;right:-10px;bottom:0;width:170px;transition:transform .3s ease}
+.poster:hover img{transform:scale(1.06) translateY(-4px)}
+.poster .play{position:absolute;left:18px;bottom:18px;width:52px;height:52px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;font-size:18px;box-shadow:0 0 0 0 rgba(255,255,255,.6);animation:playping 2.4s infinite}
+@keyframes playping{70%{box-shadow:0 0 0 14px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.rail-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:var(--navy);font-size:20px;cursor:pointer;box-shadow:var(--shadow);z-index:2}
+.rail-btn.l{left:-14px}.rail-btn.r{right:-14px}
 
-/* ============ FINDER ============ */
-.finder{padding-top:8px}
-.finder-box{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:22px;border:1px solid var(--line)}
-.f-top{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.search{flex:1 1 280px;display:flex;align-items:center;gap:8px;background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:4px 16px}
-.search:focus-within{border-color:var(--teal)}
-.search input{flex:1;border:0;background:transparent;font:inherit;font-size:16px;padding:8px 0;outline:none;min-width:0}
-.seg{display:inline-flex;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:3px}
-.seg button{border:0;background:transparent;padding:7px 14px;border-radius:999px;font-weight:700;cursor:pointer;color:var(--muted);font-size:14px}
-.seg button.on{background:var(--navy);color:#fff}
-.filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;align-items:center}
-.filters .lbl{font-size:13px;color:var(--muted);font-weight:700;margin-right:4px}
-.fchip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;cursor:pointer;color:var(--navy-2)}
-.fchip.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-.result-meta{margin:14px 2px 8px;font-size:14px;color:var(--muted)}
-.list{display:flex;flex-direction:column;gap:8px}
-.row{display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:14px;text-decoration:none;background:#fff;transition:transform .15s ease,box-shadow .15s ease;animation:rowin .4s ease both}
-@keyframes rowin{from{opacity:0;transform:translateY(8px)}}
-.row:hover{transform:translateX(4px);box-shadow:var(--shadow)}
-.row.k-vuln{border-left-color:var(--amber)}.row.k-threat{border-left-color:#845ef7}.row.k-advice{border-left-color:#12b886}.row.lv-h{border-left-color:var(--red)}
-.row .d{font-size:13px;color:var(--muted);line-height:1.3}
-.row .d b{display:block;color:var(--navy);font-size:14px}
-.row .t{font-weight:700;font-size:15px;line-height:1.45}
-.row .tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:220px}
-.row mark{background:#ffec99;border-radius:3px;padding:0 1px}
-.more{display:block;margin:14px auto 0}
-.empty-state{text-align:center;padding:26px;color:var(--muted)}
-.empty-state img{width:120px;margin:0 auto 6px}
-.loading{display:flex;align-items:center;gap:10px;justify-content:center;padding:26px;color:var(--muted)}
-.loading img{width:80px;animation:hop 1.2s ease-in-out infinite}
+/* ============ JOURNEY (A01–A15) ============ */
+.journey{position:relative;overflow-x:auto;padding:110px 10px 14px;scrollbar-width:thin}
+.road{position:relative;display:grid;grid-template-columns:repeat(15,128px);gap:0;min-width:max-content}
+.road::before{content:"";position:absolute;left:64px;right:64px;top:34px;height:6px;border-radius:6px;background:repeating-linear-gradient(90deg,var(--teal) 0 14px,transparent 14px 24px);animation:dash 1.2s linear infinite}
+@keyframes dash{to{background-position:24px 0}}
+.st{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;text-decoration:none;padding:0 6px}
+.st .node{width:74px;height:74px;border-radius:50%;background:#fff;border:4px solid var(--teal);display:grid;place-items:center;font-size:30px;box-shadow:var(--shadow);transition:transform .2s ease,background .2s ease,border-color .2s ease;position:relative;z-index:1}
+.st small{margin-top:8px;font-weight:900;color:var(--teal-2);font-size:13px;letter-spacing:.05em}
+.st b{font-size:14px;line-height:1.3}
+.st.on .node,.st:hover .node{transform:scale(1.12);background:var(--yellow);border-color:var(--navy)}
+.walker{position:absolute;top:-96px;left:0;width:128px;display:flex;justify-content:center;transition:transform .6s cubic-bezier(.4,1.4,.5,1);pointer-events:none;z-index:2}
+.walker img{height:96px;width:auto;animation:hop 1.2s ease-in-out infinite}
+.walker .say{position:absolute;top:-6px;left:84px;white-space:nowrap;background:#fff;border-radius:12px;padding:3px 10px;font-size:13px;font-weight:700;box-shadow:var(--shadow)}
 
-/* ============ SHEET EMBED ============ */
-.sheet-wrap{position:relative;margin-top:96px}
-.sheet-frame{background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line);position:relative}
-.sheet-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#eef2f8;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;color:var(--navy-2)}
-.sheet-bar i{width:11px;height:11px;border-radius:50%;display:inline-block;flex:none}
-.sheet-bar .title{margin-left:8px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sheet-bar a{font-size:13px;color:var(--teal-2);flex:none}
-.sheet-frame iframe{display:block;width:100%;height:620px;border:0;background:#fff}
-.peek{position:absolute;right:18px;top:-74px;width:110px;animation:peek 6s ease-in-out infinite;pointer-events:none}
-@keyframes peek{0%,15%,100%{transform:translateY(40px)}25%,70%{transform:translateY(0)}}
-
-/* ============ SOURCES ============ */
-.sources{background:#fff}
-.src-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.src{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--paper);text-decoration:none;transition:transform .15s ease,box-shadow .15s ease}
-.src:hover{transform:translateY(-3px);box-shadow:var(--shadow);background:#fff}
-.src .ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:900;color:#fff;font-size:13px;background:var(--c,#1d2f57)}
-.src b{display:block;font-size:15px}.src small{color:var(--muted);font-size:12px;line-height:1.35;display:block}
-
-/* ============ HUB ============ */
-.hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.hcard{position:relative;background:#fff;border-radius:22px;padding:20px;box-shadow:var(--shadow);border-top:6px solid var(--c);overflow:hidden}
-.hcard h3{margin:0 0 4px;font-size:20px;display:flex;align-items:center;gap:8px}
-.hcard p{margin:0 0 10px;color:var(--muted);font-size:14px}
-.hcard ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
-.hcard li a{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:500;font-size:15px;background:var(--paper);transition:background .15s ease,transform .15s ease}
-.hcard li a:hover{background:#e7f8fa;transform:translateX(4px)}
-.hcard li a::after{content:"↗";margin-left:auto;color:var(--muted);font-size:12px}
-.hcard ul{position:relative;z-index:1}
-.hcard .deco{position:absolute;right:-10px;top:-6px;width:86px;opacity:.95;pointer-events:none}
-.hcard.wide{grid-column:span 3}
-.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.flow a{position:relative;display:flex;flex-direction:column;gap:2px;padding:12px;border-radius:14px;text-decoration:none;background:linear-gradient(135deg,var(--paper),#fff);border:1px solid var(--line);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
-.flow a:hover{transform:translateY(-4px) rotate(-1deg);box-shadow:var(--shadow);border-color:var(--teal)}
-.flow small{font-weight:900;color:var(--teal-2);font-size:13px;letter-spacing:.05em}
-.flow b{font-size:15px}
-.flow .play{position:absolute;right:10px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--navy);color:var(--yellow);font-size:10px;display:grid;place-items:center}
-
-/* ============ HOW-TO ============ */
-.how{background:#fff}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.step{position:relative;background:var(--paper);border-radius:var(--radius);padding:24px 22px 22px;border:1px solid var(--line);transition:transform .2s ease}
-.step:hover{transform:translateY(-6px) rotate(-.4deg)}
-.step .num{position:absolute;top:-16px;left:18px;background:var(--navy);color:var(--yellow);width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:18px;transform:rotate(-6deg)}
-.step img{width:110px;height:110px;object-fit:contain;margin:0 auto 6px}
-.step h3{margin:6px 0;font-size:19px;text-align:center}
-.step p{margin:0;color:var(--muted);font-size:15px}
+/* ============ COMIC ============ */
+.comic{background:#fff}
+.chat{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;align-items:flex-end;gap:12px;opacity:0;transform:translateY(16px) scale(.96);transition:opacity .5s ease,transform .5s cubic-bezier(.2,1.4,.4,1)}
+.chat.in .msg{opacity:1;transform:none}
+.msg.r{flex-direction:row-reverse}
+.msg img{width:76px;height:76px;object-fit:cover;object-position:top;border-radius:50%;background:#e9f3ff;border:3px solid #fff;box-shadow:var(--shadow);flex:none}
+.msg.r img{background:#fff6d6}
+.msg .t{position:relative;max-width:620px;padding:12px 16px;border-radius:20px 20px 20px 6px;background:var(--paper);border:1px solid var(--line);font-size:16px}
+.msg.r .t{border-radius:20px 20px 6px 20px;background:#fff8d6;border-color:#ffe58a}
+.msg .nm{display:block;font-size:12px;font-weight:900;color:var(--muted)}
 .iso{display:inline-block;background:#e6fcf5;color:#087f5b;border-radius:8px;padding:0 6px;font-weight:700}
+
+/* ============ QUIZ CTA ============ */
+.quiz{position:relative;display:grid;grid-template-columns:160px 1fr 160px;align-items:end;gap:20px;border-radius:28px;padding:30px 30px 0;background:linear-gradient(135deg,#ff6b6b,#f59f00);color:#fff;overflow:hidden;box-shadow:0 20px 40px rgba(229,72,77,.25)}
+.quiz::before{content:"?";position:absolute;right:28%;top:-40px;font-size:220px;font-weight:900;opacity:.12}
+.quiz img{width:160px;animation:hop 3s ease-in-out infinite}
+.quiz .mid{padding-bottom:30px;text-align:center;position:relative}
+.quiz h2{margin:0 0 6px;font-size:clamp(24px,3vw,34px);font-weight:900}
+.quiz p{margin:0 0 16px;opacity:.95}
+.quiz .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.quiz .btn-white{border:0;color:#c2410c}
+
+/* ============ LINKS ============ */
+.links2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.lbox{background:#fff;border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+.lbox h3{margin:0 0 12px;font-size:20px;display:flex;align-items:center;gap:10px}
+.lbox h3 img{width:48px;height:48px;object-fit:contain}
+.lgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lk{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--paper);text-decoration:none;font-size:14px;font-weight:500;line-height:1.35;transition:transform .15s ease,background .15s ease}
+.lk:hover{background:#e7f8fa;transform:translateY(-2px)}
+.lk .ic{flex:none;min-width:34px;padding:0 6px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:12px;font-weight:900;color:#fff;background:var(--c,#1d2f57)}
+.lk small{display:block;color:var(--muted);font-size:12px}
 
 /* ============ DUO ============ */
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
@@ -228,13 +205,10 @@ footer .sticker-row{display:flex;justify-content:center;gap:10px;margin-bottom:1
 footer .sticker-row img{width:58px;height:58px;object-fit:contain;animation:hop 3s ease-in-out infinite}
 footer .sticker-row img:nth-child(2n){animation-delay:.4s}
 footer a{color:#fff}
-footer .fine{opacity:.6;font-size:12px;margin-top:6px}
-
 .to-top{position:fixed;right:16px;bottom:16px;width:64px;height:64px;border:0;background:transparent;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:10}
 .to-top.show{opacity:1;pointer-events:auto}
 .to-top img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
 
-/* reveal */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 
@@ -242,35 +216,32 @@ footer .fine{opacity:.6;font-size:12px;margin-top:6px}
 @media (max-width:980px){
   .hero-inner{grid-template-columns:1fr 1fr}
   .hero-title{grid-column:1/-1;order:-1;padding-bottom:10px}
-  .intel-card{padding:30px 22px 26px}
+  .intel-card{grid-template-columns:1fr;padding:30px 22px 24px}
   .intel-card .mascot{display:none}
-  .stats{grid-template-columns:repeat(3,1fr)}
-  .cal{grid-template-columns:repeat(6,1fr)}
-  .src-grid{grid-template-columns:repeat(2,1fr)}
-  .hub-grid{grid-template-columns:1fr 1fr}.hcard.wide{grid-column:span 2}
-  .flow{grid-template-columns:repeat(3,1fr)}
-  .steps{grid-template-columns:1fr}
-  .duo{grid-template-columns:1fr}
+  .portals{grid-template-columns:repeat(3,1fr)}
+  .quiz{grid-template-columns:1fr 120px;padding:26px 24px 0}.quiz img{width:120px}.quiz .l{display:none}
+  .quiz .mid{text-align:left}.quiz .btns{justify-content:flex-start}
+  .links2,.duo{grid-template-columns:1fr}
 }
 @media (max-width:600px){
   .wrap{padding:0 16px}
+  section{padding:48px 0}
   .char.allan img{height:250px}.char.arale img{height:230px}
   .bubble{font-size:13px;min-width:0;max-width:150px;padding:8px 10px}
   .allan .bubble{left:40%}.arale .bubble{right:40%}
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .cal{grid-template-columns:repeat(4,1fr)}.mon{height:84px}
   .intel-actions .btn{width:100%;justify-content:center}
-  .row{grid-template-columns:1fr;gap:6px}.row .tags{justify-content:flex-start;max-width:none}
-  .row .d b{display:inline;margin-right:6px}
-  .src-grid,.hub-grid{grid-template-columns:1fr}.hcard.wide{grid-column:auto}
-  .flow{grid-template-columns:1fr 1fr}
-  .who{grid-template-columns:1fr}
-  .who .pic img{max-height:220px}
-  .sheet-frame iframe{height:520px}
+  .portals{grid-template-columns:1fr 1fr;gap:12px}.portal{min-height:200px;padding:14px}.portal img{width:92px}
+  .portal:last-child{grid-column:span 2}
+  .rail{grid-auto-columns:220px}.rail-btn{display:none}
+  .msg img{width:56px;height:56px}.msg .t{font-size:15px}
+  .quiz{grid-template-columns:1fr}.quiz .r{display:none}.quiz .mid{text-align:center}.quiz .btns{justify-content:center}
+  .lgrid{grid-template-columns:1fr}
+  .who{grid-template-columns:1fr}.who .pic img{max-height:220px}
+  .viewer iframe{height:480px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .reveal{opacity:1;transform:none}
+  .reveal,.msg{opacity:1!important;transform:none!important}
 }
 </style>
 </head>
@@ -285,7 +256,6 @@ footer .fine{opacity:.6;font-size:12px;margin-top:6px}
       <div class="bubble"><span class="say"></span><span class="caret"></span></div>
       <img src="assets/img/allan-main.webp" alt="Allan Lo 顧問" width="560" height="1110">
     </div>
-
     <div class="hero-title">
       <span class="kicker"><span class="dot"></span>資安整理 AllanLo · 每月更新</span>
       <h1>ISMS<span class="dot">·</span>普拉斯<span class="dot">·</span><span class="yr">2026</span></h1>
@@ -297,10 +267,9 @@ footer .fine{opacity:.6;font-size:12px;margin-top:6px}
       </div>
       <div class="hero-cta">
         <a class="btn btn-gold pulse" href="#intel" target="_self">📥 下載本月資安情資</a>
-        <a class="btn btn-ghost" href="#hub" target="_self">🎬 課程動畫與資源</a>
+        <a class="btn btn-ghost" href="#explore" target="_self">🚀 開始學習</a>
       </div>
     </div>
-
     <div class="char arale" id="heroArale" title="點我聽阿拉蕾說">
       <div class="bubble"><span class="say"></span><span class="caret"></span></div>
       <img src="assets/img/arale-tablet.webp" alt="AI 小助手 阿拉蕾" width="700" height="874">
@@ -309,7 +278,6 @@ footer .fine{opacity:.6;font-size:12px;margin-top:6px}
   <svg class="hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0,30 C240,70 480,0 720,24 C960,48 1200,10 1440,30 L1440,60 L0,60 Z" fill="#14213d"/></svg>
 </header>
 
-<!-- ================= TICKER ================= -->
 <div class="ticker" aria-label="最新資安情資跑馬燈">
   <span class="tag">⚡ 最新情資</span>
   <div class="track" id="tickerTrack">
@@ -319,126 +287,125 @@ footer .fine{opacity:.6;font-size:12px;margin-top:6px}
 </div>
 
 <main>
-<!-- ================= INTEL ================= -->
+<!-- ================= INTEL BANNER ================= -->
 <section class="intel" id="intel">
   <div class="wrap">
     <div class="intel-card reveal">
       <span class="ribbon">📌 客戶每月必下載</span>
       <img class="mascot" src="assets/img/arale-wave.webp" alt="" aria-hidden="true">
-      <span class="month-pill">🗓️ <span id="monthLabel">本月</span> <span id="updatedLabel"></span></span>
-      <h2>資安內外部情資蒐集紀錄<span class="file">_2026</span></h2>
-      <p class="lead">彙整 NICS、TWCERT、iThome、TechNews 等來源之<strong>漏洞情報</strong>、<strong>安全事件情報</strong>與<strong>威脅情報</strong>，標註對組織的現況威脅程度與因應對策。可直接下載留存，作為內部評估與稽核佐證。</p>
-      <div class="intel-actions">
-        <a class="btn btn-gold pulse" id="btnXlsx" href="#">⬇️ 下載全年情資 Excel</a>
-        <a class="btn btn-teal" id="btnOpen" href="#">🔎 開啟<span class="selMonth">本月</span>分頁</a>
-        <a class="btn btn-white" id="btnPdf" href="#">📄 <span class="selMonth">本月</span> PDF</a>
-      </div>
-      <div class="stats" id="stats">
-        <div class="stat"><b data-count="total">–</b><span>情資筆數</span></div>
-        <div class="stat warm"><b data-count="vuln">–</b><span>漏洞情報</span></div>
-        <div class="stat"><b data-count="event">–</b><span>安全事件</span></div>
-        <div class="stat hot"><b data-count="risk">–</b><span>中高風險</span></div>
-        <div class="stat"><b data-count="src">–</b><span>情資來源</span></div>
-      </div>
-
-      <div class="cal-head"><h3>📅 2026 年度情資月曆</h3><small>點月份切換統計、清單與下載分頁</small></div>
-      <div class="cal" id="cal"></div>
-
-      <div class="tabs-row" id="tabsRow"><span class="lbl">其他分頁：</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= FINDER ================= -->
-<section class="finder" id="finder">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <img src="assets/img/arale-think.webp" alt="">
-      <div><h2>情資快查</h2><p>輸入產品或關鍵字（如 Fortinet、Cisco、CVE），阿拉蕾幫你找！</p></div>
-    </div>
-    <div class="finder-box reveal">
-      <div class="f-top">
-        <label class="search">🔍<input id="q" type="search" placeholder="搜尋標題、來源或 CVE 編號…" autocomplete="off"></label>
-        <div class="seg" id="scope"><button class="on" data-v="month"><span class="selMonth">本月</span></button><button data-v="year">全年</button></div>
-      </div>
-      <div class="filters" id="fCat"><span class="lbl">類別</span></div>
-      <div class="filters" id="fLv"><span class="lbl">威脅程度</span></div>
-      <div class="result-meta" id="resultMeta"></div>
-      <div class="list" id="list"><div class="loading"><img src="assets/img/arale-mini.webp" alt="">阿拉蕾正在讀取情資表…</div></div>
-      <button class="btn btn-white more" id="more" hidden>顯示更多 ⬇️</button>
-    </div>
-
-    <div class="sheet-wrap reveal">
-      <img class="peek" src="assets/img/arale-thumb.webp" alt="" aria-hidden="true">
-      <div class="sheet-frame">
-        <div class="sheet-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>
-          <span class="title">📊 原始試算表：資安內外部情資蒐集紀錄_2026（下方可切換分頁）</span>
-          <a id="sheetOpen2" href="#">新視窗開啟 ↗</a>
+      <div>
+        <span class="month-pill">🗓️ <span id="monthLabel">每月更新</span></span>
+        <h2>資安內外部情資蒐集紀錄<span class="file">_2026</span></h2>
+        <p class="lead">彙整 NICS、TWCERT、iThome、TechNews 等來源的漏洞與安全事件情報，可直接下載留存作為稽核佐證。</p>
+        <div class="intel-actions">
+          <a class="btn btn-gold pulse" id="btnXlsx" href="#">⬇️ 下載 Excel</a>
+          <a class="btn btn-teal" id="btnOpen" href="#">🔎 開啟情資表</a>
         </div>
-        <iframe id="sheetFrame" title="資安內外部情資蒐集紀錄_2026" loading="lazy"></iframe>
+      </div>
+      <div class="focus">
+        <h3><span class="live"></span>本月焦點情資</h3>
+        <div id="focusList"><div class="ph">阿拉蕾正在整理最新情資…</div></div>
+      </div>
+    </div>
+    <details class="viewer reveal" id="viewer">
+      <summary>📊 線上瀏覽完整情資表（含各月份分頁）</summary>
+      <iframe id="sheetFrame" title="資安內外部情資蒐集紀錄_2026"></iframe>
+    </details>
+  </div>
+</section>
+
+<!-- ================= PORTALS ================= -->
+<section id="explore">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">EXPLORE</span>
+      <h2>今天想學什麼？</h2>
+      <p>選一扇門，Allan 和阿拉蕾帶你逛</p>
+    </div>
+    <div class="portals" id="portals"></div>
+  </div>
+</section>
+
+<!-- ================= COURSES ================= -->
+<section class="courses" id="courses">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">NOW SHOWING</span>
+      <h2>🎬 課程動畫 熱映中</h2>
+      <p>由 Allan 與阿拉蕾主演，完整線上課程與互動教材</p>
+    </div>
+    <div class="rail-wrap">
+      <button class="rail-btn l" data-dir="-1" aria-label="往左">‹</button>
+      <div class="rail" id="rail"></div>
+      <button class="rail-btn r" data-dir="1" aria-label="往右">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= JOURNEY ================= -->
+<section id="flows">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">ISMS JOURNEY</span>
+      <h2>🗺️ ISMS 運作流程地圖</h2>
+      <p>跟著阿拉蕾走完 15 站，一站一支動畫，看懂整個 ISMS</p>
+    </div>
+    <div class="journey reveal" id="journey">
+      <div class="road" id="road">
+        <div class="walker" id="walker"><img src="assets/img/arale-mini.webp" alt=""><span class="say" id="walkerSay">出發囉！</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= SOURCES ================= -->
-<section class="sources">
+<!-- ================= COMIC ================= -->
+<section class="comic">
   <div class="wrap">
     <div class="sec-head reveal">
-      <img src="assets/img/allan-point.webp" alt="">
-      <div><h2>外部情資來源</h2><p>Allan 每月固定追蹤的官方與媒體來源</p></div>
+      <span class="eyebrow">MINI THEATER</span>
+      <h2>Allan × 阿拉蕾 資安小劇場</h2>
+      <p>情資下載之後，到底要怎麼用？</p>
     </div>
-    <div class="src-grid" id="srcGrid"></div>
+    <div class="chat" id="chat"></div>
   </div>
 </section>
 
-<!-- ================= HUB ================= -->
-<section class="hub" id="hub">
+<!-- ================= QUIZ ================= -->
+<section id="quiz">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <img src="assets/img/arale-laugh.webp" alt="">
-      <div><h2>課程動畫・測驗・教學資源</h2><p>所有教學動畫都由 Allan 與阿拉蕾陪你上課</p></div>
+    <div class="quiz reveal">
+      <img class="l" src="assets/img/allan-point.webp" alt="">
+      <div class="mid">
+        <h2>上完課了嗎？來挑戰一下！</h2>
+        <p>課後測驗幫你檢查學習成果，答對就能拿到阿拉蕾的讚 👍</p>
+        <div class="btns" id="quizBtns"></div>
+      </div>
+      <img class="r" src="assets/img/arale-cheer.webp" alt="">
     </div>
-    <div class="hub-grid" id="hubGrid"></div>
   </div>
 </section>
 
-<!-- ================= HOW-TO ================= -->
-<section class="how">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <img src="assets/img/allan-think.webp" alt="">
-      <div><h2>情資這樣用，稽核不卡關</h2><p>Allan 顧問 × 阿拉蕾 小教室</p></div>
+<!-- ================= LINKS ================= -->
+<section id="resources" style="padding-top:20px">
+  <div class="wrap links2">
+    <div class="lbox reveal">
+      <h3><img src="assets/img/allan-laugh.webp" alt="">📚 教學資源</h3>
+      <div class="lgrid" id="resList"></div>
     </div>
-    <div class="steps">
-      <div class="step reveal">
-        <span class="num">1</span>
-        <img src="assets/img/arale-explain.webp" alt="">
-        <h3>每月下載留存</h3>
-        <p>每月初下載最新月份情資，存放於 ISMS 文件區，作為<span class="iso">A.5.7 威脅情資</span>之蒐集紀錄；涵蓋戰略、戰術、作戰三個層次。</p>
-      </div>
-      <div class="step reveal">
-        <span class="num">2</span>
-        <img src="assets/img/allan-think.webp" alt="">
-        <h3>評估對組織的影響</h3>
-        <p>對照資產清冊確認是否使用相關產品／版本，填寫「對組織的現況威脅程度」與因應對策，必要時納入<span class="iso">風險評鑑</span>。</p>
-      </div>
-      <div class="step reveal">
-        <span class="num">3</span>
-        <img src="assets/img/arale-cheer.webp" alt="">
-        <h3>追蹤修補與回饋</h3>
-        <p>高風險漏洞連結<span class="iso">A.8.8 技術脆弱性管理</span>修補流程；外部議題回饋到<span class="iso">4.1 組織全景</span>與管理審查。</p>
-      </div>
+    <div class="lbox reveal">
+      <h3><img src="assets/img/arale-wow.webp" alt="">📡 外部情資來源</h3>
+      <div class="lgrid" id="srcList"></div>
     </div>
   </div>
 </section>
 
 <!-- ================= DUO ================= -->
-<section class="meet">
+<section>
   <div class="wrap">
     <div class="sec-head reveal">
-      <img src="assets/img/allan-wink.webp" alt="">
-      <div><h2>認識我們</h2><p>點表情試試看 👇</p></div>
+      <span class="eyebrow">MEET US</span>
+      <h2>認識我們</h2>
+      <p>點表情試試看 👇</p>
     </div>
     <div class="duo">
       <article class="who a reveal">
@@ -495,97 +462,100 @@ footer .fine{opacity:.6;font-size:12px;margin-top:6px}
   </div>
   <div>資安整理 AllanLo · ISMS 普拉斯 2026</div>
   <div>🌐 <a href="http://www.123hi.org">www.123hi.org</a> · ✉️ <a href="mailto:allanlo.plus@gmail.com">allanlo.plus@gmail.com</a> · <a href="https://123hi-org.allanlo-plus.workers.dev/">Cloudflare Dev 版（Test）</a></div>
-  <div class="fine">情資內容整理自各公開來源，實際影響請依組織資產與環境評估。</div>
 </footer>
 
 <button class="to-top" id="toTop" aria-label="回到頂端"><img src="assets/img/arale-cheer.webp" alt=""></button>
 
 <script>
-/* ================= 設定 =================
-   每年換新試算表時：改 SHEET_ID、YEAR，並更新 MONTH_GIDS（分頁網址 #gid= 後的數字）。
-   情資讀取是依分頁名稱「2026年10月」，順序可任意調整。 */
-const CONFIG = {
-  SHEET_ID: "1lxBMegXKCiBZZpnD16WTp4hZm3P6tgvnH5lqQ5q1V0I",
-  YEAR: 2026,
-  MONTH_GIDS: { 1: "376805049", 2: "1153791079", 3: "338932123", 4: "871295555", 5: "552916112", 6: "1997897886",
-                7: "1187677789", 8: "1060099529", 9: "1422393834", 10: "1778876357", 11: "1747486614", 12: "1815651082" },
-  OTHER_TABS: [
-    { name: "重大漏洞情資", gid: "0", icon: "🚨" },
-    { name: "外部議題蒐集", gid: "326538264", icon: "🌐" },
-    { name: "資通安全網路月報整理", gid: "1960007338", icon: "📰" },
-    { name: "資安情資來源", gid: "1850516092", icon: "📡" },
-    { name: "說明", gid: "1914667043", icon: "📘" }
-  ],
-  PAGE_SIZE: 12
-};
+/* ================= 設定 ================= */
+const SHEET_ID = "1lxBMegXKCiBZZpnD16WTp4hZm3P6tgvnH5lqQ5q1V0I";
+const YEAR = 2026;
 const SITE = "https://sites.google.com/123hi.org/isms/";
-const SOURCES = [
-  { k: "NICS", n: "國家資通安全研究院", d: "漏洞新聞、漏洞公告", u: "https://www.nics.nat.gov.tw/", c: "#1d4ed8" },
-  { k: "TW", n: "TWCERT/CC", d: "資安新聞、通報、報告", u: "https://www.twcert.org.tw/", c: "#0f766e" },
-  { k: "H", n: "H-ISAC", d: "衛福部資安資訊分享與分析中心", u: "https://hisac.nat.gov.tw/", c: "#be123c" },
-  { k: "F", n: "F-ISAC", d: "金融資安資訊分享", u: "https://www.fisac.tw/", c: "#a16207" },
-  { k: "iT", n: "iThome 資安", d: "資安日報、週報", u: "https://www.ithome.com.tw/security", c: "#c2410c" },
-  { k: "TN", n: "TechNews 資安", d: "科技新報資安快報", u: "https://infosecu.technews.tw/", c: "#334155" },
-  { k: "TM", n: "趨勢科技研究", d: "威脅研究與趨勢報告", u: "https://www.trendmicro.com/zh_tw/research.html", c: "#dc2626" },
-  { k: "月報", n: "政府機關資安月報", d: "數位發展部資安署", u: "https://moda.gov.tw/ACS/press/report/670", c: "#4338ca" }
+
+const PORTALS = [
+  { emo: "📡", t: "資安情資", d: "每月情資下載與內外部情資地圖", href: "#intel", self: true, img: "arale-wow", bg: "linear-gradient(150deg,#ff6b6b,#c92a2a)" },
+  { emo: "🎬", t: "課程動畫", d: "ISO 27001／27701／42001、TISAX", href: "#courses", self: true, img: "arale-explain", bg: "linear-gradient(150deg,#22b8cf,#0b7285)" },
+  { emo: "🗺️", t: "ISMS 流程", d: "A01–A15 運作流程動畫", href: "#flows", self: true, img: "allan-point", bg: "linear-gradient(150deg,#4c6ef5,#1d2f57)" },
+  { emo: "📝", t: "課後測驗", d: "檢驗學習成果", href: "#quiz", self: true, img: "allan-think", bg: "linear-gradient(150deg,#fab005,#e8590c)" },
+  { emo: "🤖", t: "Allan's AI Map", d: "Allan 的 AI 工具地圖", href: "allans-ai-map", img: "arale-think", bg: "linear-gradient(150deg,#7950f2,#5f3dc4)" }
 ];
-const HUB = [
-  { t: "🎬 課程動畫", d: "完整線上課程與互動教材", c: "#18a6b5", img: "arale-explain", links: [
-    ["ISO27001 完整線上互動教材", "課程動畫/iso27001完整線上互動教材"], ["ISO27701 完整線上課程", "課程動畫/iso27701完整線上課程"],
-    ["ISO42001 完整線上課程", "課程動畫/iso42001完整線上課程"], ["TISAX 要求完整解說", "課程動畫/tisax要求完整解說"],
-    ["3 分鐘和 ISO27001", "課程動畫/3分鐘和iso27001"], ["用心智圖了解 ISO27001", "課程動畫/用心智圖了解iso27001"],
-    ["Allan 的年度資安宣導", "課程動畫/allan的年度資安宣導"], ["資通安全法－資安事件通報", "課程動畫/資通安全法-資安事件通報"] ] },
-  { t: "📝 課後測驗專區", d: "上完課，來挑戰看看吧！", c: "#e5484d", img: "allan-point", links: [
-    ["ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["資安課程課後測驗", "課後測驗專區/資安課程課後測驗"] ],
-    extra: { t: "🗺️ 資安情資・地圖", links: [["內外部情資地圖", "資安情資/內外部情資地圖"], ["Allan's AI Map", "allans-ai-map"]] } },
-  { t: "📚 教學資源", d: "延伸學習與影音", c: "#d9a93b", img: "allan-laugh", links: [
-    ["ISO27001 教學資源", "https://sites.google.com/123hi.org/iso27001/"],
-    ["ISO27701 教學資源", "https://sites.google.com/view/allanlo-iso27701/iso27701%E6%A2%9D%E6%96%87%E8%A7%A3%E8%AA%AA%E7%B0%A1%E5%A0%B1"],
-    ["TISAX 教學資源", "https://sites.google.com/123hi.org/tisax/"], ["ISMS 系統化展示", "https://sites.google.com/view/allantest001/"],
-    ["上課影音 YouTube－AllanLo", "https://www.youtube.com/channel/UCnsy7Lewl-4BIw4T5J2vV4Q"],
-    ["Allan 的 iT 邦幫忙文章", "https://ithelp.ithome.com.tw/users/20151950/articles"],
-    ["資安教學分類影音資源整理", "教學資源/allan的資安教學分類影音資源整理"] ] }
+const COURSES = [
+  { big: "ISO<br>27001", badge: "互動教材", name: "ISO27001 完整線上互動教材", p: "課程動畫/iso27001完整線上互動教材", img: "allan-point", bg: "linear-gradient(160deg,#1d4ed8,#14213d)" },
+  { big: "ISO<br>27701", badge: "隱私管理", name: "ISO27701 完整線上課程", p: "課程動畫/iso27701完整線上課程", img: "arale-explain", bg: "linear-gradient(160deg,#9c36b5,#5f3dc4)" },
+  { big: "ISO<br>42001", badge: "AI 管理", name: "ISO42001 完整線上課程", p: "課程動畫/iso42001完整線上課程", img: "arale-wow", bg: "linear-gradient(160deg,#f76707,#c92a2a)" },
+  { big: "TISAX", badge: "汽車產業", name: "TISAX 要求完整解說", p: "課程動畫/tisax要求完整解說", img: "allan-think", bg: "linear-gradient(160deg,#495057,#212529)" },
+  { big: "3<br>MIN", badge: "快速入門", name: "3 分鐘和 ISO27001", p: "課程動畫/3分鐘和iso27001", img: "arale-laugh", bg: "linear-gradient(160deg,#37b24d,#087f5b)" },
+  { big: "MIND<br>MAP", badge: "心智圖", name: "用心智圖了解 ISO27001", p: "課程動畫/用心智圖了解iso27001", img: "arale-think", bg: "linear-gradient(160deg,#fab005,#e67700)" },
+  { big: "資安<br>宣導", badge: "年度必修", name: "Allan 的年度資安宣導", p: "課程動畫/allan的年度資安宣導", img: "allan-laugh", bg: "linear-gradient(160deg,#15aabf,#1864ab)" },
+  { big: "資安法", badge: "事件通報", name: "資通安全法－資安事件通報", p: "課程動畫/資通安全法-資安事件通報", img: "allan-surprised", bg: "linear-gradient(160deg,#e03131,#862e9c)" }
 ];
-const FLOWS = ["治理", "人員安全", "資訊保護", "資產管理", "存取管理", "保全組態", "實體安全", "威脅與弱點管理",
-  "應用程式安全", "系統與網路安全", "供應者安全管理", "資安事件管理", "持續性", "資訊安全保證", "遵循性"];
+const FLOWS = [["治理", "🏛️"], ["人員安全", "👥"], ["資訊保護", "🔐"], ["資產管理", "📦"], ["存取管理", "🔑"], ["保全組態", "⚙️"], ["實體安全", "🏢"],
+  ["威脅與弱點管理", "🛡️"], ["應用程式安全", "🧩"], ["系統與網路安全", "🌐"], ["供應者安全管理", "🤝"], ["資安事件管理", "🚨"], ["持續性", "♻️"], ["資訊安全保證", "✅"], ["遵循性", "📜"]];
+const CHAT = [
+  ["arale-wow", "阿拉蕾", "Allan，客戶常問：每個月的資安情資要去哪裡拿？"],
+  ["allan-point", "Allan", "就在首頁最上面！我每月整理 NICS、TWCERT、iThome 的情資，Excel 直接下載。"],
+  ["arale-think", "阿拉蕾", "下載之後要做什麼呢？"],
+  ["allan-think", "Allan", "對照資產清冊評估威脅程度，留存作為 <span class='iso'>ISO 27001 A.5.7 威脅情資</span> 的紀錄。"],
+  ["arale-confused", "阿拉蕾", "那如果碰到高風險漏洞呢？"],
+  ["allan-smile", "Allan", "走 <span class='iso'>A.8.8 技術脆弱性管理</span> 修補流程，外部議題再回饋到 <span class='iso'>4.1 組織全景</span>，稽核就不卡關！"],
+  ["arale-thumb", "阿拉蕾", "懂了！我去看 A08「威脅與弱點管理」的動畫複習一下～"]
+];
+const QUIZ = [["📋 ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["🧠 資安課程課後測驗", "課後測驗專區/資安課程課後測驗"]];
+const RES = [
+  ["27001", "ISO27001 教學資源", "教學網站", "https://sites.google.com/123hi.org/iso27001/", "#1d4ed8"],
+  ["27701", "ISO27701 教學資源", "條文解說簡報", "https://sites.google.com/view/allanlo-iso27701/iso27701%E6%A2%9D%E6%96%87%E8%A7%A3%E8%AA%AA%E7%B0%A1%E5%A0%B1", "#9c36b5"],
+  ["TX", "TISAX 教學資源", "汽車產業資安", "https://sites.google.com/123hi.org/tisax/", "#495057"],
+  ["展示", "ISMS 系統化展示", "系統實作範例", "https://sites.google.com/view/allantest001/", "#0b7285"],
+  ["▶", "YouTube－AllanLo", "上課影音", "https://www.youtube.com/channel/UCnsy7Lewl-4BIw4T5J2vV4Q", "#e03131"],
+  ["iT", "iT 邦幫忙文章", "Allan 的技術文章", "https://ithelp.ithome.com.tw/users/20151950/articles", "#2b8a3e"],
+  ["影音", "資安教學影音整理", "分類影音資源", "教學資源/allan的資安教學分類影音資源整理", "#e67700"],
+  ["地圖", "內外部情資地圖", "資安情資", "資安情資/內外部情資地圖", "#c92a2a"]
+];
+const SRC = [
+  ["NICS", "國家資通安全研究院", "漏洞新聞、漏洞公告", "https://www.nics.nat.gov.tw/", "#1d4ed8"],
+  ["TW", "TWCERT/CC", "資安新聞、通報", "https://www.twcert.org.tw/", "#0f766e"],
+  ["H", "H-ISAC", "衛福部資安分享中心", "https://hisac.nat.gov.tw/", "#be123c"],
+  ["F", "F-ISAC", "金融資安分享", "https://www.fisac.tw/", "#a16207"],
+  ["iT", "iThome 資安", "資安日報、週報", "https://www.ithome.com.tw/security", "#c2410c"],
+  ["TN", "TechNews 資安", "科技新報資安快報", "https://infosecu.technews.tw/", "#334155"],
+  ["TM", "趨勢科技研究", "威脅研究報告", "https://www.trendmicro.com/zh_tw/research.html", "#dc2626"],
+  ["月報", "政府機關資安月報", "數位發展部資安署", "https://moda.gov.tw/ACS/press/report/670", "#4338ca"]
+];
 
 /* ================= 共用 ================= */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const siteUrl = p => /^https?:/.test(p) ? p : SITE + p.split("/").map(encodeURIComponent).join("/");
-const safeUrl = u => /^https?:\/\//i.test(u) ? u : null;
+const siteUrl = p => /^(https?:|#)/.test(p) ? p : SITE + p.split("/").map(encodeURIComponent).join("/");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const base = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}`;
-const tabUrl = gid => `${base}/edit${gid ? "#gid=" + gid : ""}`;
-const now = new Date();
+const base = `https://docs.google.com/spreadsheets/d/${SHEET_ID}`;
 
-$("#btnXlsx").href = `${base}/export?format=xlsx`;
-$("#sheetOpen2").href = tabUrl("");
-$("#sheetFrame").src = `${base}/htmlembed`;
-CONFIG.OTHER_TABS.forEach(t => $("#tabsRow").insertAdjacentHTML("beforeend",
-  `<a class="tablink" href="${esc(tabUrl(t.gid))}">${t.icon} ${esc(t.name)}</a>`));
+/* ================= 版面組裝 ================= */
+$("#portals").innerHTML = PORTALS.map((p, i) => `<a class="portal reveal" style="--bg:${p.bg};transition-delay:${i * 80}ms" href="${esc(siteUrl(p.href))}" ${p.self ? 'target="_self"' : 'rel="noopener"'}>
+  <img src="assets/img/${p.img}.webp" alt=""><span class="emo">${p.emo}</span><b>${esc(p.t)}</b><span>${esc(p.d)}</span><span class="go">${p.self ? "往下看 ↓" : "前往 ↗"}</span></a>`).join("");
 
-/* ================= 靜態區塊 ================= */
-$("#srcGrid").innerHTML = SOURCES.map(s => `<a class="src reveal" href="${esc(s.u)}" rel="noopener">
-  <span class="ic" style="--c:${s.c}">${esc(s.k)}</span><span><b>${esc(s.n)}</b><small>${esc(s.d)}</small></span></a>`).join("");
+$("#rail").innerHTML = COURSES.map(c => `<a class="poster" style="--bg:${c.bg}" href="${esc(siteUrl(c.p))}" rel="noopener">
+  <span class="badge">${esc(c.badge)}</span><span class="big">${c.big}</span><span class="name">${esc(c.name)}</span>
+  <img src="assets/img/${c.img}.webp" alt=""><span class="play">▶</span></a>`).join("");
+document.querySelectorAll(".rail-btn").forEach(b => b.addEventListener("click", () =>
+  $("#rail").scrollBy({ left: +b.dataset.dir * 540, behavior: reduce ? "auto" : "smooth" })));
 
-const li = ([name, p]) => `<li><a href="${esc(siteUrl(p))}" rel="noopener">${esc(name)}</a></li>`;
-$("#hubGrid").innerHTML = HUB.map(h => `<div class="hcard reveal" style="--c:${h.c}">
-  <img class="deco" src="assets/img/${h.img}.webp" alt="">
-  <h3>${h.t}</h3><p>${esc(h.d)}</p><ul>${h.links.map(li).join("")}</ul>
-  ${h.extra ? `<h3 style="margin-top:16px">${h.extra.t}</h3><ul>${h.extra.links.map(li).join("")}</ul>` : ""}</div>`).join("")
-  + `<div class="hcard wide reveal" style="--c:#14213d">
-  <img class="deco" src="assets/img/allan-smile.webp" alt="">
-  <h3>🔄 ISMS 運作流程動畫（A01–A15）</h3><p>15 大運作流程，一支動畫看懂一個流程</p>
-  <div class="flow">${FLOWS.map((f, i) => {
-    const no = String(i + 1).padStart(2, "0");
-    return `<a href="${esc(siteUrl(`課程動畫/isms運作流程/a${no}_${f}流程`))}" rel="noopener"><span class="play">▶</span><small>A${no}</small><b>${esc(f)}</b></a>`;
-  }).join("")}</div></div>`;
+$("#road").insertAdjacentHTML("beforeend", FLOWS.map(([f, ic], i) => {
+  const no = String(i + 1).padStart(2, "0");
+  return `<a class="st" data-i="${i}" href="${esc(siteUrl(`課程動畫/isms運作流程/a${no}_${f}流程`))}" rel="noopener"><span class="node">${ic}</span><small>A${no}</small><b>${esc(f)}</b></a>`;
+}).join(""));
 
-/* ================= 角色對話 ================= */
+$("#chat").innerHTML = CHAT.map(([img, who, text], i) => `<div class="msg ${who === "Allan" ? "" : "r"}" style="transition-delay:${i * 450}ms">
+  <img src="assets/img/${img}.webp" alt="${esc(who)}"><div class="t"><span class="nm">${esc(who)}</span>${text}</div></div>`).join("");
+
+$("#quizBtns").innerHTML = QUIZ.map(([t, p]) => `<a class="btn btn-white" href="${esc(siteUrl(p))}" rel="noopener">${esc(t)}</a>`).join("");
+const lk = ([ic, t, d, u, c]) => `<a class="lk" href="${esc(siteUrl(u))}" rel="noopener"><span class="ic" style="--c:${c}">${esc(ic)}</span><span>${esc(t)}<small>${esc(d)}</small></span></a>`;
+$("#resList").innerHTML = RES.map(lk).join("");
+$("#srcList").innerHTML = SRC.map(lk).join("");
+
+/* ================= 互動 ================= */
 const lines = {
-  heroAllan: ["大家好，我是 Allan！", "本月資安情資已更新 📥", "A.5.7 威脅情資，記得每月留存喔", "有問題歡迎來信討論～"],
-  heroArale: ["阿拉蕾幫腔上課囉！", "情資表在下面，點一下就能下載！", "高風險漏洞要先修補喔 💪", "想找特定產品？用「情資快查」！"]
+  heroAllan: ["大家好，我是 Allan！", "本月資安情資已更新 📥", "課程動畫都在下面喔", "有問題歡迎來信討論～"],
+  heroArale: ["阿拉蕾幫腔上課囉！", "情資點一下就能下載！", "跟我一起走 ISMS 流程地圖 🗺️", "上完課記得做測驗喔 💪"]
 };
 function typer(id, delay) {
   const el = document.querySelector(`#${id} .say`); let i = 0, timer;
@@ -621,14 +591,36 @@ document.querySelectorAll(".faces").forEach(g => g.addEventListener("click", e =
   img.src = `assets/img/${b.dataset.img}.webp`;
 }));
 
+/* 阿拉蕾走流程地圖：自動前進，滑過站點就跳過去 */
+const stations = [...document.querySelectorAll(".st")], walker = $("#walker"), journey = $("#journey");
+const sayings = ["出發囉！", "這站很重要！", "記得看動畫喔", "快到了～", "加油！"];
+let cur = 0, autoTimer = null, visible = false;
+function goStation(i, follow) {
+  cur = i;
+  stations.forEach((s, k) => s.classList.toggle("on", k === i));
+  walker.style.transform = `translateX(${stations[i].offsetLeft}px)`;
+  $("#walkerSay").textContent = i === stations.length - 1 ? "完成！🎉" : `A${String(i + 1).padStart(2, "0")} ${sayings[i % sayings.length]}`;
+  if (follow) journey.scrollTo({ left: stations[i].offsetLeft - journey.clientWidth / 2 + 64, behavior: reduce ? "auto" : "smooth" });
+}
+stations.forEach((s, i) => s.addEventListener("mouseenter", () => { stopAuto(); goStation(i, false); }));
+journey.addEventListener("mouseleave", startAuto);
+function startAuto() { if (reduce || autoTimer || !visible) return; autoTimer = setInterval(() => goStation((cur + 1) % stations.length, true), 2200); }
+function stopAuto() { clearInterval(autoTimer); autoTimer = null; }
+new IntersectionObserver(([e]) => { visible = e.isIntersecting; visible ? startAuto() : stopAuto(); }, { threshold: .4 }).observe(journey);
+goStation(0, false);
+
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .1 });
-document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+document.querySelectorAll(".reveal, #chat").forEach(el => io.observe(el));
 
 const toTop = $("#toTop");
 addEventListener("scroll", () => toTop.classList.toggle("show", scrollY > 900), { passive: true });
 toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
 
-/* ================= 情資資料 ================= */
+/* ================= 情資：下載、線上瀏覽、本月焦點 ================= */
+$("#btnXlsx").href = `${base}/export?format=xlsx`;
+$("#btnOpen").href = `${base}/edit`;
+$("#viewer").addEventListener("toggle", e => { if (e.target.open && !$("#sheetFrame").src) $("#sheetFrame").src = `${base}/htmlembed`; });
+
 const cellText = c => c ? String(c.f ?? c.v ?? "").trim() : "";
 function cellDate(c) {
   if (!c || c.v == null) return null;
@@ -637,142 +629,32 @@ function cellDate(c) {
   const d = String(c.f ?? c.v).match(/(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
   return d ? new Date(+d[1], +d[2] - 1, +d[3]) : null;
 }
-const kindOf = cat => /漏洞/.test(cat) ? "vuln" : /事件/.test(cat) ? "event" : /建議|指南/.test(cat) ? "advice" : /威脅/.test(cat) ? "threat" : "";
-const lvOf = t => /高|嚴重/.test(t) ? "lv-high" : /中/.test(t) ? "lv-mid" : /低/.test(t) ? "lv-low" : t ? "lv-ok" : "";
-
+/* 依分頁名稱讀取；分頁不存在時 Google 會回傳第一個分頁，所以再以日期過濾 */
 async function loadMonth(m) {
-  const res = await fetch(`${base}/gviz/tq?tqx=out:json&headers=0&sheet=${encodeURIComponent(`${CONFIG.YEAR}年${m}月`)}`);
+  const res = await fetch(`${base}/gviz/tq?tqx=out:json&headers=0&sheet=${encodeURIComponent(`${YEAR}年${m}月`)}`);
   const txt = await res.text();
   const data = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
   if (data.status !== "ok") return [];
   const rows = data.table.rows.map(r => r.c || []);
-  const hIdx = rows.findIndex(r => r.some(c => /資料標題/.test(cellText(c))));
-  if (hIdx < 0) return [];
-  const head = rows[hIdx].map(cellText);
-  const col = re => head.findIndex(h => re.test(h));
-  const C = { date: Math.max(0, col(/日期/)), src: col(/^資料來源/), title: col(/標題/), url: col(/網址|連結/), cat: col(/類別/), lv: col(/威脅程度/), act: col(/因應/) };
-  const get = (r, i) => i >= 0 ? cellText(r[i]) : "";
-  /* 分頁不存在時 Google 會回傳第一個分頁，所以以資料日期過濾，只保留該月份 */
-  return rows.slice(hIdx + 1).map(r => ({
-    date: cellDate(r[C.date]), src: get(r, C.src), title: get(r, C.title), url: get(r, C.url),
-    cat: get(r, C.cat).replace(/^.*[:：]\s*/, ""), lv: get(r, C.lv).replace(/\s+/g, ""), act: get(r, C.act), m
-  })).filter(x => x.title && x.date && x.date.getFullYear() === CONFIG.YEAR && x.date.getMonth() + 1 === m);
+  const h = rows.findIndex(r => r.some(c => /資料標題/.test(cellText(c))));
+  if (h < 0) return [];
+  const head = rows[h].map(cellText), col = re => head.findIndex(x => re.test(x));
+  const C = { date: Math.max(0, col(/日期/)), src: col(/^資料來源/), title: col(/標題/), url: col(/網址|連結/) };
+  return rows.slice(h + 1).map(r => ({ date: cellDate(r[C.date]), src: cellText(r[C.src]), title: cellText(r[C.title]), url: cellText(r[C.url]) }))
+    .filter(x => x.title && x.date && x.date.getFullYear() === YEAR && x.date.getMonth() + 1 === m)
+    .sort((a, b) => b.date - a.date);
 }
-
-const state = { byMonth: {}, all: [], month: now.getMonth() + 1, scope: "month", q: "", cat: "", lv: "", shown: CONFIG.PAGE_SIZE };
-
-function countUp(el, target) {
-  if (reduce) { el.textContent = target; return; }
-  const t0 = performance.now(), from = +el.textContent || 0;
-  (function tick(t) { const p = Math.min(1, (t - t0) / 900); el.textContent = Math.round(from + (target - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(tick); })(t0);
-}
-
-function renderCalendar() {
-  const max = Math.max(1, ...Object.values(state.byMonth).map(a => a.length));
-  const latest = Math.max(0, ...Object.keys(state.byMonth).filter(m => state.byMonth[m].length).map(Number));
-  $("#cal").innerHTML = Array.from({ length: 12 }, (_, i) => {
-    const m = i + 1, n = (state.byMonth[m] || []).length;
-    return `<button class="mon ${n ? "" : "empty"} ${m === state.month ? "on" : ""}" data-m="${m}" ${n ? "" : "disabled"}>
-      ${m === latest ? '<span class="new">NEW</span>' : ""}<span class="fill" data-h="${Math.round(n / max * 100)}"></span>
-      <b>${m}月</b><span>${n ? n + " 筆" : "尚未更新"}</span></button>`;
-  }).join("");
-  requestAnimationFrame(() => document.querySelectorAll(".mon .fill").forEach(f => f.style.height = f.dataset.h + "%"));
-}
-
-function selectMonth(m) {
-  state.month = m; state.shown = CONFIG.PAGE_SIZE;
-  const items = state.byMonth[m] || [];
-  const gid = CONFIG.MONTH_GIDS[m];
-  document.querySelectorAll(".selMonth").forEach(e => e.textContent = `${m}月`);
-  $("#monthLabel").textContent = `${CONFIG.YEAR}年${m}月`;
-  const last = items[0]?.date;
-  $("#updatedLabel").textContent = last ? `· 最新 ${last.getMonth() + 1}/${last.getDate()}` : "";
-  $("#btnOpen").href = tabUrl(gid);
-  $("#btnPdf").href = `${base}/export?format=pdf${gid ? "&gid=" + gid : ""}&portrait=false&fitw=true&gridlines=false`;
-  const counts = {
-    total: items.length, vuln: items.filter(x => kindOf(x.cat) === "vuln").length,
-    event: items.filter(x => kindOf(x.cat) === "event").length,
-    risk: items.filter(x => /高|中/.test(x.lv)).length, src: new Set(items.map(x => x.src.toLowerCase()).filter(Boolean)).size
-  };
-  document.querySelectorAll("[data-count]").forEach(b => countUp(b, counts[b.dataset.count]));
-  document.querySelectorAll(".mon").forEach(b => b.classList.toggle("on", +b.dataset.m === m));
-  renderList();
-}
-
-function buildFilters() {
-  const cats = [...new Set(state.all.map(x => x.cat).filter(Boolean))];
-  const order = ["高", "中", "低", "現行不影響"];
-  const lvs = [...new Set(state.all.map(x => x.lv).filter(Boolean))].sort((a, b) => (order.indexOf(a) + 9) % 9 - (order.indexOf(b) + 9) % 9);
-  const chips = (arr, key) => [`<button class="fchip on" data-k="${key}" data-v="">全部</button>`]
-    .concat(arr.map(v => `<button class="fchip" data-k="${key}" data-v="${esc(v)}">${esc(v)}</button>`)).join("");
-  $("#fCat").insertAdjacentHTML("beforeend", chips(cats, "cat"));
-  $("#fLv").insertAdjacentHTML("beforeend", chips(lvs, "lv"));
-  document.querySelectorAll(".filters").forEach(g => g.addEventListener("click", e => {
-    const b = e.target.closest(".fchip"); if (!b) return;
-    g.querySelectorAll(".fchip").forEach(x => x.classList.toggle("on", x === b));
-    state[b.dataset.k] = b.dataset.v; state.shown = CONFIG.PAGE_SIZE; renderList();
-  }));
-}
-
-function highlight(text, q) {
-  const safe = esc(text); if (!q) return safe;
-  const re = new RegExp(esc(q).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
-  return safe.replace(re, m => `<mark>${m}</mark>`);
-}
-
-function renderList() {
-  const q = state.q.trim().toLowerCase();
-  const pool = state.scope === "year" ? state.all : (state.byMonth[state.month] || []);
-  const res = pool.filter(x => (!state.cat || x.cat === state.cat) && (!state.lv || x.lv === state.lv) &&
-    (!q || (x.title + " " + x.src).toLowerCase().includes(q)));
-  const scopeTxt = state.scope === "year" ? `${CONFIG.YEAR} 全年` : `${CONFIG.YEAR}年${state.month}月`;
-  $("#resultMeta").textContent = `${scopeTxt}：共 ${res.length} 筆${q ? `符合「${state.q.trim()}」` : ""}`;
-  if (!res.length) {
-    $("#list").innerHTML = `<div class="empty-state"><img src="assets/img/arale-confused.webp" alt="">找不到符合的情資，換個關鍵字或改搜尋「全年」試試看！</div>`;
-    $("#more").hidden = true; return;
-  }
-  $("#list").innerHTML = res.slice(0, state.shown).map(x => {
-    const k = kindOf(x.cat), lc = lvOf(x.lv), url = safeUrl(x.url);
-    const tag = url ? "a" : "div";
-    return `<${tag} class="row k-${k} ${lc === "lv-high" ? "lv-h" : ""}" ${url ? `href="${esc(url)}" rel="noopener"` : ""}>
-      <span class="d"><b>${x.date.getMonth() + 1}/${x.date.getDate()}</b>${highlight(x.src, q)}</span>
-      <span class="t">${highlight(x.title, q)}</span>
-      <span class="tags">${x.cat ? `<span class="chip c-${k}">${esc(x.cat)}</span>` : ""}${x.lv ? `<span class="chip ${lc}">${esc(x.lv)}</span>` : ""}</span></${tag}>`;
-  }).join("");
-  $("#more").hidden = res.length <= state.shown;
-}
-
-$("#more").addEventListener("click", () => { state.shown += CONFIG.PAGE_SIZE * 2; renderList(); });
-let qTimer;
-$("#q").addEventListener("input", e => { clearTimeout(qTimer); qTimer = setTimeout(() => { state.q = e.target.value; state.shown = CONFIG.PAGE_SIZE; renderList(); }, 150); });
-$("#scope").addEventListener("click", e => {
-  const b = e.target.closest("button"); if (!b) return;
-  $("#scope").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
-  state.scope = b.dataset.v; state.shown = CONFIG.PAGE_SIZE; renderList();
-});
-$("#cal").addEventListener("click", e => { const b = e.target.closest(".mon:not(.empty)"); if (b) selectMonth(+b.dataset.m); });
-
-(async function init() {
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const results = await Promise.allSettled(months.map(loadMonth));
-  results.forEach((r, i) => { state.byMonth[i + 1] = r.status === "fulfilled" ? r.value.sort((a, b) => b.date - a.date) : []; });
-  state.all = months.flatMap(m => state.byMonth[m]).sort((a, b) => b.date - a.date);
-  if (!state.all.length) {
-    $("#list").innerHTML = `<div class="empty-state"><img src="assets/img/arale-cry.webp" alt="">暫時讀不到情資表，請直接使用上方按鈕或下方原始試算表。</div>`;
-    selectMonth(state.month); renderCalendar(); return;
-  }
-  const latest = state.all[0].date.getMonth() + 1;
-  state.month = latest;
-  renderCalendar(); buildFilters(); selectMonth(latest);
-
-  const vuln = (state.byMonth[latest] || []).filter(x => kindOf(x.cat) === "vuln").length;
-  lines.heroAllan[1] = `${latest}月情資已整理 ${state.byMonth[latest].length} 筆 📥`;
-  lines.heroArale[2] = `本月有 ${vuln} 則漏洞情報，記得確認修補喔 💪`;
-
-  const tick = state.all.slice(0, 20).map(x => {
-    const u = safeUrl(x.url);
-    return `<${u ? `a href="${esc(u)}" rel="noopener"` : "span"}><span class="tsrc">[${esc(x.src)}]</span>${esc(x.title)}</${u ? "a" : "span"}>`;
-  }).join("");
+(async () => {
+  const now = new Date();
+  let m = now.getFullYear() === YEAR ? now.getMonth() + 1 : 12, items = [];
+  for (let k = 0; k < 3 && m >= 1 && !items.length; k++, m--) items = await loadMonth(m).catch(() => []);
+  if (!items.length) { $("#focusList").innerHTML = `<div class="ph">請點「開啟情資表」查看最新內容。</div>`; return; }
+  const month = items[0].date.getMonth() + 1, last = items[0].date;
+  $("#monthLabel").textContent = `${YEAR}年${month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  lines.heroAllan[1] = `${month}月情資已整理 ${items.length} 筆 📥`;
+  const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
+  $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.date.getMonth() + 1}/${x.date.getDate()} · ${esc(x.src)}</small>${esc(x.title)}`)).join("");
+  const tick = items.slice(0, 15).map(x => link(x, `<span class="tsrc">[${esc(x.src)}]</span>${esc(x.title)}`)).join("");
   $("#tickerTrack").innerHTML = tick + tick;
 })();
 </script>
