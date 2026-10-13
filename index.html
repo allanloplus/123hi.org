@@ -239,6 +239,23 @@ footer a{color:#fff}
   .who{grid-template-columns:1fr}.who .pic img{max-height:220px}
   .viewer iframe{height:480px}
 }
+/* ============ COMPACT（Google Sites 手機小框） ============ */
+.mini{display:none}
+html.compact,html.compact body{height:100%;overflow:hidden}
+html.compact body>*:not(.mini){display:none!important}
+html.compact .mini{position:relative;display:grid;grid-template-columns:24% minmax(0,1fr) 27%;grid-template-rows:100vh;align-items:end;height:100vh;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 50% 0%,#2b4a8a 0%,transparent 60%),linear-gradient(160deg,#0d1730,#14213d 55%,#0e2a3a)}
+.mini .grid-bg{animation-duration:12s}
+.mini .c{position:relative;display:flex;justify-content:center;align-items:flex-end;height:100vh;min-width:0}
+.mini .c img{height:90vh;width:auto;max-width:none;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4))}
+.mini .c.a img{animation:sway 5s ease-in-out infinite}
+.mini .c.b img{height:82vh;animation:hop 3.2s ease-in-out infinite}
+.mini .mid{position:relative;align-self:center;text-align:center;padding:4px 2px;display:flex;flex-direction:column;align-items:center;gap:min(1.6vh,8px)}
+.mini .t{font-weight:900;white-space:nowrap;font-size:clamp(15px,min(5.4vw,10vh),34px);line-height:1.1}
+.mini .t .dot{color:var(--gold)}
+.mini .t .yr{color:var(--yellow)}
+.mini .pill{font-size:clamp(10px,min(2.8vw,5.2vh),14px);font-weight:700;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.mini .btn{font-size:clamp(11px,min(3.4vw,6.4vh),16px);padding:min(2.4vh,10px) 14px;white-space:nowrap}
+.mini .say{font-size:clamp(10px,min(2.8vw,5vh),13px);opacity:.85}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .reveal,.msg{opacity:1!important;transform:none!important}
@@ -246,6 +263,29 @@ footer a{color:#fff}
 </style>
 </head>
 <body>
+<script>
+/* 在 Google Sites 嵌入框內且框很小（手機）時，改用一頁式精簡卡片；?compact=1 可強制預覽 */
+(function () {
+  let embedded = true; try { embedded = window.self !== window.top; } catch (e) {}
+  const force = /[?&]compact=1/.test(location.search);
+  const check = () => document.documentElement.classList.toggle("compact",
+    force || (embedded && innerWidth < 700 && innerHeight < 600));
+  check(); addEventListener("resize", check);
+})();
+</script>
+
+<!-- ================= COMPACT CARD ================= -->
+<div class="mini">
+  <div class="grid-bg"></div>
+  <div class="c a"><img src="assets/img/allan-main.webp" alt="Allan Lo 顧問"></div>
+  <div class="mid">
+    <div class="t">ISMS<span class="dot">·</span>普拉斯<span class="dot">·</span><span class="yr">2026</span></div>
+    <span class="pill">🗓️ <span id="miniMonth">資安情資每月更新</span></span>
+    <a class="btn btn-gold pulse" id="miniXlsx" href="#">📥 下載本月情資 Excel</a>
+    <a class="btn btn-ghost" id="miniFull" href="https://allanloplus.github.io/123hi.org/">✨ 看完整首頁</a>
+  </div>
+  <div class="c b"><img src="assets/img/arale-tablet.webp" alt="AI 小助手 阿拉蕾"></div>
+</div>
 
 <!-- ================= HERO ================= -->
 <header class="hero" id="top">
@@ -618,6 +658,8 @@ toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "aut
 
 /* ================= 情資：下載、線上瀏覽、本月焦點 ================= */
 $("#btnXlsx").href = `${base}/export?format=xlsx`;
+$("#miniXlsx").href = `${base}/export?format=xlsx`;
+$("#miniFull").href = location.href.split(/[?#]/)[0];
 $("#btnOpen").href = `${base}/edit`;
 $("#viewer").addEventListener("toggle", e => { if (e.target.open && !$("#sheetFrame").src) $("#sheetFrame").src = `${base}/htmlembed`; });
 
@@ -651,6 +693,7 @@ async function loadMonth(m) {
   if (!items.length) { $("#focusList").innerHTML = `<div class="ph">請點「開啟情資表」查看最新內容。</div>`; return; }
   const month = items[0].date.getMonth() + 1, last = items[0].date;
   $("#monthLabel").textContent = `${YEAR}年${month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  $("#miniMonth").textContent = `${month}月情資已整理 ${items.length} 筆`;
   lines.heroAllan[1] = `${month}月情資已整理 ${items.length} 筆 📥`;
   const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
   $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.date.getMonth() + 1}/${x.date.getDate()} · ${esc(x.src)}</small>${esc(x.title)}`)).join("");
