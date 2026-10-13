@@ -239,23 +239,23 @@ footer a{color:#fff}
   .who{grid-template-columns:1fr}.who .pic img{max-height:220px}
   .viewer iframe{height:480px}
 }
-/* ============ COMPACT（Google Sites 手機小框） ============ */
+/* ============ COMPACT（Google Sites 手機嵌入框） ============
+   尺寸全部由 JS 依實際框寬高計算（iOS 在 iframe 內的 vh 會取整個螢幕高度，不可靠） */
 .mini{display:none}
 html.compact,html.compact body{height:100%;overflow:hidden}
 html.compact body>*:not(.mini){display:none!important}
-html.compact .mini{position:relative;display:grid;grid-template-columns:24% minmax(0,1fr) 27%;grid-template-rows:100vh;align-items:end;height:100vh;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 50% 0%,#2b4a8a 0%,transparent 60%),linear-gradient(160deg,#0d1730,#14213d 55%,#0e2a3a)}
-.mini .grid-bg{animation-duration:12s}
-.mini .c{position:relative;display:flex;justify-content:center;align-items:flex-end;height:100vh;min-width:0}
-.mini .c img{height:90vh;width:auto;max-width:none;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4))}
-.mini .c.a img{animation:sway 5s ease-in-out infinite}
-.mini .c.b img{height:82vh;animation:hop 3.2s ease-in-out infinite}
-.mini .mid{position:relative;z-index:2;align-self:center;text-align:center;padding:4px 2px;display:flex;flex-direction:column;align-items:center;gap:min(1.6vh,8px)}
-.mini .t{font-weight:900;white-space:nowrap;font-size:clamp(13px,min(3.9vw,9vh),30px);line-height:1.1;text-shadow:0 2px 8px rgba(13,23,48,.9)}
+html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 50% 0%,#2b4a8a 0%,transparent 60%),linear-gradient(160deg,#0d1730,#14213d 55%,#0e2a3a)}
+.mini .c{position:absolute;bottom:0;pointer-events:none;z-index:1}
+.mini .c img{width:auto;max-width:none;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4))}
+.mini .c.a{left:2%}.mini .c.a img{height:var(--ah,200px);animation:sway 5s ease-in-out infinite}
+.mini .c.b{right:0}.mini .c.b img{height:var(--bh,180px);animation:hop 3.2s ease-in-out infinite}
+.mini .mid{position:absolute;z-index:3;left:50%;transform:translateX(-50%);width:var(--mw,60%);top:var(--mt,20px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:calc(var(--t,24px)*.32)}
+.mini .t{font-weight:900;white-space:nowrap;font-size:var(--t,24px);line-height:1.1;text-shadow:0 2px 8px rgba(13,23,48,.9)}
 .mini .t .dot{color:var(--gold)}
 .mini .t .yr{color:var(--yellow)}
-.mini .pill{font-size:clamp(10px,min(2.8vw,5.2vh),14px);font-weight:700;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:1px 10px;white-space:nowrap}
-.mini .btn{font-size:clamp(11px,min(3.4vw,6.4vh),16px);padding:min(2.4vh,10px) 14px;white-space:nowrap}
-.mini .say{font-size:clamp(10px,min(2.8vw,5vh),13px);opacity:.85}
+.mini .pill{font-size:calc(var(--t,24px)*.46);font-weight:700;background:rgba(13,23,48,.6);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.mini .btn{font-size:calc(var(--t,24px)*.56);padding:calc(var(--t,24px)*.36) calc(var(--t,24px)*.7);white-space:nowrap}
+.mini .btn-ghost{background:rgba(13,23,48,.55)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .reveal,.msg{opacity:1!important;transform:none!important}
@@ -268,9 +268,32 @@ html.compact .mini{position:relative;display:grid;grid-template-columns:24% minm
 (function () {
   let embedded = true; try { embedded = window.self !== window.top; } catch (e) {}
   const force = /[?&]compact=1/.test(location.search);
-  const check = () => document.documentElement.classList.toggle("compact",
-    force || (embedded && innerWidth < 700 && innerHeight < 600));
-  check(); addEventListener("resize", check);
+  const root = document.documentElement;
+  function layout() {
+    const w = root.clientWidth || innerWidth, h = root.clientHeight || innerHeight;
+    const on = force || (embedded && w < 700 && h < 760);
+    root.classList.toggle("compact", on);
+    const mini = document.querySelector(".mini");
+    if (!on || !mini) return;
+    const set = (k, v) => mini.style.setProperty(k, Math.round(v) + "px");
+    const mid = mini.querySelector(".mid");
+    if (w / h >= 1.15) {               /* 橫式：角色在左右，標題按鈕置中 */
+      const t = Math.max(12, Math.min(30, w * .5 / 11.5, h * .1));
+      set("--t", t); mid.style.setProperty("--mw", "54%");
+      set("--ah", h * .9); set("--bh", h * .8);
+      set("--mt", Math.max(6, (h - mid.offsetHeight) / 2));
+    } else {                           /* 直式：標題按鈕在上，角色在下 */
+      const t = Math.max(14, Math.min(30, (w - 32) / 11.5));
+      set("--t", t); mid.style.setProperty("--mw", "100%"); set("--mt", 16);
+      const room = h - mid.offsetHeight - 30;
+      const ch = Math.max(80, Math.min(room, w / 1.35));
+      set("--ah", ch); set("--bh", ch * .9);
+    }
+  }
+  window.__compactLayout = layout;
+  addEventListener("resize", layout);
+  addEventListener("load", layout);
+  document.addEventListener("DOMContentLoaded", layout);
 })();
 </script>
 
@@ -694,6 +717,7 @@ async function loadMonth(m) {
   const month = items[0].date.getMonth() + 1, last = items[0].date;
   $("#monthLabel").textContent = `${YEAR}年${month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
   $("#miniMonth").textContent = `${month}月情資已整理 ${items.length} 筆`;
+  window.__compactLayout && window.__compactLayout();
   lines.heroAllan[1] = `${month}月情資已整理 ${items.length} 筆 📥`;
   const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
   $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.date.getMonth() + 1}/${x.date.getDate()} · ${esc(x.src)}</small>${esc(x.title)}`)).join("");
