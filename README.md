@@ -1,4 +1,4 @@
-# ISMS·普拉斯·2026 首頁（Google Sites 嵌入用）
+# ISMS·普拉斯·AllanLo 首頁（Google Sites 嵌入用）
 
 Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google Sites「整頁嵌入」使用。
 
