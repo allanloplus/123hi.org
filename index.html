@@ -211,11 +211,11 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .arcade .sec-head p{color:#cbbbe8}
 .stars span{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;animation:twinkle 2.4s ease-in-out infinite}
 @keyframes twinkle{50%{opacity:.15}}
-.carts{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.carts{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .cart{position:relative;display:flex;flex-direction:column;text-decoration:none;color:#fff;border-radius:18px 18px 10px 10px;background:linear-gradient(180deg,#2a1d4f,#1c1238);border:2px solid var(--c);box-shadow:0 0 0 rgba(0,0,0,0);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;overflow:hidden}
 .cart::before{content:"";height:14px;background:repeating-linear-gradient(90deg,var(--c) 0 10px,transparent 10px 16px);opacity:.8}
 .cart:hover{transform:translateY(-10px) rotate(-1.5deg);box-shadow:0 0 24px var(--c),0 0 4px var(--c) inset}
-.cart .scr{margin:12px;border-radius:12px;aspect-ratio:4/3;display:grid;place-items:center;font-size:56px;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--c) 40%,transparent),rgba(0,0,0,.35));border:2px solid rgba(255,255,255,.12)}
+.cart .scr{margin:12px;border-radius:12px;aspect-ratio:16/7;display:grid;place-items:center;font-size:clamp(48px,6vw,72px);background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--c) 40%,transparent),rgba(0,0,0,.35));border:2px solid rgba(255,255,255,.12)}
 .cart:hover .scr{animation:wob .5s ease}
 @keyframes wob{30%{transform:scale(1.06) rotate(-3deg)}60%{transform:scale(.98) rotate(2deg)}}
 .cart b{padding:0 14px;font-size:16px;line-height:1.35}
@@ -691,6 +691,7 @@ const ARCADE = [
   { ic: "⛰️", t: "跟著 Allan 走一趟特富野古道", d: "Allan 當領隊：鄒族獵徑、運材鐵道、交通路線與古道小遊戲", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/", c: "#69db7c" },
   { ic: "🃏", t: "Allan 與阿拉蕾的橋牌桌", d: "四人合約橋牌：和阿拉蕾搭檔，對抗駭客小黑與釣魚怪", u: "https://allanloplus.github.io/bridge/", c: "#4dabf7" },
   { ic: "🐷", t: "Allan 的拱豬夜市", d: "夜市開桌拱豬：♠Q 是勒索豬，♦J 是資安預算羊", u: "https://allanloplus.github.io/Gong_Zhu/", c: "#ffa94d" },
+  { ic: "🎴", t: "Allan's 資安大老二", d: "環島攻防戰：出一張牌走一站，先回台北 101 拿資安認證；鐵支＝零時差攻擊", u: "https://allanloplus.github.io/big2/", c: "#ff6b6b" },
   { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "選心情、看天氣、挑飯友，阿拉蕾從 373 道台灣美食幫你挑", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" }
 ];
 const COURSES = [
