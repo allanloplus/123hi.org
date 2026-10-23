@@ -107,10 +107,10 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .viewer iframe{display:block;width:100%;height:600px;border:0;margin-top:14px;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
 
 /* ============ PORTALS ============ */
-.portals{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.portals{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
 .portal{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:250px;padding:18px;border-radius:24px;color:#fff;text-decoration:none;overflow:hidden;background:var(--bg);box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
 .portal::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(255,255,255,.25),transparent 55%)}
-.portal img{position:absolute;right:-6px;top:10px;width:120px;transform:translateY(16px) rotate(6deg);transition:transform .3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+.portal img{position:absolute;right:-8px;top:6px;width:96px;transform:translateY(16px) rotate(6deg);transition:transform .3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
 .portal:hover{transform:translateY(-8px)}
 .portal:hover img{transform:translateY(-6px) rotate(-4deg) scale(1.08)}
 .portal .emo{position:relative;font-size:30px}
@@ -149,6 +149,81 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .walker{position:absolute;top:-96px;left:0;width:128px;display:flex;justify-content:center;transition:transform .6s cubic-bezier(.4,1.4,.5,1);pointer-events:none;z-index:2}
 .walker img{height:96px;width:auto;animation:hop 1.2s ease-in-out infinite}
 .walker .say{position:absolute;top:-6px;left:84px;white-space:nowrap;background:#fff;border-radius:12px;padding:3px 10px;font-size:13px;font-weight:700;box-shadow:var(--shadow)}
+
+/* ============ 情資官養成之路 ============ */
+.lvup{margin-top:26px;background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:22px 22px 24px;border:1px solid var(--line)}
+.lvup-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.lvup-head img{width:56px;height:56px;object-fit:contain}
+.lvup-head h3{margin:0;font-size:22px;font-weight:900}
+.lvup-head p{margin:0;color:var(--muted);font-size:14px}
+.xp{position:relative;height:10px;border-radius:10px;background:#e9eef6;margin:0 6% 18px;overflow:hidden}
+.xp i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#22b8cf,#7950f2,#f59f00);border-radius:10px;transition:width 2.2s cubic-bezier(.2,.8,.2,1)}
+.lvup.in .xp i{width:100%}
+.lvs{display:grid;grid-template-columns:repeat(4,1fr) 120px;gap:14px;align-items:stretch}
+.lv{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:18px;text-decoration:none;background:linear-gradient(160deg,#f8fbff,#eef6ff);border:2px solid #dbe7fb;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;opacity:0;transform:translateY(14px)}
+.lvup.in .lv{opacity:1;transform:none;transition:opacity .5s ease var(--d),transform .5s cubic-bezier(.2,1.4,.4,1) var(--d)}
+.lvup.in .lv:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--c);transition-delay:0s}
+.lv .badge{align-self:flex-start;font-size:12px;font-weight:900;color:#fff;background:var(--c);padding:1px 10px;border-radius:999px;letter-spacing:.06em}
+.lv .ic{font-size:34px;line-height:1.2}
+.lv b{font-size:16px;line-height:1.35}
+.lv small{color:var(--muted);font-size:13px;line-height:1.45}
+.lv::after{content:"›";position:absolute;right:-13px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #dbe7fb;color:var(--muted);display:grid;place-items:center;font-weight:900;z-index:1;font-size:14px;line-height:1}
+.trophy{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;font-weight:900;font-size:14px;color:#b45309}
+.trophy img{width:110px;animation:hop 2.6s ease-in-out infinite}
+.trophy span{font-size:28px;line-height:1}
+
+/* ============ ISMS 主題樂園 ============ */
+.park-map{position:relative;aspect-ratio:1100/540;border-radius:32px;overflow:hidden;background:radial-gradient(60% 50% at 20% 20%,rgba(255,255,255,.55),transparent 60%),linear-gradient(170deg,#c3f0ff 0%,#d8f5d0 38%,#b8e7a8 100%);box-shadow:var(--shadow);border:4px solid #fff}
+.park-map .road{position:absolute;inset:0;width:100%;height:100%}
+.park-map .road path{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.park-map .road .base{stroke:#f3e3b5;stroke-width:26}
+.park-map .road .dash{stroke:#fff;stroke-width:4;stroke-dasharray:12 12;animation:roaddash 1.4s linear infinite}
+@keyframes roaddash{to{stroke-dashoffset:-24}}
+.cloud{position:absolute;font-size:44px;opacity:.85;animation:cloud linear infinite;pointer-events:none}
+@keyframes cloud{from{transform:translateX(-120px)}to{transform:translateX(1300px)}}
+.deco{position:absolute;font-size:26px;pointer-events:none}
+.pin{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;text-decoration:none;z-index:2}
+.pin .bld{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;font-size:46px;background:#fff;border:5px solid var(--c);box-shadow:0 10px 0 rgba(0,0,0,.08),0 14px 24px rgba(20,33,61,.18);animation:bob 3s ease-in-out infinite;animation-delay:var(--d);transition:transform .2s ease}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.pin .sign{margin-top:8px;background:var(--c);color:#fff;font-weight:900;font-size:15px;padding:4px 12px;border-radius:10px;white-space:nowrap;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.pin .no{position:absolute;top:-6px;right:-6px;width:28px;height:28px;border-radius:50%;background:var(--navy);color:var(--yellow);font-weight:900;font-size:13px;display:grid;place-items:center;z-index:1}
+.pin .tip{position:absolute;bottom:calc(100% + 10px);left:50%;width:220px;transform:translate(-50%,8px) scale(.95);opacity:0;pointer-events:none;background:#fff;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow);font-size:14px;color:var(--ink);transition:opacity .2s ease,transform .2s ease;text-align:left}
+.pin .tip b{display:block;color:var(--c)}
+.pin .tip em{display:inline-block;margin-top:6px;font-style:normal;font-weight:900;color:var(--c)}
+.pin:hover .bld,.pin:focus-visible .bld{transform:scale(1.12) rotate(-4deg);animation-play-state:paused}
+.pin:hover .tip,.pin:focus-visible .tip{opacity:1;transform:translate(-50%,0) scale(1)}
+.guide{position:absolute;right:2%;bottom:0;display:flex;align-items:flex-end;pointer-events:none;z-index:1}
+.guide img{height:230px;width:auto;animation:sway 5s ease-in-out infinite}
+.guide .gb{position:absolute;right:10px;top:-40px;background:#fff;border-radius:14px;padding:6px 12px;font-weight:700;font-size:14px;white-space:nowrap;box-shadow:var(--shadow)}
+.park-kid{position:absolute;left:2%;bottom:0;height:170px;width:auto;animation:hop 2.8s ease-in-out infinite;pointer-events:none;z-index:1}
+.park-list{display:none}
+@media (max-width:1240px){.guide .gb{display:none}}
+@media (max-width:600px){.arcade-foot img{display:none}}
+
+.park-list a{display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;background:#fff;box-shadow:var(--shadow);text-decoration:none;border-left:6px solid var(--c);transition:transform .2s ease}
+.park-list a:hover{transform:translateX(4px)}
+.park-list .bld{flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:#f6f8fc;border:3px solid var(--c);animation:bob 3s ease-in-out infinite;animation-delay:var(--d)}
+.park-list b{display:block;font-size:16px}.park-list small{color:var(--muted);font-size:13px}
+/* ============ AI 遊樂場（下課時間） ============ */
+.arcade{position:relative;overflow:hidden;color:#fff;background:radial-gradient(800px 300px at 15% 0%,rgba(190,75,219,.35),transparent 60%),radial-gradient(800px 300px at 85% 100%,rgba(34,184,207,.3),transparent 60%),#160d2e}
+.arcade .sec-head .eyebrow{background:rgba(255,255,255,.1);color:#ff8cf5}
+.arcade .sec-head h2{text-shadow:0 0 18px rgba(255,140,245,.6)}
+.arcade .sec-head p{color:#cbbbe8}
+.stars span{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;animation:twinkle 2.4s ease-in-out infinite}
+@keyframes twinkle{50%{opacity:.15}}
+.carts{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.cart{position:relative;display:flex;flex-direction:column;text-decoration:none;color:#fff;border-radius:18px 18px 10px 10px;background:linear-gradient(180deg,#2a1d4f,#1c1238);border:2px solid var(--c);box-shadow:0 0 0 rgba(0,0,0,0);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;overflow:hidden}
+.cart::before{content:"";height:14px;background:repeating-linear-gradient(90deg,var(--c) 0 10px,transparent 10px 16px);opacity:.8}
+.cart:hover{transform:translateY(-10px) rotate(-1.5deg);box-shadow:0 0 24px var(--c),0 0 4px var(--c) inset}
+.cart .scr{margin:12px;border-radius:12px;aspect-ratio:4/3;display:grid;place-items:center;font-size:56px;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--c) 40%,transparent),rgba(0,0,0,.35));border:2px solid rgba(255,255,255,.12)}
+.cart:hover .scr{animation:wob .5s ease}
+@keyframes wob{30%{transform:scale(1.06) rotate(-3deg)}60%{transform:scale(.98) rotate(2deg)}}
+.cart b{padding:0 14px;font-size:16px;line-height:1.35}
+.cart small{padding:4px 14px 0;color:#cbbbe8;font-size:13px;line-height:1.45;flex:1}
+.cart .play2{margin:12px 14px 14px;align-self:flex-start;font-weight:900;font-size:13px;letter-spacing:.1em;color:#160d2e;background:var(--c);padding:3px 12px;border-radius:999px}
+.arcade-foot{position:relative;display:flex;align-items:center;justify-content:center;gap:14px;margin-top:26px;flex-wrap:wrap}
+.arcade-foot img{width:84px;animation:hop 2.4s ease-in-out infinite}
+.arcade-foot .btn-ghost{border-color:rgba(255,140,245,.6)}
 
 /* ============ COMIC ============ */
 .comic{background:#fff}
@@ -222,6 +297,10 @@ footer a{color:#fff}
   .quiz{grid-template-columns:1fr 120px;padding:26px 24px 0}.quiz img{width:120px}.quiz .l{display:none}
   .quiz .mid{text-align:left}.quiz .btns{justify-content:flex-start}
   .links2,.duo{grid-template-columns:1fr}
+  .lvs{grid-template-columns:1fr 1fr}.trophy{display:none}.lv::after{display:none}
+  .carts{grid-template-columns:repeat(3,1fr)}
+  .park-map{display:none}
+  .park-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 }
 @media (max-width:600px){
   .wrap{padding:0 16px}
@@ -231,13 +310,15 @@ footer a{color:#fff}
   .allan .bubble{left:40%}.arale .bubble{right:40%}
   .intel-actions .btn{width:100%;justify-content:center}
   .portals{grid-template-columns:1fr 1fr;gap:12px}.portal{min-height:200px;padding:14px}.portal img{width:92px}
-  .portal:last-child{grid-column:span 2}
   .rail{grid-auto-columns:220px}.rail-btn{display:none}
   .msg img{width:56px;height:56px}.msg .t{font-size:15px}
   .quiz{grid-template-columns:1fr}.quiz .r{display:none}.quiz .mid{text-align:center}.quiz .btns{justify-content:center}
   .lgrid{grid-template-columns:1fr}
   .who{grid-template-columns:1fr}.who .pic img{max-height:220px}
   .viewer iframe{height:480px}
+  .lvs{grid-template-columns:1fr}
+  .carts{grid-template-columns:1fr 1fr}
+  .park-list{grid-template-columns:1fr}
 }
 /* ============ COMPACT（Google Sites 手機嵌入框） ============
    尺寸全部由 JS 依實際框寬高計算（iOS 在 iframe 內的 vh 會取整個螢幕高度，不可靠） */
@@ -374,6 +455,12 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
       <summary>📊 線上瀏覽完整情資表（含各月份分頁）</summary>
       <iframe id="sheetFrame" title="資安內外部情資蒐集紀錄_2026"></iframe>
     </details>
+
+    <div class="lvup reveal" id="lvup">
+      <div class="lvup-head"><img src="assets/img/arale-explain.webp" alt=""><div><h3>🎖️ 情資官養成之路</h3><p>下載情資只是第一步！跟著四個關卡，從看懂到實戰</p></div></div>
+      <div class="xp"><i></i></div>
+      <div class="lvs" id="lvs"></div>
+    </div>
   </div>
 </section>
 
@@ -421,6 +508,31 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
   </div>
 </section>
 
+<!-- ================= ISMS 主題樂園 ================= -->
+<section id="park">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">ISMS THEME PARK</span>
+      <h2>🎡 ISMS 主題樂園</h2>
+      <p>ISMS 工作觀：用動畫、地圖和遊戲，玩出對 ISMS 的整體感</p>
+    </div>
+    <div class="park-map reveal" id="parkMap">
+      <svg class="road" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="base" d="M4,52 C8,30 10,30 13,30 S24,68 32,68 S44,28 52,28 S62,66 70,66 S80,30 88,30"/>
+        <path class="dash" d="M4,52 C8,30 10,30 13,30 S24,68 32,68 S44,28 52,28 S62,66 70,66 S80,30 88,30"/>
+      </svg>
+      <span class="cloud" style="top:4%;animation-duration:38s">☁️</span>
+      <span class="cloud" style="top:14%;animation-duration:52s;animation-delay:-20s;font-size:32px">☁️</span>
+      <span class="deco" style="left:22%;top:12%">🌳</span><span class="deco" style="left:42%;top:78%">🌲</span>
+      <span class="deco" style="left:60%;top:10%">🎈</span><span class="deco" style="left:78%;top:78%">🌳</span>
+      <span class="deco" style="left:4%;top:16%">🚩</span>
+      <img class="park-kid" src="assets/img/arale-wave.webp" alt="">
+      <div class="guide"><span class="gb">歡迎光臨 ISMS 主題樂園！</span><img src="assets/img/allan-main.webp" alt=""></div>
+    </div>
+    <div class="park-list" id="parkList"></div>
+  </div>
+</section>
+
 <!-- ================= COMIC ================= -->
 <section class="comic">
   <div class="wrap">
@@ -444,6 +556,24 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
         <div class="btns" id="quizBtns"></div>
       </div>
       <img class="r" src="assets/img/arale-cheer.webp" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- ================= AI 遊樂場 ================= -->
+<section class="arcade" id="arcade">
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">BREAK TIME · 無關資安</span>
+      <h2>🕹️ 下課時間｜Allan's AI 遊樂場</h2>
+      <p>上完資安課，來放鬆一下！Allan 用 AI 做的小作品</p>
+    </div>
+    <div class="carts" id="carts"></div>
+    <div class="arcade-foot reveal">
+      <img src="assets/img/arale-laugh.webp" alt="">
+      <a class="btn btn-ghost" id="aiMap" href="#">🤖 看 Allan's AI Map 全部作品 ↗</a>
+      <img src="assets/img/allan-wink.webp" alt="">
     </div>
   </div>
 </section>
@@ -539,8 +669,29 @@ const PORTALS = [
   { emo: "📡", t: "資安情資", d: "每月情資下載與內外部情資地圖", href: "#intel", self: true, img: "arale-wow", bg: "linear-gradient(150deg,#ff6b6b,#c92a2a)" },
   { emo: "🎬", t: "課程動畫", d: "ISO 27001／27701／42001、TISAX", href: "#courses", self: true, img: "arale-explain", bg: "linear-gradient(150deg,#22b8cf,#0b7285)" },
   { emo: "🗺️", t: "ISMS 流程", d: "A01–A15 運作流程動畫", href: "#flows", self: true, img: "allan-point", bg: "linear-gradient(150deg,#4c6ef5,#1d2f57)" },
+  { emo: "🎡", t: "ISMS 主題樂園", d: "工作觀動畫、地圖與遊戲", href: "#park", self: true, img: "allan-laugh", bg: "linear-gradient(150deg,#51cf66,#2b8a3e)" },
   { emo: "📝", t: "課後測驗", d: "檢驗學習成果", href: "#quiz", self: true, img: "allan-think", bg: "linear-gradient(150deg,#fab005,#e8590c)" },
-  { emo: "🤖", t: "Allan's AI Map", d: "Allan 的 AI 工具地圖", href: "allans-ai-map", img: "arale-think", bg: "linear-gradient(150deg,#7950f2,#5f3dc4)" }
+  { emo: "🕹️", t: "AI 遊樂場", d: "下課時間，無關資安", href: "#arcade", self: true, img: "arale-laugh", bg: "linear-gradient(150deg,#be4bdb,#5f3dc4)" }
+];
+const LEVELS = [
+  { ic: "📺", t: "情資作業動畫解說", d: "看懂情資蒐集、分析到應用的作業流程", p: "資安情資/資安情資作業動畫解說", c: "#15aabf" },
+  { ic: "🗺️", t: "內外部情資地圖", d: "內部事件與外部來源一張圖掌握", p: "資安情資/內外部情資地圖", c: "#4c6ef5" },
+  { ic: "📊", t: "資安情資戰情室", d: "Dashboard 儀表板，即時看情資趨勢", p: "資安情資/資安情資戰情室dashboard", c: "#7950f2" },
+  { ic: "🎮", t: "情資官特訓營", d: "遊戲闖關實戰，挑戰成為情資官", p: "資安情資/遊戲學習-情資官特訓營", c: "#f08c00" }
+];
+const PARK = [
+  { ic: "🗓️", t: "ISMS 工作的一年", tag: "動畫", d: "一年 12 個月，ISMS 該做的事一次看懂", p: "isms工作觀/isms工作的一年", c: "#1c7ed6", x: 13, y: 30 },
+  { ic: "🗺️", t: "ISMS 工作地圖", tag: "地圖", d: "一張地圖串起 ISMS 各項工作的關聯", p: "isms工作觀/isms工作地圖", c: "#0ca678", x: 32, y: 68, low: true },
+  { ic: "🏘️", t: "ISMS 資安小鎮", tag: "互動", d: "逛逛小鎮，看見每個角落的資安控制", p: "isms工作觀/isms資安小鎮", c: "#e8590c", x: 52, y: 28 },
+  { ic: "🎲", t: "ISMS 大富翁", tag: "遊戲", d: "擲骰子前進，邊玩邊學 ISMS", p: "isms工作觀/isms大富翁遊戲", c: "#e03131", x: 70, y: 66, low: true },
+  { ic: "🏰", t: "實體安全大冒險", tag: "闖關", d: "探索各個安全區域，學會實體安全控制", p: "isms工作觀/實體安全大冒險", c: "#7048e8", x: 88, y: 30 }
+];
+const ARCADE = [
+  { ic: "📖", t: "ALLAN 家族說故事劇場", d: "AI 繪本故事時間", u: "https://allanloplus.github.io/picture-book99/", c: "#ff8cf5" },
+  { ic: "⛰️", t: "跟著 Allan 走一趟特富野古道", d: "古道健行，跟著 Allan 一起走", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/", c: "#69db7c" },
+  { ic: "🃏", t: "Allan 與阿拉蕾的橋牌桌", d: "和阿拉蕾來一局橋牌", u: "https://allanloplus.github.io/bridge/", c: "#4dabf7" },
+  { ic: "🐷", t: "Allan 的拱豬遊戲", d: "經典撲克牌遊戲：拱豬", u: "https://allanloplus.github.io/Gong_Zhu/", c: "#ffa94d" },
+  { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "今天吃什麼？交給 AI 決定", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" }
 ];
 const COURSES = [
   { big: "ISO<br>27001", badge: "互動教材", name: "ISO27001 完整線上互動教材", p: "課程動畫/iso27001完整線上互動教材", img: "allan-point", bg: "linear-gradient(160deg,#1d4ed8,#14213d)" },
@@ -610,6 +761,22 @@ $("#road").insertAdjacentHTML("beforeend", FLOWS.map(([f, ic], i) => {
 $("#chat").innerHTML = CHAT.map(([img, who, text], i) => `<div class="msg ${who === "Allan" ? "" : "r"}" style="transition-delay:${i * 450}ms">
   <img src="assets/img/${img}.webp" alt="${esc(who)}"><div class="t"><span class="nm">${esc(who)}</span>${text}</div></div>`).join("");
 
+$("#lvs").innerHTML = LEVELS.map((l, i) => `<a class="lv" style="--c:${l.c};--d:${300 + i * 350}ms" href="${esc(siteUrl(l.p))}" rel="noopener">
+  <span class="badge">Lv.${i + 1}</span><span class="ic">${l.ic}</span><b>${esc(l.t)}</b><small>${esc(l.d)}</small></a>`).join("")
+  + `<div class="trophy"><span>🏆</span><img src="assets/img/arale-cheer.webp" alt="">成為情資官！</div>`;
+
+$("#parkMap").insertAdjacentHTML("beforeend", PARK.map((a, i) => `<a class="pin ${a.low ? "low" : ""}" style="left:${a.x}%;top:${a.y}%;--c:${a.c};--d:${-i * .6}s" href="${esc(siteUrl(a.p))}" rel="noopener">
+  <span class="bld">${a.ic}<span class="no">${i + 1}</span></span><span class="sign">${esc(a.t)}</span>
+  <span class="tip"><b>${esc(a.tag)}｜${esc(a.t)}</b>${esc(a.d)}<br><em>入園遊玩 ↗</em></span></a>`).join(""));
+$("#parkList").innerHTML = PARK.map((a, i) => `<a class="reveal" style="--c:${a.c};--d:${-i * .6}s" href="${esc(siteUrl(a.p))}" rel="noopener">
+  <span class="bld">${a.ic}</span><span><b>${i + 1}. ${esc(a.t)}</b><small>${esc(a.tag)}｜${esc(a.d)}</small></span></a>`).join("");
+
+$("#carts").innerHTML = ARCADE.map((g, i) => `<a class="cart reveal" style="--c:${g.c};transition-delay:${i * 80}ms" href="${esc(g.u)}" rel="noopener">
+  <span class="scr">${g.ic}</span><b>${esc(g.t)}</b><small>${esc(g.d)}</small><span class="play2">PLAY ▶</span></a>`).join("");
+$("#aiMap").href = siteUrl("allans-ai-map");
+$("#stars").innerHTML = Array.from({ length: 40 }, () =>
+  `<span style="left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-delay:${-Math.random() * 3}s"></span>`).join("");
+
 $("#quizBtns").innerHTML = QUIZ.map(([t, p]) => `<a class="btn btn-white" href="${esc(siteUrl(p))}" rel="noopener">${esc(t)}</a>`).join("");
 const lk = ([ic, t, d, u, c]) => `<a class="lk" href="${esc(siteUrl(u))}" rel="noopener"><span class="ic" style="--c:${c}">${esc(ic)}</span><span>${esc(t)}<small>${esc(d)}</small></span></a>`;
 $("#resList").innerHTML = RES.map(lk).join("");
@@ -618,7 +785,7 @@ $("#srcList").innerHTML = SRC.map(lk).join("");
 /* ================= 互動 ================= */
 const lines = {
   heroAllan: ["大家好，我是 Allan！", "本月資安情資已更新 📥", "課程動畫都在下面喔", "有問題歡迎來信討論～"],
-  heroArale: ["阿拉蕾幫腔上課囉！", "情資點一下就能下載！", "跟我一起走 ISMS 流程地圖 🗺️", "上完課記得做測驗喔 💪"]
+  heroArale: ["阿拉蕾幫腔上課囉！", "情資點一下就能下載！", "跟我一起走 ISMS 流程地圖 🗺️", "來 ISMS 主題樂園玩遊戲 🎡", "上完課記得做測驗喔 💪"]
 };
 function typer(id, delay) {
   const el = document.querySelector(`#${id} .say`); let i = 0, timer;
