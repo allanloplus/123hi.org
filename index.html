@@ -107,10 +107,10 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .viewer iframe{display:block;width:100%;height:600px;border:0;margin-top:14px;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
 
 /* ============ PORTALS ============ */
-.portals{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.portals{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .portal{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:250px;padding:18px;border-radius:24px;color:#fff;text-decoration:none;overflow:hidden;background:var(--bg);box-shadow:var(--shadow);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
 .portal::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(255,255,255,.25),transparent 55%)}
-.portal img{position:absolute;right:-8px;top:6px;width:96px;transform:translateY(16px) rotate(6deg);transition:transform .3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
+.portal img{position:absolute;right:-6px;top:8px;width:112px;transform:translateY(16px) rotate(6deg);transition:transform .3s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 8px 10px rgba(0,0,0,.25))}
 .portal:hover{transform:translateY(-8px)}
 .portal:hover img{transform:translateY(-6px) rotate(-4deg) scale(1.08)}
 .portal .emo{position:relative;font-size:30px}
@@ -225,6 +225,37 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .arcade-foot img{width:84px;animation:hop 2.4s ease-in-out infinite}
 .arcade-foot .btn-ghost{border-color:rgba(255,140,245,.6)}
 
+/* ============ 資安個案研究室（辦案牆） ============ */
+.cases-sec{background:linear-gradient(180deg,#fdf8ef,#f6efe2)}
+.cases-sec .sec-head .eyebrow{background:#fde2c4;color:#9c4a11}
+.board{position:relative;padding:34px 30px 30px;border-radius:20px;border:16px solid #8b5a2b;box-shadow:inset 0 0 30px rgba(0,0,0,.25),0 18px 40px rgba(80,45,10,.25);background-color:#c79b62;background-image:radial-gradient(rgba(0,0,0,.09) 1px,transparent 1.6px),radial-gradient(rgba(255,255,255,.14) 1px,transparent 1.6px);background-size:7px 7px,11px 11px;background-position:0 0,3px 5px}
+.board::before{content:"";position:absolute;inset:-16px;border-radius:20px;pointer-events:none;box-shadow:inset 0 0 0 2px rgba(255,255,255,.12)}
+.files{display:grid;grid-template-columns:repeat(3,1fr);gap:30px 26px}
+.file{position:relative;padding:26px 18px 16px;background:linear-gradient(180deg,#f7e2b4,#efd39a);border-radius:4px 10px 10px 10px;box-shadow:0 10px 18px rgba(60,30,0,.3);transform:rotate(var(--r));transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease;color:#3b2a14}
+.file::before{content:"";position:absolute;left:0;top:-14px;width:44%;height:16px;background:#efd39a;border-radius:8px 8px 0 0}
+.file:hover{transform:rotate(0) translateY(-8px) scale(1.03);box-shadow:0 22px 34px rgba(60,30,0,.35);z-index:2}
+.file .tack{position:absolute;top:-10px;left:50%;width:20px;height:20px;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle at 35% 35%,#ff8787,#c92a2a 60%,#7a1010);box-shadow:0 4px 4px rgba(0,0,0,.35);z-index:1}
+.file .no{font-family:ui-monospace,Consolas,monospace;font-weight:900;font-size:13px;letter-spacing:.08em;color:#7a5520}
+.file .cat{display:inline-block;margin-left:6px;font-size:11px;font-weight:900;padding:0 8px;border-radius:999px;background:#3b2a14;color:#ffd8a8;vertical-align:1px}
+.file .cat.ti{background:#c92a2a;color:#fff}
+.file .stamp{position:absolute;top:12px;right:12px;transform:rotate(12deg);border:3px solid rgba(201,42,42,.75);color:rgba(201,42,42,.8);font-weight:900;font-size:13px;padding:0 8px;border-radius:6px;letter-spacing:.2em}
+.file h3{margin:8px 0 6px;font-size:17px;line-height:1.4;font-weight:900}
+.file .origin{margin:0 0 10px;font-size:13px;line-height:1.5;color:#6b5434;border-left:3px solid #c9a46a;padding-left:8px}
+.file .tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.file .tags span{font-size:11px;font-weight:700;background:rgba(255,255,255,.55);border:1px solid #d9b77c;border-radius:6px;padding:0 6px}
+.file .acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.file .acts a{font-size:13px;font-weight:900;text-decoration:none;padding:5px 12px;border-radius:999px;background:#3b2a14;color:#ffe8c2;transition:transform .15s ease}
+.file .acts a.alt{background:transparent;color:#3b2a14;border:2px solid #3b2a14}
+.file .acts a:hover{transform:translateY(-2px)}
+.file .acts small{margin-left:auto;font-weight:700;color:#7a5520}
+.case-foot{display:grid;grid-template-columns:120px 1fr 120px;align-items:end;gap:16px;margin-top:26px}
+.case-foot img{width:120px;animation:hop 3s ease-in-out infinite}
+.case-foot .mid{text-align:center}
+.modes{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.modes span{background:#fff;border:1px solid #ecd9b8;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700;color:#5c3d14}
+.case-foot .btn{background:linear-gradient(135deg,#a0612b,#6b3a12);color:#fff;box-shadow:0 8px 20px rgba(107,58,18,.35)}
+.case-foot .note{margin:10px 0 0;font-size:12px;color:#8a7350}
+
 /* ============ COMIC ============ */
 .comic{background:#fff}
 .chat{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
@@ -300,6 +331,7 @@ footer a{color:#fff}
   .lvs{grid-template-columns:1fr 1fr}.trophy{display:none}.lv::after{display:none}
   .carts{grid-template-columns:repeat(3,1fr)}
   .park-map{display:none}
+  .files{grid-template-columns:1fr 1fr}
   .park-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 }
 @media (max-width:600px){
@@ -319,6 +351,8 @@ footer a{color:#fff}
   .lvs{grid-template-columns:1fr}
   .carts{grid-template-columns:1fr 1fr}
   .park-list{grid-template-columns:1fr}
+  .files{grid-template-columns:1fr}.board{padding:28px 14px 18px;border-width:10px}
+  .case-foot{grid-template-columns:1fr}.case-foot img{display:none}
 }
 /* ============ COMPACT（Google Sites 手機嵌入框） ============
    尺寸全部由 JS 依實際框寬高計算（iOS 在 iframe 內的 vh 會取整個螢幕高度，不可靠） */
@@ -533,6 +567,27 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
   </div>
 </section>
 
+<!-- ================= 資安個案研究室 ================= -->
+<section class="cases-sec" id="cases">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">CASE ROOM</span>
+      <h2>🕵️ 資安個案研究室</h2>
+      <p>真實資安事件改編的企業個案：動畫閱讀、互動任務、決策模擬，和 Allan、阿拉蕾一起辦案</p>
+    </div>
+    <div class="board reveal"><div class="files" id="files"></div></div>
+    <div class="case-foot reveal">
+      <img src="assets/img/allan-think.webp" alt="">
+      <div class="mid">
+        <div class="modes"><span>🎬 動畫閱讀</span><span>🧩 討論互動・六大任務</span><span>⏱️ 決策模擬</span><span>📄 文本版</span><span>🍎 教學手冊・90 分鐘</span></div>
+        <a class="btn" id="caseRoom" href="#">🔍 進入資安個案研究室 ↗</a>
+        <p class="note">個案改編自公開資料，人物與公司名稱均為虛構，僅供教學討論使用。</p>
+      </div>
+      <img src="assets/img/arale-wow.webp" alt="">
+    </div>
+  </div>
+</section>
+
 <!-- ================= COMIC ================= -->
 <section class="comic">
   <div class="wrap">
@@ -670,7 +725,9 @@ const PORTALS = [
   { emo: "🎬", t: "課程動畫", d: "ISO 27001／27701／42001、TISAX", href: "#courses", self: true, img: "arale-explain", bg: "linear-gradient(150deg,#22b8cf,#0b7285)" },
   { emo: "🗺️", t: "ISMS 流程", d: "A01–A15 運作流程動畫", href: "#flows", self: true, img: "allan-point", bg: "linear-gradient(150deg,#4c6ef5,#1d2f57)" },
   { emo: "🎡", t: "ISMS 主題樂園", d: "工作觀動畫、地圖與遊戲", href: "#park", self: true, img: "allan-laugh", bg: "linear-gradient(150deg,#51cf66,#2b8a3e)" },
+  { emo: "🕵️", t: "個案研究室", d: "真實事件改編・決策模擬", href: "#cases", self: true, img: "allan-surprised", bg: "linear-gradient(150deg,#c8834a,#6b3a12)" },
   { emo: "📝", t: "課後測驗", d: "檢驗學習成果", href: "#quiz", self: true, img: "allan-think", bg: "linear-gradient(150deg,#fab005,#e8590c)" },
+  { emo: "📚", t: "教學資源", d: "教學網站、影音與外部情資來源", href: "#resources", self: true, img: "allan-wink", bg: "linear-gradient(150deg,#495057,#1d2f57)" },
   { emo: "🕹️", t: "AI 遊樂場", d: "下課時間，無關資安", href: "#arcade", self: true, img: "arale-laugh", bg: "linear-gradient(150deg,#be4bdb,#5f3dc4)" }
 ];
 const LEVELS = [
@@ -685,6 +742,15 @@ const PARK = [
   { ic: "🏘️", t: "ISMS 資安小鎮", tag: "互動地圖", d: "點建築，阿拉蕾帶路認識各部門的 ISMS 工作與稽核準備度", p: "isms工作觀/isms資安小鎮", c: "#e8590c", x: 52, y: 28 },
   { ic: "🎲", t: "ISMS 大富翁", tag: "桌遊 1～4 人", d: "擲骰子走完資安一年，蒐集紀錄卡、擋下事件，年底外部稽核拿驗證", p: "isms工作觀/isms大富翁遊戲", c: "#e03131", x: 70, y: 66, low: true },
   { ic: "🏰", t: "實體安全大冒險", tag: "自由探索", d: "探索 16 個 A.7 實體安全控制項，區域安全與設備安全一次認識", p: "isms工作觀/實體安全大冒險", c: "#7048e8", x: 88, y: 30 }
+];
+const CASE_URL = "https://allanloplus.github.io/CASE/";
+const CASES = [
+  { id: "S115001", cat: "威脅情資", t: "總經理先看到新聞：PHP2Shell 情資應變的 48 小時", o: "PHP2Shell 重大漏洞外洩與緊急修補", tags: ["威脅情資", "漏洞管理", "資產盤點", "委外管理"] },
+  { id: "S111001", cat: "資訊保護", t: "倒數十天：艾倫建設的勒索軟體風暴", o: "上市公司遭勒索軟體攻擊，海量資料遭洩", tags: ["勒索軟體", "雙重勒索", "備份與復原", "重大訊息"] },
+  { id: "S111002", cat: "資訊保護", t: "補丁之後：艾倫普拉斯科技的 Log4j 供應鏈風暴", o: "Log4j 重大資安漏洞揭露半年後仍不可大意", tags: ["Log4Shell", "軟體供應鏈", "修補管理", "SBOM"] },
+  { id: "S111003", cat: "資訊保護", t: "沒收回的那把鑰匙：艾倫普拉斯傳媒的跨年直播危機", o: "離職員工偷刪前東家資料，該當何罪？", tags: ["離職管理", "帳號註銷", "雲端金鑰", "共用帳號"] },
+  { id: "S111004", cat: "資訊保護", t: "畫面不能重拍：曦光傳媒的片庫歸零事件", o: "電視台新聞片庫慘遭協力廠商刪除", tags: ["委外管理", "備份與復原", "RPO／RTO", "變更管理"] },
+  { id: "S111005", cat: "資訊保護", t: "起飛之前：艾倫普拉斯科技的營業秘密保衛戰", o: "離職時請別帶走公司的營業秘密", tags: ["營業秘密", "內部威脅", "離職管理", "日誌監控"] }
 ];
 const ARCADE = [
   { ic: "📖", t: "ALLAN 家族說故事劇場", d: "第一號作品《花草派》：2010 年手繪繪本，由 Allan 家族重新配音演出", u: "https://allanloplus.github.io/picture-book99/", c: "#ff8cf5" },
@@ -771,6 +837,15 @@ $("#parkMap").insertAdjacentHTML("beforeend", PARK.map((a, i) => `<a class="pin 
   <span class="tip"><b>${esc(a.tag)}｜${esc(a.t)}</b>${esc(a.d)}<br><em>入園遊玩 ↗</em></span></a>`).join(""));
 $("#parkList").innerHTML = PARK.map((a, i) => `<a class="reveal" style="--c:${a.c};--d:${-i * .6}s" href="${esc(siteUrl(a.p))}" rel="noopener">
   <span class="bld">${a.ic}</span><span><b>${i + 1}. ${esc(a.t)}</b><small>${esc(a.tag)}｜${esc(a.d)}</small></span></a>`).join("");
+
+const tilt = [-2.2, 1.6, -1.2, 2, -1.8, 1.2];
+$("#files").innerHTML = CASES.map((c, i) => `<article class="file" style="--r:${tilt[i % tilt.length]}deg">
+  <span class="tack"></span><span class="stamp">機密</span>
+  <span class="no">CASE ${esc(c.id)}</span><span class="cat ${c.cat === "威脅情資" ? "ti" : ""}">${esc(c.cat)}</span>
+  <h3>${esc(c.t)}</h3><p class="origin">改編自：${esc(c.o)}</p>
+  <div class="tags">${c.tags.map(t => `<span>#${esc(t)}</span>`).join("")}</div>
+  <div class="acts"><a href="${CASE_URL}#${esc(c.id)}-read" rel="noopener">📖 開始閱讀</a><a class="alt" href="${CASE_URL}#${esc(c.id)}-discuss" rel="noopener">💬 討論互動</a><small>⏱ 90 分鐘</small></div></article>`).join("");
+$("#caseRoom").href = siteUrl("ai寫的個案/資安個案研究室");
 
 $("#carts").innerHTML = ARCADE.map((g, i) => `<a class="cart reveal" style="--c:${g.c};transition-delay:${i * 80}ms" href="${esc(g.u)}" rel="noopener">
   <span class="scr">${g.ic}</span><b>${esc(g.t)}</b><small>${esc(g.d)}</small><span class="play2">PLAY ▶</span></a>`).join("");
