@@ -604,7 +604,7 @@ document.querySelectorAll(".rail-btn").forEach(b => b.addEventListener("click", 
 
 $("#road").insertAdjacentHTML("beforeend", FLOWS.map(([f, ic], i) => {
   const no = String(i + 1).padStart(2, "0");
-  return `<a class="st" data-i="${i}" href="${esc(siteUrl(`課程動畫/isms運作流程/a${no}_${f}流程`))}" rel="noopener"><span class="node">${ic}</span><small>A${no}</small><b>${esc(f)}</b></a>`;
+  return `<a class="st" data-i="${i}" href="${esc(siteUrl(`課程動畫/isms運作流程課程解說/a${no}_${f}流程`))}" rel="noopener"><span class="node">${ic}</span><small>A${no}</small><b>${esc(f)}</b></a>`;
 }).join(""));
 
 $("#chat").innerHTML = CHAT.map(([img, who, text], i) => `<div class="msg ${who === "Allan" ? "" : "r"}" style="transition-delay:${i * 450}ms">
