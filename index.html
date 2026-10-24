@@ -72,6 +72,9 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .btn-white{background:#fff;color:var(--navy);border:2px solid var(--line)}
 .pulse{animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{box-shadow:0 8px 20px rgba(240,169,43,.45),0 0 0 0 rgba(255,210,63,.6)}50%{box-shadow:0 8px 20px rgba(240,169,43,.45),0 0 0 12px rgba(255,210,63,0)}}
+.btn-island{position:relative;padding:7px 18px 7px 9px;background:linear-gradient(135deg,#18a6b5,#5f3dc4);color:#fff;box-shadow:0 8px 20px rgba(95,61,196,.4)}
+.btn-island svg{width:32px;height:32px;flex:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3));animation:hop 3s ease-in-out infinite}
+.btn-island .new{position:absolute;top:-9px;right:-4px;background:var(--red);color:#fff;font-size:11px;font-weight:900;letter-spacing:.06em;padding:1px 7px;border-radius:999px;box-shadow:0 3px 8px rgba(229,72,77,.45)}
 
 /* ============ TICKER ============ */
 .ticker{background:var(--navy);color:#fff;display:flex;align-items:center;overflow:hidden;font-size:14px}
@@ -448,6 +451,10 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
       <div class="hero-cta">
         <a class="btn btn-gold pulse" href="#intel" target="_self">📥 下載本月資安情資</a>
         <a class="btn btn-ghost" href="#explore" target="_self">🚀 開始學習</a>
+        <a class="btn btn-island" href="isms_island/" rel="noopener" title="10 座六角島拼成的互動資源地圖">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><g stroke="#fff" stroke-width="1.4" stroke-linejoin="round"><path d="M9 2.5l5.6 3.2v6.5L9 15.4 3.4 12.2V5.7z" fill="#e03131"/><path d="M23 2.5l5.6 3.2v6.5L23 15.4l-5.6-3.2V5.7z" fill="#ffd23f"/><path d="M16 14.6l5.6 3.2v6.5L16 27.5l-5.6-3.2v-6.5z" fill="#2f9e44"/></g><path d="M16 17.5v6.6M13.2 20.6h5.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Allan's 資安島 ↗<span class="new">NEW</span>
+        </a>
       </div>
     </div>
     <div class="char arale" id="heroArale" title="點我聽阿拉蕾說">
@@ -864,7 +871,7 @@ $("#srcList").innerHTML = SRC.map(lk).join("");
 /* ================= 互動 ================= */
 const lines = {
   heroAllan: ["大家好，我是 Allan！", "本月資安情資已更新 📥", "課程動畫都在下面喔", "有問題歡迎來信討論～"],
-  heroArale: ["阿拉蕾幫腔上課囉！", "情資點一下就能下載！", "跟我一起走 ISMS 流程地圖 🗺️", "來 ISMS 主題樂園玩遊戲 🎡", "上完課記得做測驗喔 💪"]
+  heroArale: ["阿拉蕾幫腔上課囉！", "情資點一下就能下載！", "跟我一起走 ISMS 流程地圖 🗺️", "來 ISMS 主題樂園玩遊戲 🎡", "逛逛 Allan's 資安島 🏝️", "上完課記得做測驗喔 💪"]
 };
 function typer(id, delay) {
   const el = document.querySelector(`#${id} .say`); let i = 0, timer;
