@@ -211,7 +211,8 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .arcade .sec-head p{color:#cbbbe8}
 .stars span{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;animation:twinkle 2.4s ease-in-out infinite}
 @keyframes twinkle{50%{opacity:.15}}
-.carts{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.carts{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+.carts .cart{flex:0 1 calc((100% - 60px) / 4)}
 .cart{position:relative;display:flex;flex-direction:column;text-decoration:none;color:#fff;border-radius:18px 18px 10px 10px;background:linear-gradient(180deg,#2a1d4f,#1c1238);border:2px solid var(--c);box-shadow:0 0 0 rgba(0,0,0,0);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;overflow:hidden}
 .cart::before{content:"";height:14px;background:repeating-linear-gradient(90deg,var(--c) 0 10px,transparent 10px 16px);opacity:.8}
 .cart:hover{transform:translateY(-10px) rotate(-1.5deg);box-shadow:0 0 24px var(--c),0 0 4px var(--c) inset}
@@ -276,7 +277,8 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .quiz .mid{padding-bottom:30px;text-align:center;position:relative}
 .quiz h2{margin:0 0 6px;font-size:clamp(24px,3vw,34px);font-weight:900}
 .quiz p{margin:0 0 16px;opacity:.95}
-.quiz .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.quiz .btns{display:grid;grid-template-columns:repeat(2,auto);gap:10px;justify-content:center}
+.quiz .btns .btn{justify-content:center}
 .quiz .btn-white{border:0;color:#c2410c}
 
 /* ============ LINKS ============ */
@@ -329,7 +331,7 @@ footer a{color:#fff}
   .quiz .mid{text-align:left}.quiz .btns{justify-content:flex-start}
   .links2,.duo{grid-template-columns:1fr}
   .lvs{grid-template-columns:1fr 1fr}.trophy{display:none}.lv::after{display:none}
-  .carts{grid-template-columns:repeat(3,1fr)}
+  .carts .cart{flex-basis:calc((100% - 40px) / 3)}
   .park-map{display:none}
   .files{grid-template-columns:1fr 1fr}
   .park-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -344,12 +346,12 @@ footer a{color:#fff}
   .portals{grid-template-columns:1fr 1fr;gap:12px}.portal{min-height:200px;padding:14px}.portal img{width:92px}
   .rail{grid-auto-columns:220px}.rail-btn{display:none}
   .msg img{width:56px;height:56px}.msg .t{font-size:15px}
-  .quiz{grid-template-columns:1fr}.quiz .r{display:none}.quiz .mid{text-align:center}.quiz .btns{justify-content:center}
+  .quiz{grid-template-columns:1fr}.quiz .r{display:none}.quiz .mid{text-align:center}.quiz .btns{justify-content:center;grid-template-columns:auto}
   .lgrid{grid-template-columns:1fr}
   .who{grid-template-columns:1fr}.who .pic img{max-height:220px}
   .viewer iframe{height:480px}
   .lvs{grid-template-columns:1fr}
-  .carts{grid-template-columns:1fr 1fr}
+  .carts .cart{flex-basis:calc((100% - 20px) / 2)}
   .park-list{grid-template-columns:1fr}
   .files{grid-template-columns:1fr}.board{padding:28px 14px 18px;border-width:10px}
   .case-foot{grid-template-columns:1fr}.case-foot img{display:none}
@@ -620,9 +622,9 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
   <div class="stars" id="stars" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">BREAK TIME · 無關資安</span>
+      <span class="eyebrow">BREAK TIME · AI 小作品</span>
       <h2>🕹️ 下課時間｜Allan's AI 遊樂場</h2>
-      <p>上完資安課，來放鬆一下！Allan 用 AI 做的小作品</p>
+      <p>上完資安課，來放鬆一下！Allan 用 AI 做的遊戲與小作品（有幾款偷偷藏了資安梗）</p>
     </div>
     <div class="carts" id="carts"></div>
     <div class="arcade-foot reveal">
@@ -728,7 +730,7 @@ const PORTALS = [
   { emo: "🕵️", t: "個案研究室", d: "真實事件改編・決策模擬", href: "#cases", self: true, img: "allan-surprised", bg: "linear-gradient(150deg,#c8834a,#6b3a12)" },
   { emo: "📝", t: "課後測驗", d: "檢驗學習成果", href: "#quiz", self: true, img: "allan-think", bg: "linear-gradient(150deg,#fab005,#e8590c)" },
   { emo: "📚", t: "教學資源", d: "教學網站、影音與外部情資來源", href: "#resources", self: true, img: "allan-wink", bg: "linear-gradient(150deg,#495057,#1d2f57)" },
-  { emo: "🕹️", t: "AI 遊樂場", d: "下課時間，無關資安", href: "#arcade", self: true, img: "arale-laugh", bg: "linear-gradient(150deg,#be4bdb,#5f3dc4)" }
+  { emo: "🕹️", t: "AI 遊樂場", d: "下課時間・AI 遊戲小作品", href: "#arcade", self: true, img: "arale-laugh", bg: "linear-gradient(150deg,#be4bdb,#5f3dc4)" }
 ];
 const LEVELS = [
   { ic: "📺", t: "情資作業動畫解說", d: "13 段動畫簡報：情資蒐集、脆弱性識別、AI 風險排序到稽核證據", p: "資安情資/資安情資作業動畫解說", c: "#15aabf" },
@@ -758,6 +760,7 @@ const ARCADE = [
   { ic: "🃏", t: "Allan 與阿拉蕾的橋牌桌", d: "四人合約橋牌：和阿拉蕾搭檔，對抗駭客小黑與釣魚怪", u: "https://allanloplus.github.io/bridge/", c: "#4dabf7" },
   { ic: "🐷", t: "Allan 的拱豬夜市", d: "夜市開桌拱豬：♠Q 是勒索豬，♦J 是資安預算羊", u: "https://allanloplus.github.io/Gong_Zhu/", c: "#ffa94d" },
   { ic: "🎴", t: "Allan's 資安大老二", d: "環島攻防戰：出一張牌走一站，先回台北 101 拿資安認證；鐵支＝零時差攻擊", u: "https://allanloplus.github.io/big2/", c: "#ff6b6b" },
+  { ic: "🧋", t: "Allan's 資安大富翁－快樂遊台灣", d: "22 縣市環島大富翁：吃在地美食、認養縣市當資安守護者，把韌性指數推到 100%", u: "https://allanloplus.github.io/Monopoly/", c: "#38d9a9" },
   { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "選心情、看天氣、挑飯友，阿拉蕾從 373 道台灣美食幫你挑", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" }
 ];
 const COURSES = [
@@ -781,7 +784,7 @@ const CHAT = [
   ["allan-smile", "Allan", "走 <span class='iso'>A.8.8 技術脆弱性管理</span> 修補流程，外部議題再回饋到 <span class='iso'>4.1 組織全景</span>，稽核就不卡關！"],
   ["arale-thumb", "阿拉蕾", "懂了！我去看 A08「威脅與弱點管理」的動畫複習一下～"]
 ];
-const QUIZ = [["📋 ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["🧠 資安課程課後測驗", "課後測驗專區/資安課程課後測驗"], ["🕵️ ISMS Auditor 知識測驗", "課後測驗專區/isms-auditor知識測驗"]];
+const QUIZ = [["📋 ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["🧠 資安課程課後測驗", "課後測驗專區/資安課程課後測驗"], ["🕵️ ISMS Auditor 知識測驗", "課後測驗專區/isms-auditor知識測驗"], ["💻 Allan's IT 知識測驗", "課後測驗專區/allans-it知識測驗"]];
 const RES = [
   ["27001", "ISO27001 教學資源", "教學網站", "https://sites.google.com/123hi.org/iso27001/", "#1d4ed8"],
   ["27701", "ISO27701 教學資源", "條文解說簡報", "https://sites.google.com/view/allanlo-iso27701/iso27701%E6%A2%9D%E6%96%87%E8%A7%A3%E8%AA%AA%E7%B0%A1%E5%A0%B1", "#9c36b5"],
