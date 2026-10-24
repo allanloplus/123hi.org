@@ -3,7 +3,7 @@
 Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google Sites「整頁嵌入」使用。
 
 ## 發佈（GitHub Pages）
-1. Repo → Settings → Pages → Source 選 `Deploy from a branch`，Branch 選 `main`、資料夾 `/ (root)`。之後所有修改都合併進 `main`。
+1. Repo → Settings → Pages → Source 選 `Deploy from a branch`，Branch 選 `main`、資料夾 `/ (root)`。之後所有修改都直接合併並推送到 `main`（見 `CLAUDE.md`）。
 2. 網址為 `https://allanloplus.github.io/123hi.org/`（資安島：`https://allanloplus.github.io/123hi.org/isms_island/`）。
 3. Google Sites → 插入 → 嵌入 → 「依網址」貼上網址 → 選「整頁」。
 
