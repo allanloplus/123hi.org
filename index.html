@@ -925,6 +925,14 @@ const toTop = $("#toTop");
 addEventListener("scroll", () => toTop.classList.toggle("show", scrollY > 900), { passive: true });
 toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
 
+/* 跑馬燈速度：依內容長度換算，固定每秒移動 TICKER_PX_PER_SEC 像素 */
+const TICKER_PX_PER_SEC = 50;
+function setTickerSpeed() {
+  const t = $("#tickerTrack");
+  t.style.animationDuration = Math.max(20, t.scrollWidth / 2 / TICKER_PX_PER_SEC) + "s";
+}
+setTickerSpeed();
+
 /* ================= 情資：下載、線上瀏覽、本月焦點 ================= */
 $("#btnXlsx").href = `${base}/export?format=xlsx`;
 $("#miniXlsx").href = `${base}/export?format=xlsx`;
@@ -969,6 +977,7 @@ async function loadMonth(m) {
   $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.date.getMonth() + 1}/${x.date.getDate()} · ${esc(x.src)}</small>${esc(x.title)}`)).join("");
   const tick = items.slice(0, 15).map(x => link(x, `<span class="tsrc">[${esc(x.src)}]</span>${esc(x.title)}`)).join("");
   $("#tickerTrack").innerHTML = tick + tick;
+  setTickerSpeed();
 })();
 </script>
 </body>
