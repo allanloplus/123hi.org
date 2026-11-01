@@ -8,7 +8,7 @@
 <base target="_blank">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#14213d; --navy-2:#1d2f57; --ink:#1b2335; --muted:#5b6577;
@@ -215,7 +215,7 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .stars span{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;animation:twinkle 2.4s ease-in-out infinite}
 @keyframes twinkle{50%{opacity:.15}}
 .carts{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
-.carts .cart{flex:0 1 calc((100% - 60px) / 4)}
+.carts .cart{flex:0 1 calc((100% - 80px) / 5)}
 .cart{position:relative;display:flex;flex-direction:column;text-decoration:none;color:#fff;border-radius:18px 18px 10px 10px;background:linear-gradient(180deg,#2a1d4f,#1c1238);border:2px solid var(--c);box-shadow:0 0 0 rgba(0,0,0,0);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;overflow:hidden}
 .cart::before{content:"";height:14px;background:repeating-linear-gradient(90deg,var(--c) 0 10px,transparent 10px 16px);opacity:.8}
 .cart:hover{transform:translateY(-10px) rotate(-1.5deg);box-shadow:0 0 24px var(--c),0 0 4px var(--c) inset}
@@ -259,6 +259,30 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .modes span{background:#fff;border:1px solid #ecd9b8;border-radius:999px;padding:4px 12px;font-size:14px;font-weight:700;color:#5c3d14}
 .case-foot .btn{background:linear-gradient(135deg,#a0612b,#6b3a12);color:#fff;box-shadow:0 8px 20px rgba(107,58,18,.35)}
 .case-foot .note{margin:10px 0 0;font-size:12px;color:#8a7350}
+
+/* ============ 從新聞．看個案（資安日報） ============ */
+.paper{margin-top:30px;background:#fbf8f1;color:#222;border-radius:6px;padding:20px 24px 22px;box-shadow:0 14px 30px rgba(60,40,10,.18);border:1px solid #e6dcc6;position:relative;transform:rotate(-.3deg)}
+.paper::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:6px;background:repeating-linear-gradient(0deg,rgba(0,0,0,.015) 0 2px,transparent 2px 4px)}
+.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:4px double #222;padding-bottom:8px;margin-bottom:6px}
+.mast h3{margin:0;font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(26px,3.6vw,40px);letter-spacing:.06em;line-height:1.1}
+.mast h3 small{display:block;font-family:"Noto Sans TC",sans-serif;font-size:13px;letter-spacing:.3em;font-weight:700;color:#7a5520}
+.mast .ed{font-size:13px;color:#555;text-align:right;line-height:1.5}
+.mast .ed a{font-weight:900;color:#a0612b}
+.dateline{display:flex;justify-content:space-between;font-size:12px;color:#666;border-bottom:1px solid #222;padding:2px 0 6px;margin-bottom:14px;flex-wrap:wrap;gap:6px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr)}
+.clip{position:relative;padding:0 16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:6px;transition:transform .2s ease}
+.clip+.clip{border-left:1px solid #cfc6b2}
+.clip:first-child{padding-left:0}.clip:last-child{padding-right:0}
+.clip:hover{transform:translateY(-4px)}
+.clip:hover h4{text-decoration:underline;text-decoration-thickness:2px}
+.clip .sev{align-self:flex-start;font-size:11px;font-weight:900;color:#fff;background:#c92a2a;padding:1px 8px;border-radius:2px;letter-spacing:.1em}
+.clip .sev.major{background:#e8590c}
+.clip .meta{font-size:12px;color:#777}
+.clip h4{margin:0;font-family:"Noto Serif TC",serif;font-weight:900;font-size:19px;line-height:1.4}
+.clip p{margin:0;font-size:14px;line-height:1.65;color:#444;text-align:justify}
+.clip .tp{display:flex;flex-wrap:wrap;gap:4px}
+.clip .tp span{font-size:11px;border:1px solid #bbb;padding:0 6px;border-radius:2px;color:#555}
+.clip .more{font-size:13px;font-weight:900;color:#a0612b;margin-top:auto}
 
 /* ============ COMIC ============ */
 .comic{background:#fff}
@@ -337,6 +361,7 @@ footer a{color:#fff}
   .carts .cart{flex-basis:calc((100% - 40px) / 3)}
   .park-map{display:none}
   .files{grid-template-columns:1fr 1fr}
+  .cols{grid-template-columns:1fr}.clip{padding:14px 0!important}.clip+.clip{border-left:0;border-top:1px solid #cfc6b2}
   .park-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 }
 @media (max-width:600px){
@@ -582,9 +607,18 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
     <div class="sec-head reveal">
       <span class="eyebrow">CASE ROOM</span>
       <h2>🕵️ 資安個案研究室</h2>
-      <p>真實資安事件改編的企業個案：動畫閱讀、互動任務、決策模擬，和 Allan、阿拉蕾一起辦案</p>
+      <p>真實資安事件改編的企業個案，加上即時新聞拆解的「資安日報」：和 Allan、阿拉蕾一起辦案</p>
     </div>
     <div class="board reveal"><div class="files" id="files"></div></div>
+
+    <div class="paper reveal">
+      <div class="mast">
+        <h3><small>從新聞，看個案</small>資安日報</h3>
+        <div class="ed">每一則資安新聞，都是一堂管理課<br>導讀：Allan Lo 顧問 × 助教阿拉蕾 · <a id="newsAll" href="#">看全部新聞個案 ↗</a></div>
+      </div>
+      <div class="dateline"><span>ISMS × PIMS 個案教室・持續更新</span><span>事件始末｜技術解析｜管理・技術・法律・企業因應四大面向討論｜稽核員視角</span></div>
+      <div class="cols" id="newsCols"></div>
+    </div>
     <div class="case-foot reveal">
       <img src="assets/img/allan-think.webp" alt="">
       <div class="mid">
@@ -761,6 +795,12 @@ const CASES = [
   { id: "S111004", cat: "資訊保護", t: "畫面不能重拍：曦光傳媒的片庫歸零事件", o: "電視台新聞片庫慘遭協力廠商刪除", tags: ["委外管理", "備份與復原", "RPO／RTO", "變更管理"] },
   { id: "S111005", cat: "資訊保護", t: "起飛之前：艾倫普拉斯科技的營業秘密保衛戰", o: "離職時請別帶走公司的營業秘密", tags: ["營業秘密", "內部威脅", "離職管理", "日誌監控"] }
 ];
+const NEWS_URL = "https://allanloplus.github.io/case_isnews/";
+const NEWS = [
+  { slug: "2026-10-synology-c3rb3r", sev: "重大", date: "2026-10-30", src: "iThome 新聞", t: "群暉 NAS 遭 C3RB3R 勒索軟體攻擊：被遺忘的更新與備份", d: "鎖定未更新的群暉 NAS 加密勒索；「沒更新、對外曝露、備份放同一台」是共同破口。附互動式勒索攻防模擬器。", tp: ["勒索軟體", "備份與復原", "漏洞管理"] },
+  { slug: "2026-10-91app-breach", sev: "重大", date: "2026-10-30", src: "今周刊", t: "91APP 資料庫遭 AI 代理攻擊：一個未更新的內部工具，波及 1,329 個品牌", d: "內部工具未更新被 AI 自主滲透工具打入，再從 GitLab 取得資料庫金鑰；SaaS 供應鏈與個資責任一次看。", tp: ["個資保護", "供應鏈", "AI 資安"] },
+  { slug: "2026-10-php2shell", sev: "緊急", date: "2026-10-29", src: "非凡商業台", t: "AI 揪出潛藏十多年的 PHP 漏洞：PHP2Shell 與資安雙面刃", d: "全球約七成網站使用的 PHP 爆出免登入 RCE 漏洞，攻擊早於修補，日本與歐洲大量預防性關站。", tp: ["漏洞管理", "事件應變", "AI 資安"] }
+];
 const ARCADE = [
   { ic: "📖", t: "ALLAN 家族說故事劇場", d: "第一號作品《花草派》：2010 年手繪繪本，由 Allan 家族重新配音演出", u: "https://allanloplus.github.io/picture-book99/", c: "#ff8cf5" },
   { ic: "⛰️", t: "跟著 Allan 走一趟特富野古道", d: "Allan 當領隊：鄒族獵徑、運材鐵道、交通路線與古道小遊戲", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/", c: "#69db7c" },
@@ -769,7 +809,9 @@ const ARCADE = [
   { ic: "🎴", t: "Allan's 資安大老二", d: "環島攻防戰：出一張牌走一站，先回台北 101 拿資安認證；鐵支＝零時差攻擊", u: "https://allanloplus.github.io/big2/", c: "#ff6b6b" },
   { ic: "🧋", t: "Allan's 資安大富翁－快樂遊台灣", d: "22 縣市環島大富翁：吃在地美食、認養縣市當資安守護者，把韌性指數推到 100%", u: "https://allanloplus.github.io/Monopoly/", c: "#38d9a9" },
   { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "選心情、看天氣、挑飯友，阿拉蕾從 373 道台灣美食幫你挑", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" },
-  { ic: "🌴", t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天：357 篇日誌、台北⇄檳城航線地圖與南洋奇幻之旅勳章", u: "https://allanloplus.github.io/AllanWentToNayang/", c: "#a9e34b" }
+  { ic: "🌴", t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天：357 篇日誌、台北⇄檳城航線地圖與南洋奇幻之旅勳章", u: "https://allanloplus.github.io/AllanWentToNayang/", c: "#a9e34b" },
+  { ic: "🏯", t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖：嘉義市、嘉義縣、雲林縣、臺南市，語音導覽、老地圖時光機與文資護照", u: "https://allanloplus.github.io/Cultural_Heritage", c: "#e8a87c" },
+  { ic: "🚉", t: "Allan's 文化知識學習：影片導讀", d: "嘉義與臺南車站：同一位建築師，一座風華再現、一座風華再見？", u: "https://allanlo-g.github.io/Train_Station", c: "#74c0fc" }
 ];
 const COURSES = [
   { big: "ISO<br>27001", badge: "互動教材", name: "ISO27001 完整線上互動教材", p: "課程動畫/iso27001完整線上互動教材", img: "allan-point", bg: "linear-gradient(160deg,#1d4ed8,#14213d)" },
@@ -779,6 +821,7 @@ const COURSES = [
   { big: "3<br>MIN", badge: "快速入門", name: "3 分鐘和 ISO27001", p: "課程動畫/3分鐘和iso27001", img: "arale-laugh", bg: "linear-gradient(160deg,#37b24d,#087f5b)" },
   { big: "MIND<br>MAP", badge: "心智圖", name: "用心智圖了解 ISO27001", p: "課程動畫/用心智圖了解iso27001", img: "arale-think", bg: "linear-gradient(160deg,#fab005,#e67700)" },
   { big: "資安<br>宣導", badge: "年度必修", name: "Allan 的年度資安宣導", p: "課程動畫/allan的年度資安宣導", img: "allan-laugh", bg: "linear-gradient(160deg,#15aabf,#1864ab)" },
+  { big: "TISAX<br>EN", badge: "English", name: "ISA 2027 for TISAX — Requirements Explained", p: "課程動畫/tisax要求完整解說_英文版", img: "allan-smile", bg: "linear-gradient(160deg,#1864ab,#212529)" },
   { big: "資安法", badge: "事件通報", name: "資通安全法－資安事件通報", p: "課程動畫/資通安全法-資安事件通報", img: "allan-surprised", bg: "linear-gradient(160deg,#e03131,#862e9c)" }
 ];
 const FLOWS = [["治理", "🏛️"], ["人員安全", "👥"], ["資訊保護", "🔐"], ["資產管理", "📦"], ["存取管理", "🔑"], ["保全組態", "⚙️"], ["實體安全", "🏢"],
@@ -857,6 +900,10 @@ $("#files").innerHTML = CASES.map((c, i) => `<article class="file" style="--r:${
   <div class="tags">${c.tags.map(t => `<span>#${esc(t)}</span>`).join("")}</div>
   <div class="acts"><a href="${CASE_URL}#${esc(c.id)}-read" rel="noopener">📖 開始閱讀</a><a class="alt" href="${CASE_URL}#${esc(c.id)}-discuss" rel="noopener">💬 討論互動</a><small>⏱ 90 分鐘</small></div></article>`).join("");
 $("#caseRoom").href = siteUrl("ai寫的個案/資安個案研究室");
+$("#newsAll").href = siteUrl("ai寫的個案/從新聞看個案");
+$("#newsCols").innerHTML = NEWS.map(n => `<a class="clip" href="${NEWS_URL}cases/${esc(n.slug)}/" rel="noopener">
+  <span class="sev ${n.sev === "緊急" ? "" : "major"}">${esc(n.sev)}</span><span class="meta">${esc(n.date.replace(/-/g, "/"))} · ${esc(n.src)}</span>
+  <h4>${esc(n.t)}</h4><p>${esc(n.d)}</p><span class="tp">${n.tp.map(t => `<span>${esc(t)}</span>`).join("")}</span><span class="more">📰 讀個案 →</span></a>`).join("");
 
 $("#carts").innerHTML = ARCADE.map((g, i) => `<a class="cart reveal" style="--c:${g.c};transition-delay:${i * 80}ms" href="${esc(g.u)}" rel="noopener">
   <span class="scr">${g.ic}</span><b>${esc(g.t)}</b><small>${esc(g.d)}</small><span class="play2">PLAY ▶</span></a>`).join("");

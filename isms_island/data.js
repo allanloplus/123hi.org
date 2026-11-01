@@ -75,6 +75,7 @@ export const ISLANDS = [
       { t: "ISO27701 完整線上課程", d: "隱私資訊管理系統", tag: "隱私管理", u: site("課程動畫/iso27701完整線上課程"), std: ["27701"] },
       { t: "ISO42001 完整線上課程", d: "AI 管理系統", tag: "AI 管理", u: site("課程動畫/iso42001完整線上課程"), std: ["42001"] },
       { t: "TISAX 要求完整解說", d: "汽車產業資安評估", tag: "汽車產業", u: site("課程動畫/tisax要求完整解說"), std: ["TISAX"] },
+      { t: "TISAX 要求完整解說（英文版）", d: "ISA 2027 for TISAX — Requirements Explained", tag: "English", u: site("課程動畫/tisax要求完整解說_英文版"), std: ["TISAX"] },
       { t: "3 分鐘和 ISO27001", d: "第一次接觸 ISMS 從這裡開始", tag: "快速入門", u: site("課程動畫/3分鐘和iso27001"), std: ["27001"] },
       { t: "用心智圖了解 ISO27001", d: "一張圖看懂條文架構", tag: "心智圖", u: site("課程動畫/用心智圖了解iso27001"), std: ["27001"] },
       { t: "Allan 的年度資安宣導", d: "全員資安教育訓練", tag: "年度必修", u: site("課程動畫/allan的年度資安宣導"), std: ["27001", "CSMA"] },
@@ -108,6 +109,11 @@ export const ISLANDS = [
       ["S111004", "畫面不能重拍：曦光傳媒的片庫歸零事件", "電視台新聞片庫慘遭協力廠商刪除", "片庫歸零事件"],
       ["S111005", "起飛之前：艾倫普拉斯科技的營業秘密保衛戰", "離職時請別帶走公司的營業秘密", "營業秘密保衛戰"]
     ].map(([id, t, o, m]) => ({ t, m, d: `改編自：${o}`, tag: id, u: `${CASE_URL}#${id}-read`, alt: ["💬 討論", `${CASE_URL}#${id}-discuss`], std: id === "S115001" ? ["27001", "CSMA"] : ["27001"] }))
+      .concat([
+        ["#003", "2026-10-synology-c3rb3r", "群暉 NAS 遭 C3RB3R 勒索軟體攻擊：被遺忘的更新與備份", "iThome 新聞 2026/10/30"],
+        ["#002", "2026-10-91app-breach", "91APP 資料庫遭 AI 代理攻擊：一個未更新的內部工具，波及 1,329 個品牌", "今周刊 2026/10/30"],
+        ["#001", "2026-10-php2shell", "AI 揪出潛藏十多年的 PHP 漏洞：PHP2Shell 與資安雙面刃", "非凡商業台 2026/10/29"]
+      ].map(([no, slug, t, src]) => ({ t, d: `從新聞，看個案｜${src}`, tag: `新聞${no}`, u: `https://allanloplus.github.io/case_isnews/cases/${slug}/`, std: ["27001", "27701"] })))
   },
   {
     id: "park", t: "ISMS 主題樂園", en: "THEME PARK", ic: "🎡", c: "#2f9e44", row: 2, col: 1, kind: "park",
@@ -165,7 +171,10 @@ export const ISLANDS = [
       { t: "Allan 的拱豬夜市", d: "♠Q 是勒索豬，♦J 是資安預算羊", tag: "拱豬", u: "https://allanloplus.github.io/Gong_Zhu/" },
       { t: "Allan's 資安大老二", d: "環島攻防戰：鐵支＝零時差攻擊", tag: "大老二", u: "https://allanloplus.github.io/big2/" },
       { t: "資安大富翁－快樂遊台灣", d: "22 縣市環島，把韌性指數推到 100%", tag: "大富翁", u: "https://allanloplus.github.io/Monopoly/" },
-      { t: "Allan 在哪裡？要吃甚麼？", d: "阿拉蕾從 373 道台灣美食幫你挑", tag: "美食", u: "https://allanloplus.github.io/What-to-eat/" }
+      { t: "Allan 在哪裡？要吃甚麼？", d: "阿拉蕾從 373 道台灣美食幫你挑", tag: "美食", u: "https://allanloplus.github.io/What-to-eat/" },
+      { t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天的人生紀念頁", tag: "南洋", u: "https://allanloplus.github.io/AllanWentToNayang/" },
+      { t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖", tag: "文化", u: "https://allanloplus.github.io/Cultural_Heritage" },
+      { t: "影片導讀：嘉義與臺南車站", d: "Allan's 文化知識學習", tag: "導讀", u: "https://allanlo-g.github.io/Train_Station" }
     ]
   }
 ];
