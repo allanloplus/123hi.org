@@ -4,7 +4,7 @@ Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google S
 
 ## 發佈（GitHub Pages）
 1. Repo → Settings → Pages → Source 選 `Deploy from a branch`，Branch 選 `main`、資料夾 `/ (root)`。之後所有修改都直接合併並推送到 `main`（見 `CLAUDE.md`）。
-2. 網址為 `https://allanloplus.github.io/123hi.org/`（資安島：`https://allanloplus.github.io/123hi.org/isms_island/`）。
+2. 網址為 `https://allanlo.123hi.org/`（資安島：`https://allanlo.123hi.org/isms_island/`）。
 3. Google Sites → 插入 → 嵌入 → 「依網址」貼上網址 → 選「整頁」。
 
 ## 首頁區塊
@@ -21,7 +21,7 @@ Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google S
 `assets/img/` 為由角色設定圖裁切去背的 WebP（Allan 8 種表情、阿拉蕾 8 種表情與全身圖）。
 
 ## Allan's 資安島（`isms_island/`）
-參考 HEART 政策島的互動 3D 島嶼地圖，網址為 `https://allanloplus.github.io/123hi.org/isms_island/`，與首頁互不影響。
+參考 HEART 政策島的互動 3D 島嶼地圖，網址為 `https://allanlo.123hi.org/isms_island/`，與首頁互不影響。
 - 10 座六角島拼成盾牌形，每座島是一類資源；點島或用右側清單（可搜尋）開啟資源卡片，所有資源開新分頁。
 - 島與島之間有 13 條「知識流」，島民沿著橋搬運情資、測驗卷等；「日誌」記錄每趟出發與抵達。
 - 下方面板：ISMS 的一年（月份時間軸，示意排程）、學習路線、標準篩選（27001／27701／42001／TISAX／資通安全法）。
@@ -30,7 +30,7 @@ Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google S
 - Three.js 0.170.0 放在 `isms_island/vendor/three/`（MIT 授權），不依賴外部 CDN；裝置不支援 WebGL 時改用平面六角地圖。
 
 ## 米數的資安島（`medsigtw-island/`）
-給米數資科使用的資安島複本，網址為 `https://allanloplus.github.io/123hi.org/medsigtw-island/`。
+給米數資科使用的資安島複本，網址為 `https://allanlo.123hi.org/medsigtw-island/`。
 - 與 `isms_island/` 內容相同，差別：品牌改為「米數的資安島／米數資科」，顧問稱「米數顧問」、阿拉蕾稱「AI小助手」，總部島改連米數官網 `https://www.medsigtw.com/` 與資安業務信箱 `isms@medsigtw.com`。
 - 連到外部頁面的資源（課程、測驗、遊戲、YouTube、AI Map、個案）名稱維持原樣，與點進去的頁面一致。
 - 資料夾自成一體（角色圖在 `medsigtw-island/img/`、Three.js 在 `vendor/`），整包複製到米數的網站也能直接使用。

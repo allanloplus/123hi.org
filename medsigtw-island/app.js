@@ -1,6 +1,6 @@
 /* 米數的資安島：介面（清單、卡片、時間軸、日誌、導覽）
    3D 場景載入失敗（例如裝置不支援 WebGL）時改用平面六角地圖，清單與卡片照常可用。 */
-import { ISLANDS, FLOWS, PATHS, YEAR_PLAN, STANDARDS, ROLES } from "./data.js?v=20261101b";
+import { ISLANDS, FLOWS, PATHS, YEAR_PLAN, STANDARDS, ROLES } from "./data.js?v=20261104a";
 
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -486,7 +486,7 @@ const lt = new Date().getHours();
 const startTime = lt >= 19 || lt < 5 ? "night" : lt < 8 ? "dawn" : lt >= 17 ? "dusk" : "day";
 
 try {
-  const { createWorld } = await import("./scene.js?v=20261101b");
+  const { createWorld } = await import("./scene.js?v=20261104a");
   world = await createWorld({
     container: $("#stage"), labels: $("#labels"), islands: ISLANDS, flows: FLOWS, roles: ROLES, reduce,
     onPick: id => openIsland(id, null, true),

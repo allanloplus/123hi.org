@@ -173,7 +173,7 @@ export const ISLANDS = [
       { t: "資安大富翁－快樂遊台灣", d: "22 縣市環島，把韌性指數推到 100%", tag: "大富翁", u: "https://allanloplus.github.io/Monopoly/" },
       { t: "Allan 在哪裡？要吃甚麼？", d: "阿拉蕾從 373 道台灣美食幫你挑", tag: "美食", u: "https://allanloplus.github.io/What-to-eat/" },
       { t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天的人生紀念頁", tag: "南洋", u: "https://allanloplus.github.io/AllanWentToNayang/" },
-      { t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖", tag: "文化", u: "https://allanloplus.github.io/Cultural_Heritage" },
+      { t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖", tag: "文化", u: "https://cultural.123hi.org/" },
       { t: "影片導讀：嘉義與臺南車站", d: "Allan's 文化知識學習", tag: "導讀", u: "https://allanlo-g.github.io/Train_Station" }
     ]
   }

@@ -1,7 +1,7 @@
 # 123hi.org 工作規則（給 Claude）
 
 ## 分支與發佈（重要）
-- GitHub Pages 從 **`main`** 分支、根目錄發佈：https://allanloplus.github.io/123hi.org/
+- GitHub Pages 從 **`main`** 分支、根目錄發佈，自訂網域 **https://allanlo.123hi.org/**（由 `CNAME` 檔設定，勿刪；舊網址 allanloplus.github.io/123hi.org/ 會自動轉址）。資安島：https://allanlo.123hi.org/isms_island/，米數版：https://allanlo.123hi.org/medsigtw-island/
 - 網站擁有者 Allan 已授權：**每次更新完成後，直接合併並推送到 `main`**，不需要再詢問。
   - 若工作分支不是 `main`：先 `git fetch origin main`，把 `origin/main` 合併進工作分支（或在 `main` 上合併工作分支），確認無衝突、頁面正常後 `git push origin HEAD:main`；工作分支也一併推送，保持兩者一致。
   - 不可 force push `main`；遇到衝突時保留雙方內容，無法判斷才詢問。
