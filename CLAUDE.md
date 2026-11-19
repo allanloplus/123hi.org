@@ -15,6 +15,12 @@
 - 資安島快取：兩座島的 `index.html`（`island.css?v=`、`app.js?v=`）與 `app.js`（`data.js?v=`、`scene.js?v=`）都帶版本號。**每次修改島的檔案，就把兩座島的版本號一起換成新值**（例如日期＋字母 `20261101b`），否則瀏覽器與 Google Sites 嵌入框會沿用舊的 data.js。
 - `assets/img/`：Allan 與阿拉蕾角色素材。
 
+## 情資試算表年度切換
+- 每年一份試算表，月份分頁命名「YYYY年M月」。年度對應表以**情資戰情看板**（repo `allanlo-g/threat-intel-warroom`，https://allanlo-g.github.io/threat-intel-warroom/ ）的 `config/companies.json` 為準；首頁載入時會讀它並覆蓋 `index.html` 內的備用清單 `SHEETS`。
+- 注意：看板 `maintenance.html`「年度設定」的修改只存在該瀏覽器，要按「匯出 companies.json」並上傳到看板 repo 的 `config/` 才會對所有人（含首頁）生效。
+- 首頁邏輯：從今天的月份往回找最近有資料的月份（可跨年）；按鈕、檔名、線上瀏覽都指向該月份所在年度。1–2 月多一顆「去年 12 月情資」按鈕；新年度尚無資料時多一顆「開啟新年度情資表」。測試可加 `?today=2027-01-05`。
+- 兩座資安島的 `data.js` 也各有一份 `SHEETS`（依日期切換，不讀 companies.json）；新增年度時三處一起補。
+
 ## 更新前後檢查
 - 新增連結前，先抓 https://sites.google.com/123hi.org/isms/ 的選單比對實際網址。
 - 嵌入的 GitHub 作品可 clone `https://github.com/allanloplus/<repo>` 讀內容（預設分支多半是 `claude/...`，不是 `main`）。

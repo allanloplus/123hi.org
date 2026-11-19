@@ -3,7 +3,16 @@
    連到外部頁面的資源名稱維持原樣。isms_island 新增資源時，這裡也要一起補上。 */
 
 export const SITE = "https://sites.google.com/123hi.org/isms/";
-export const SHEET = "https://docs.google.com/spreadsheets/d/1lxBMegXKCiBZZpnD16WTp4hZm3P6tgvnH5lqQ5q1V0I";
+/* 各年度情資試算表（與首頁 index.html 的 SHEETS、情資戰情看板的年度設定一致）；依今天的年份自動切換 */
+const SHEETS = {
+  2026: "1lxBMegXKCiBZZpnD16WTp4hZm3P6tgvnH5lqQ5q1V0I",
+  2027: "1uaeoVFTOhvtMGheo6LFPMJoQbMFVEIFfC7I7jtlIZXE"
+};
+const TODAY = new Date();
+const SHEET_YEAR = Object.keys(SHEETS).map(Number).sort((a, b) => b - a).find(y => y <= TODAY.getFullYear()) ?? 2026;
+const sheetOf = y => `https://docs.google.com/spreadsheets/d/${SHEETS[y]}`;
+export const SHEET = sheetOf(SHEET_YEAR);
+const WARROOM = "https://allanlo-g.github.io/threat-intel-warroom/";
 export const HOME = "https://www.medsigtw.com/";
 const CASE_URL = "https://allanloplus.github.io/CASE/";
 
@@ -40,8 +49,10 @@ export const ISLANDS = [
     iso: ["A.5.7 威脅情資", "A.8.8 技術脆弱性管理"],
     cta: ["⬇️ 下載本月情資 Excel", `${SHEET}/export?format=xlsx`],
     items: [
-      { t: "下載情資 Excel", d: "資安內外部情資蒐集紀錄_2026", tag: "Excel", u: `${SHEET}/export?format=xlsx`, std: ["27001"] },
-      { t: "開啟線上情資表", d: "含各月份分頁", tag: "試算表", u: `${SHEET}/edit`, std: ["27001"] },
+      { t: "下載情資 Excel", d: `資安內外部情資蒐集紀錄_${SHEET_YEAR}`, tag: "Excel", u: `${SHEET}/export?format=xlsx`, std: ["27001"] },
+      { t: "開啟線上情資表", d: `${SHEET_YEAR} 年，含各月份分頁`, tag: "試算表", u: `${SHEET}/edit`, std: ["27001"] },
+      ...(TODAY.getMonth() < 2 && SHEETS[SHEET_YEAR - 1] ? [{ t: `${SHEET_YEAR - 1} 年 12 月情資`, d: `上年度檔：資安內外部情資蒐集紀錄_${SHEET_YEAR - 1}`, tag: "上年度", u: `${sheetOf(SHEET_YEAR - 1)}/export?format=xlsx`, std: ["27001"] }] : []),
+      { t: "情資戰情看板", d: "即時讀取情資表：各月統計、情資明細與來源分析", tag: "看板", u: WARROOM, std: ["27001"] },
       { t: "情資作業動畫解說", d: "13 段動畫：情資蒐集、脆弱性識別、AI 風險排序到稽核證據", tag: "Lv.1", u: site("資安情資/資安情資作業動畫解說"), std: ["27001"] },
       { t: "內外部情資地圖", d: "內部事件與外部來源一張圖掌握", tag: "Lv.2", u: site("資安情資/內外部情資地圖"), std: ["27001"] },
       { t: "資安情資戰情室", d: "內外部情資、脆弱性與處置成效儀表板", tag: "Lv.3", u: site("資安情資/資安情資戰情室dashboard"), std: ["27001"] },

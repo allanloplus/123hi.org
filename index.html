@@ -96,6 +96,11 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .intel-card h2 .file{display:inline-block;background:var(--navy);color:var(--yellow);padding:1px 10px;border-radius:10px;font-family:ui-monospace,Consolas,monospace;font-size:.78em;margin-left:4px}
 .intel-card .lead{color:var(--muted);margin:0 0 16px;font-size:15px}
 .intel-actions{display:flex;gap:10px;flex-wrap:wrap}
+.intel-actions .btn[hidden],.years[hidden]{display:none}
+.years{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;font-size:13px;color:var(--muted)}
+.years a{font-weight:700;text-decoration:none;color:var(--teal-2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:1px 10px}
+.years a:hover{border-color:var(--teal)}
+.years a.on{background:var(--navy);color:var(--yellow);border-color:var(--navy)}
 .focus{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
 .focus h3{margin:0 0 8px;font-size:16px;display:flex;align-items:center;gap:8px}
 .focus h3 .live{width:8px;height:8px;border-radius:50%;background:var(--red);animation:ping 1.8s infinite;box-shadow:0 0 0 0 rgba(229,72,77,.6)}
@@ -493,8 +498,8 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
 <div class="ticker" aria-label="最新資安情資跑馬燈">
   <span class="tag">⚡ 最新情資</span>
   <div class="track" id="tickerTrack">
-    <span>每月資安內外部情資整理中，歡迎下載 <b>資安內外部情資蒐集紀錄_2026</b> 作為 ISO/IEC 27001:2022 A.5.7 威脅情資之佐證紀錄</span>
-    <span>每月資安內外部情資整理中，歡迎下載 <b>資安內外部情資蒐集紀錄_2026</b> 作為 ISO/IEC 27001:2022 A.5.7 威脅情資之佐證紀錄</span>
+    <span>每月資安內外部情資整理中，歡迎下載 <b>資安內外部情資蒐集紀錄</b> 作為 ISO/IEC 27001:2022 A.5.7 威脅情資之佐證紀錄</span>
+    <span>每月資安內外部情資整理中，歡迎下載 <b>資安內外部情資蒐集紀錄</b> 作為 ISO/IEC 27001:2022 A.5.7 威脅情資之佐證紀錄</span>
   </div>
 </div>
 
@@ -507,21 +512,24 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
       <img class="mascot" src="assets/img/arale-wave.webp" alt="" aria-hidden="true">
       <div>
         <span class="month-pill">🗓️ <span id="monthLabel">每月更新</span></span>
-        <h2>資安內外部情資蒐集紀錄<span class="file">_2026</span></h2>
+        <h2>資安內外部情資蒐集紀錄<span class="file" id="fileYear">_2026</span></h2>
         <p class="lead">彙整 NICS、TWCERT、iThome、TechNews 等來源的漏洞與安全事件情報，可直接下載留存作為稽核佐證。</p>
         <div class="intel-actions">
           <a class="btn btn-gold pulse" id="btnXlsx" href="#">⬇️ 下載 Excel</a>
           <a class="btn btn-teal" id="btnOpen" href="#">🔎 開啟情資表</a>
+          <a class="btn btn-white" id="btnWarroom" href="https://allanlo-g.github.io/threat-intel-warroom/">📊 情資戰情看板</a>
+          <a class="btn btn-white" id="btnOther" href="#" hidden></a>
         </div>
+        <div class="years" id="yearRow" hidden></div>
       </div>
       <div class="focus">
-        <h3><span class="live"></span>本月焦點情資</h3>
+        <h3><span class="live"></span><span id="focusTitle">本月焦點情資</span></h3>
         <div id="focusList"><div class="ph">阿拉蕾正在整理最新情資…</div></div>
       </div>
     </div>
     <details class="viewer reveal" id="viewer">
-      <summary>📊 線上瀏覽完整情資表（含各月份分頁）</summary>
-      <iframe id="sheetFrame" title="資安內外部情資蒐集紀錄_2026"></iframe>
+      <summary>📊 線上瀏覽 <span id="viewerYear">2026</span> 年完整情資表（含各月份分頁）</summary>
+      <iframe id="sheetFrame" title="資安內外部情資蒐集紀錄"></iframe>
     </details>
 
     <div class="lvup reveal" id="lvup">
@@ -759,8 +767,17 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
 
 <script>
 /* ================= 設定 ================= */
-const SHEET_ID = "1lxBMegXKCiBZZpnD16WTp4hZm3P6tgvnH5lqQ5q1V0I";
-const YEAR = 2026;
+/* 各年度情資試算表：以「情資戰情看板」的年度設定（config/companies.json）為準，載入時自動同步；
+   下方清單只在讀不到該設定時備用。每個試算表的月份分頁需命名為「YYYY年M月」。
+   測試跨年度可在網址加 ?today=2027-01-05 */
+const WARROOM = "https://allanlo-g.github.io/threat-intel-warroom/";
+const SHEETS = {
+  2023: "1XX7wOGIsqktwYtBwsm5MgEEwylPA66eRYluutCbLOxs",
+  2024: "1pXtjAIvuW07Jtf1HMUGG5Jro2ehTQgCbT3ciID7KQ4A",
+  2025: "1C7bt8Qj2c3QgUOwLUoka6YFOuKdWrQH_TNs8HFkD__c",
+  2026: "1lxBMegXKCiBZZpnD16WTp4hZm3P6tgvnH5lqQ5q1V0I",
+  2027: "1uaeoVFTOhvtMGheo6LFPMJoQbMFVEIFfC7I7jtlIZXE"
+};
 const SITE = "https://sites.google.com/123hi.org/isms/";
 
 const PORTALS = [
@@ -862,7 +879,6 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const siteUrl = p => /^(https?:|#)/.test(p) ? p : SITE + p.split("/").map(encodeURIComponent).join("/");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const base = `https://docs.google.com/spreadsheets/d/${SHEET_ID}`;
 
 /* ================= 版面組裝 ================= */
 $("#portals").innerHTML = PORTALS.map((p, i) => `<a class="portal reveal" style="--bg:${p.bg};transition-delay:${i * 80}ms" href="${esc(siteUrl(p.href))}" ${p.self ? 'target="_self"' : 'rel="noopener"'}>
@@ -988,12 +1004,43 @@ function setTickerSpeed() {
 }
 setTickerSpeed();
 
-/* ================= 情資：下載、線上瀏覽、本月焦點 ================= */
-$("#btnXlsx").href = `${base}/export?format=xlsx`;
-$("#miniXlsx").href = `${base}/export?format=xlsx`;
+/* ================= 情資：下載、線上瀏覽、本月焦點（跨年度自動切換） ================= */
+const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(); })();
+const sheetBase = y => `https://docs.google.com/spreadsheets/d/${SHEETS[y]}`;
+const sheetYears = () => Object.keys(SHEETS).map(Number).filter(y => SHEETS[y]).sort((a, b) => b - a);
+/* 今年有設定就用今年，否則用最近的過去年度 */
+const currentYear = () => { const ys = sheetYears(), y = TODAY.getFullYear(); return ys.find(v => v <= y) ?? ys[ys.length - 1]; };
+
+/* year：下載按鈕與線上瀏覽指向的年度；month：該年度已顯示資料的月份（可為 null） */
+function applyIntel(year, month) {
+  const base = sheetBase(year), nowY = TODAY.getFullYear(), nowM = TODAY.getMonth() + 1;
+  $("#fileYear").textContent = `_${year}`;
+  $("#btnXlsx").textContent = `⬇️ 下載 ${year} 年 Excel`;
+  $("#btnXlsx").href = $("#miniXlsx").href = `${base}/export?format=xlsx`;
+  $("#btnOpen").textContent = `🔎 開啟 ${year} 情資表`;
+  $("#btnOpen").href = `${base}/edit`;
+  $("#viewerYear").textContent = year;
+  const frame = $("#sheetFrame"), embed = `${base}/htmlembed`;
+  frame.dataset.src = embed;
+  if ($("#viewer").open && frame.getAttribute("src") !== embed) frame.src = embed;
+
+  /* 跨年度時的第二個檔案：年初補上去年 12 月；新年度還沒資料時補上新年度的表 */
+  const other = $("#btnOther");
+  if (year === nowY && nowM <= 2 && SHEETS[year - 1]) {
+    other.textContent = `⬇️ ${year - 1} 年 12 月情資（${year - 1} 年度檔）`;
+    other.href = `${sheetBase(year - 1)}/export?format=xlsx`; other.hidden = false;
+  } else if (year < nowY && SHEETS[nowY]) {
+    other.textContent = `🔎 開啟 ${nowY} 情資表（新年度）`;
+    other.href = `${sheetBase(nowY)}/edit`; other.hidden = false;
+  } else other.hidden = true;
+
+  const ys = sheetYears().filter(y => y <= Math.max(nowY, year));
+  $("#yearRow").hidden = ys.length < 2;
+  $("#yearRow").innerHTML = "🗂️ 歷年情資：" + ys.map(y => `<a class="${y === year ? "on" : ""}" href="${sheetBase(y)}/edit" rel="noopener" title="開啟 ${y} 年情資表">${y}</a>`).join("");
+}
 $("#miniFull").href = location.href.split(/[?#]/)[0];
-$("#btnOpen").href = `${base}/edit`;
-$("#viewer").addEventListener("toggle", e => { if (e.target.open && !$("#sheetFrame").src) $("#sheetFrame").src = `${base}/htmlembed`; });
+$("#viewer").addEventListener("toggle", e => { const f = $("#sheetFrame"); if (e.target.open && f.getAttribute("src") !== f.dataset.src) f.src = f.dataset.src; });
+applyIntel(currentYear(), null);
 
 const cellText = c => c ? String(c.f ?? c.v ?? "").trim() : "";
 function cellDate(c) {
@@ -1004,8 +1051,9 @@ function cellDate(c) {
   return d ? new Date(+d[1], +d[2] - 1, +d[3]) : null;
 }
 /* 依分頁名稱讀取；分頁不存在時 Google 會回傳第一個分頁，所以再以日期過濾 */
-async function loadMonth(m) {
-  const res = await fetch(`${base}/gviz/tq?tqx=out:json&headers=0&sheet=${encodeURIComponent(`${YEAR}年${m}月`)}`);
+async function loadMonth(y, m) {
+  if (!SHEETS[y]) return [];
+  const res = await fetch(`${sheetBase(y)}/gviz/tq?tqx=out:json&headers=0&sheet=${encodeURIComponent(`${y}年${m}月`)}`);
   const txt = await res.text();
   const data = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
   if (data.status !== "ok") return [];
@@ -1015,16 +1063,30 @@ async function loadMonth(m) {
   const head = rows[h].map(cellText), col = re => head.findIndex(x => re.test(x));
   const C = { date: Math.max(0, col(/日期/)), src: col(/^資料來源/), title: col(/標題/), url: col(/網址|連結/) };
   return rows.slice(h + 1).map(r => ({ date: cellDate(r[C.date]), src: cellText(r[C.src]), title: cellText(r[C.title]), url: cellText(r[C.url]) }))
-    .filter(x => x.title && x.date && x.date.getFullYear() === YEAR && x.date.getMonth() + 1 === m)
+    .filter(x => x.title && x.date && x.date <= TODAY && x.date.getFullYear() === y && x.date.getMonth() + 1 === m)
     .sort((a, b) => b.date - a.date);
 }
+/* 與情資戰情看板的「年度設定」同步（匯出並上傳 companies.json 後，首頁就會跟著換） */
+async function syncSheets() {
+  const cfg = await (await fetch(`${WARROOM}config/companies.json`, { cache: "no-store" })).json();
+  const co = (cfg.companies || []).find(c => c.id === cfg.defaultCompany) || (cfg.companies || [])[0];
+  Object.entries(co?.years || {}).forEach(([y, id]) => { if (/^\d{4}$/.test(y) && /^[\w-]{20,}$/.test(id)) SHEETS[y] = id; });
+}
 (async () => {
-  const now = new Date();
-  let m = now.getFullYear() === YEAR ? now.getMonth() + 1 : 12, items = [];
-  for (let k = 0; k < 3 && m >= 1 && !items.length; k++, m--) items = await loadMonth(m).catch(() => []);
+  await syncSheets().catch(() => {});
+  applyIntel(currentYear(), null);
+  /* 從今天的月份往回找最近有資料的月份，可跨年度（例如 2027 年 1 月初仍顯示 2026 年 12 月） */
+  let y = TODAY.getFullYear(), m = TODAY.getMonth() + 1, items = [];
+  for (let k = 0; k < 4 && !items.length; k++) {
+    items = await loadMonth(y, m).catch(() => []);
+    if (!items.length && --m < 1) { m = 12; y--; }
+  }
   if (!items.length) { $("#focusList").innerHTML = `<div class="ph">請點「開啟情資表」查看最新內容。</div>`; return; }
-  const month = items[0].date.getMonth() + 1, last = items[0].date;
-  $("#monthLabel").textContent = `${YEAR}年${month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  const last = items[0].date, year = last.getFullYear(), month = last.getMonth() + 1;
+  const isThisMonth = year === TODAY.getFullYear() && month === TODAY.getMonth() + 1;
+  applyIntel(year, month);
+  $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${year}年${month}月）`;
+  $("#monthLabel").textContent = `${year}年${month}月 · 已整理 ${items.length} 筆 · 最新 ${month}/${last.getDate()}`;
   $("#miniMonth").textContent = `${month}月情資已整理 ${items.length} 筆`;
   window.__compactLayout && window.__compactLayout();
   lines.heroAllan[1] = `${month}月情資已整理 ${items.length} 筆 📥`;

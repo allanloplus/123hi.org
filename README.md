@@ -12,9 +12,11 @@ Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google S
 
 各區塊的連結與文字集中在 `index.html` 底部 `<script>` 的 `PORTALS`、`COURSES`、`FLOWS`、`CHAT`、`QUIZ`、`RES`、`SRC` 陣列，新增課程或連結只要改這裡。
 
-## 情資試算表
-- `SHEET_ID`、`YEAR` 設定在 `<script>` 最上方；明年換新試算表時修改這兩項即可。
-- 本月焦點依分頁名稱「2026年10月」自動讀取，試算表需維持「知道連結的任何人皆可檢視」。
+## 情資試算表（每年一份，自動切換）
+- 年度與試算表的對應，以「情資戰情看板」https://allanlo-g.github.io/threat-intel-warroom/ 的年度設定（`config/companies.json`）為準，首頁載入時自動同步；`index.html` 的 `SHEETS` 只是讀不到時的備用清單。
+- 在看板的「年度設定」新增或修改年度後，要按「匯出 companies.json」並上傳到看板 repo 的 `config/`，首頁才會跟著換。
+- 月份分頁需命名為「YYYY年M月」，試算表需維持「知道連結的任何人皆可檢視」。
+- 首頁會顯示最近有資料的月份（可跨年度）；每年 1–2 月會多一顆「去年 12 月情資」下載按鈕。
 - Google Sites 嵌入框不允許導向上層頁面，所有連結皆以新分頁開啟。
 
 ## 角色素材
