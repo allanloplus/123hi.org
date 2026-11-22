@@ -22,6 +22,7 @@
 - 兩座資安島的 `data.js` 也各有一份 `SHEETS`（依日期切換，不讀 companies.json）；新增年度時三處一起補。
 
 ## 更新前後檢查
+- 選單「Allan's Tools」底下的項目（Allan's AI Map、隨意畫流程圖等）**不放進首頁與資安島**（Allan 指定）。
 - 新增連結前，先抓 https://sites.google.com/123hi.org/isms/ 的選單比對實際網址。
 - 嵌入的 GitHub 作品可 clone `https://github.com/allanloplus/<repo>` 讀內容（預設分支多半是 `claude/...`，不是 `main`）。
 - 推送前確認：桌機／手機無橫向捲動、手機嵌入框（約 390×575）精簡卡片正常、站內連結都回應 200。

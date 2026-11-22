@@ -34,6 +34,6 @@ Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google S
 ## 米數的資安島（`medsigtw-island/`）
 給米數資科使用的資安島複本，網址為 `https://allanlo.123hi.org/medsigtw-island/`。
 - 與 `isms_island/` 內容相同，差別：品牌改為「米數的資安島／米數資科」，顧問稱「米數顧問」、阿拉蕾稱「AI小助手」，總部島改連米數官網 `https://www.medsigtw.com/` 與資安業務信箱 `isms@medsigtw.com`。
-- 連到外部頁面的資源（課程、測驗、遊戲、YouTube、AI Map、個案）名稱維持原樣，與點進去的頁面一致。
+- 連到外部頁面的資源（課程、測驗、遊戲、YouTube、個案）名稱維持原樣，與點進去的頁面一致。
 - 資料夾自成一體（角色圖在 `medsigtw-island/img/`、Three.js 在 `vendor/`），整包複製到米數的網站也能直接使用。
 - 兩座島各自有 `data.js`；資源有增減時，兩邊要一起更新。

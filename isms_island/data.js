@@ -37,7 +37,6 @@ export const ISLANDS = [
     items: [
       { t: "ISMS·普拉斯 首頁", d: "情資、課程、測驗、遊戲一頁看完", tag: "首頁", u: HOME, std: ["27001"] },
       { t: "ISMS 知識庫網站", d: "Google Sites 完整版", tag: "網站", u: SITE, std: ["27001", "27701", "42001", "TISAX", "CSMA"] },
-      { t: "Allan's AI Map", d: "Allan 用 AI 做的全部作品", tag: "作品集", u: site("allans-ai-map") },
       { t: "來信與 Allan 討論", d: "allanlo.plus@gmail.com", tag: "Email", u: "mailto:allanlo.plus@gmail.com" }
     ]
   },
@@ -174,7 +173,7 @@ export const ISLANDS = [
     d: "下課時間！Allan 用 AI 做的遊戲與小作品，有幾款偷偷藏了資安梗。",
     say: ["arale-laugh", "阿拉蕾", "鐵支＝零時差攻擊？♠Q 是勒索豬？玩了就知道！"],
     iso: [],
-    cta: ["🤖 看 Allan's AI Map 全部作品", site("allans-ai-map")],
+    cta: ["🧋 先玩資安大富翁－快樂遊台灣", "https://allanloplus.github.io/Monopoly/"],
     items: [
       { t: "ALLAN 家族說故事劇場", d: "《花草派》手繪繪本，Allan 家族重新配音", tag: "繪本", u: "https://allanloplus.github.io/picture-book99/" },
       { t: "跟著 Allan 走一趟特富野古道", d: "鄒族獵徑、運材鐵道與古道小遊戲", tag: "古道", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/" },
@@ -207,7 +206,7 @@ export const FLOWS = [
   { from: "hq", to: "intel", t: "Allan 每月整理情資", carry: "情資 Excel", ci: "📊", iso: "A.5.7", d: "每個月 Allan 整理情資，更新到情資表給客戶下載。" },
   { from: "hq", to: "cinema", t: "錄製課程動畫", carry: "動畫腳本", ci: "🎬", iso: "A.6.3", d: "Allan 與阿拉蕾把艱澀條文變成好懂的動畫。" },
   { from: "beacon", to: "hq", t: "外部議題回饋組織全景", carry: "外部議題", ci: "🌐", iso: "4.1", d: "外部情資也是外部議題，回饋到治理與 4.1 組織全景。" },
-  { from: "arcade", to: "hq", t: "AI 小作品收進 AI Map", carry: "新作品", ci: "🤖", iso: "", d: "每一款 AI 小作品，最後都收進 Allan's AI Map。" }
+  { from: "arcade", to: "hq", t: "AI 小作品變成新教材", carry: "新點子", ci: "🤖", iso: "", d: "做 AI 小作品累積的點子，帶回總部變成下一份教材。" }
 ];
 FLOWS.forEach((f, i) => { f.id = `L${i + 1}`; });
 
