@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISMS·普拉斯·AllanLo｜星際資安導航（外星人風格版）</title>
+<meta name="description" content="Allan 幫客戶整理及分享的資安知識庫：每月資安內外部情資、課程動畫、課後測驗與教學資源。外星人風格版：八顆星球、八個主題。">
+<base target="_blank">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* 外星人風格版首頁「星際資安導航」：星圖軌道上的八顆星球＝八個分類，飛碟飛過去，點星球只換下方面板。
+   其他版本見 versions.js（頁尾可切換）；資料陣列與各版首頁相同（從台灣環島版複製）。 */
+:root{
+  --bg:#060a1c; --deep:#0c1330; --card:#111a3d; --card2:#16214a; --ink:#e8eeff; --muted:#a5b0d6;
+  --line:#2a3768; --neon:#3dff9a; --purple:#9d7bff; --pink:#f2559c; --gold:#ffd43b; --tc:#3dff9a;
+  --sci:"Orbitron","Noto Sans TC",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;background:var(--bg)}
+/* 星空底色 */
+body{margin:0;color:var(--ink);font-family:"Noto Sans TC",system-ui,-apple-system,"Microsoft JhengHei",sans-serif;font-weight:500;line-height:1.55;overflow-x:hidden;background:
+  radial-gradient(circle at 20% 30%,rgba(255,255,255,.7) 0 .8px,transparent 1.2px) 0 0/140px 120px,
+  radial-gradient(circle at 70% 60%,rgba(255,255,255,.5) 0 .7px,transparent 1.1px) 0 0/90px 110px,
+  radial-gradient(circle at 50% 90%,rgba(157,123,255,.7) 0 1px,transparent 1.5px) 0 0/170px 150px,
+  radial-gradient(ellipse at 85% 0,rgba(123,63,228,.35),transparent 55%),
+  radial-gradient(ellipse at 0 70%,rgba(31,200,227,.18),transparent 50%),var(--bg)}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:14px 16px 0}
+
+/* ---------- 星際通訊跑馬燈 ---------- */
+.led{overflow:hidden;background:#03050f;color:var(--neon);font-weight:700;font-size:14px;letter-spacing:.08em;white-space:nowrap;border-bottom:1px solid rgba(61,255,154,.5);text-shadow:0 0 8px rgba(61,255,154,.7)}
+.led div{display:inline-block;padding:6px 0;animation:led 50s linear infinite}
+.led span{padding-right:60px}
+@keyframes led{to{transform:translateX(-50%)}}
+
+/* ---------- 舞台：左邊船員、右邊星圖 ---------- */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 540px;gap:18px;align-items:stretch}
+.lead{position:relative;display:flex;flex-direction:column;min-width:0}
+.team{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:3px 12px 3px 4px;border-radius:999px;background:rgba(61,255,154,.12);border:1px solid rgba(61,255,154,.55);color:var(--neon);font-size:13px;font-weight:900;letter-spacing:.12em}
+.team i{font-style:normal;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#0a2a1c;font-size:14px}
+.team b{color:#fff}
+h1{margin:8px 0 2px;font-family:var(--sci);font-weight:900;font-size:clamp(25px,3.6vw,40px);line-height:1.2;white-space:nowrap;color:#fff;text-shadow:0 0 14px rgba(61,255,154,.45)}
+h1 i{font-style:normal;color:var(--neon)}
+.tagline{margin:0;font-weight:700;font-size:clamp(13px,1.5vw,16px);color:var(--muted)}
+.tagline b{color:var(--neon)}
+.bubble{position:relative;display:flex;align-items:center;gap:12px;min-height:78px;margin:14px 0 12px;padding:10px 14px 10px 10px;background:rgba(17,26,61,.85);border:1.5px solid var(--neon);border-radius:16px;box-shadow:0 0 18px rgba(61,255,154,.22),inset 0 0 18px rgba(61,255,154,.06)}
+.bubble::before{content:"◉ 通訊中";position:absolute;top:-10px;right:14px;padding:0 8px;border-radius:999px;background:var(--bg);color:var(--neon);font-size:11px;font-weight:900;letter-spacing:.1em}
+.bubble .face{flex:none;width:54px;height:54px;border-radius:50%;border:2px solid var(--neon);background:#173a5c;object-fit:cover;object-position:top}
+.bubble.from-b .face{background:#3b2a6b;border-color:var(--purple)}
+.bubble.from-b{border-color:var(--purple);box-shadow:0 0 18px rgba(157,123,255,.25)}
+.bubble .nm{display:block;font-size:12px;font-weight:900;color:var(--muted)}
+.bubble .say{font-weight:700;font-size:16px;line-height:1.45}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border:1.5px solid var(--line);border-radius:12px;background:var(--card2);font-weight:900;font-size:15px;line-height:1.3;text-decoration:none;text-align:center;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+.btn:hover{transform:translateY(-2px);border-color:var(--neon);box-shadow:0 0 14px rgba(61,255,154,.4)}
+.btn:active{transform:translateY(1px)}
+.btn.red{background:linear-gradient(135deg,#3dff9a,#1fc8e3);border-color:transparent;color:#04140c}
+.btn.sea{background:linear-gradient(135deg,#9d7bff,#f2559c);border-color:transparent;color:#fff}
+.btn.gold{background:var(--gold);border-color:transparent;color:#2a1d00}
+.btn.sm{padding:6px 12px;font-size:13px}
+.crew{position:relative;display:flex;align-items:flex-end;gap:6px;margin-top:auto;padding-top:10px;min-height:0}
+.crew button{position:relative;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
+.crew img{width:auto;transform-origin:bottom center;filter:drop-shadow(0 0 10px rgba(61,255,154,.3))}
+.crew .a img{height:210px;animation:float 5s ease-in-out infinite}
+.crew .b img{height:196px;animation:float 4s ease-in-out infinite -1.5s}
+.talk img{animation:talk .5s ease-in-out 2!important}
+@keyframes float{50%{transform:translateY(-8px) rotate(1deg)}}
+@keyframes talk{50%{transform:translateY(-9px) scale(1.03)}}
+.ufo-deco{position:absolute;font-size:34px;animation:hover 6s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 0 8px rgba(61,255,154,.6))}
+@keyframes hover{0%,100%{transform:translate(0,0) rotate(-6deg)}50%{transform:translate(14px,-14px) rotate(6deg)}}
+.cheer{margin-left:auto;align-self:center;text-align:center;font-weight:900;color:var(--muted);font-size:14px;line-height:1.5}
+.cheer b{display:block;font-family:var(--sci);font-size:21px;color:var(--neon);letter-spacing:.04em;text-shadow:0 0 10px rgba(61,255,154,.6)}
+
+/* 星圖 */
+.map{position:relative;align-self:start;width:100%;aspect-ratio:400/310;border:1.5px solid rgba(61,255,154,.45);border-radius:22px;overflow:hidden;box-shadow:0 0 24px rgba(61,255,154,.15),inset 0 0 40px rgba(0,0,0,.6);background:radial-gradient(ellipse at 50% 48%,#121c48,#050817 75%)}
+.map::after{content:"STAR MAP · ISMS SECTOR";position:absolute;left:12px;top:9px;font-family:var(--sci);font-size:9px;font-weight:700;letter-spacing:.2em;color:rgba(61,255,154,.6);pointer-events:none}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.star{fill:#fff;opacity:.75}
+.star.tw{animation:tw 3.2s ease-in-out infinite}
+@keyframes tw{50%{opacity:.15}}
+.orbit{fill:none;stroke:rgba(61,255,154,.35);stroke-width:1}
+.orbit2{fill:none;stroke:rgba(61,255,154,.7);stroke-width:1.4;stroke-dasharray:3 9;animation:spin 18s linear infinite}
+@keyframes spin{to{stroke-dashoffset:-240}}
+.ringp{fill:none;stroke:rgba(157,123,255,.75);stroke-width:2}
+.core{font-family:var(--sci);font-size:9px;font-weight:900;fill:#fff;letter-spacing:.08em}
+.core2{font-size:6.5px;font-weight:900;fill:#c9ffe4}
+.halo{fill:none;stroke-width:1.4;opacity:0;transform-box:fill-box;transform-origin:center}
+.halo.on{opacity:1;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.45);opacity:0}}
+.dot{fill:none}
+.stn{position:absolute;left:calc(var(--x) / 400 * 100%);top:calc(var(--y) / 310 * 100%);transform:translate(-50%,calc(var(--pr) * -1));--pr:18px;display:flex;flex-direction:column;align-items:center;gap:2px;width:96px;padding:0;border:0;background:none;text-align:center;line-height:1.2;-webkit-tap-highlight-color:transparent;z-index:1}
+.stn .e{display:grid;place-items:center;width:calc(var(--pr) * 2);height:calc(var(--pr) * 2);border-radius:50%;font-size:19px;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 55%,#fff),var(--c) 55%,color-mix(in srgb,var(--c) 45%,#000));box-shadow:0 0 12px color-mix(in srgb,var(--c) 70%,transparent);transition:transform .15s ease,box-shadow .15s ease}
+.stn .lb{padding:1px 7px 2px;border-radius:7px;background:rgba(6,10,28,.78);border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+.stn small{display:block;font-size:10px;font-weight:700;color:var(--c);letter-spacing:.04em;white-space:nowrap}
+.stn b{display:block;font-size:12.5px;font-weight:900;white-space:nowrap}
+.stn:hover .e{transform:scale(1.12)}
+.stn[aria-selected="true"] .e{transform:scale(1.18);box-shadow:0 0 22px var(--c),0 0 4px #fff}
+.stn[aria-selected="true"] .lb{background:var(--c);border-color:var(--c);color:#06101c}
+.stn[aria-selected="true"] small{color:#06101c}
+.train{position:absolute;left:calc(var(--x) / 400 * 100%);top:calc(var(--yy) / 310 * 100%);width:34px;height:34px;margin:-17px 0 0 -17px;display:grid;place-items:center;font-size:24px;filter:drop-shadow(0 0 6px rgba(61,255,154,.9));transition:left .24s linear,top .24s linear;pointer-events:none;z-index:2}
+.train::after{content:"";position:absolute;left:50%;top:78%;width:26px;height:30px;margin-left:-13px;background:linear-gradient(180deg,rgba(61,255,154,.55),transparent);clip-path:polygon(35% 0,65% 0,100% 100%,0 100%)}
+
+/* ---------- 星球名牌＋面板 ---------- */
+.panel{margin-top:16px;background:rgba(12,19,48,.92);border:1.5px solid var(--line);border-radius:20px;box-shadow:0 0 30px rgba(0,0,0,.4);overflow:hidden;scroll-margin-top:8px}
+.sign{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:14px 16px 12px;border-bottom:3px solid var(--tc);background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 14%,var(--deep)),var(--deep));box-shadow:0 3px 14px color-mix(in srgb,var(--tc) 35%,transparent)}
+.sign .mid{display:flex;align-items:center;gap:12px;min-width:0}
+.sign .mid img{flex:none;width:58px;height:58px;border-radius:50%;border:2px solid var(--tc);background:color-mix(in srgb,var(--tc) 25%,var(--deep));object-fit:cover;object-position:top}
+.sign small{display:block;font-family:var(--sci);font-size:11.5px;font-weight:700;letter-spacing:.12em;color:var(--tc)}
+.sign h2{margin:0;font-weight:900;font-size:clamp(21px,3vw,28px);line-height:1.2;color:#fff}
+.sign p{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.nb{border:0;background:none;padding:6px 4px;font-size:13px;font-weight:700;color:var(--muted);line-height:1.3;text-align:left}
+.nb b{display:block;font-size:15px;color:#fff}
+.nb.next{text-align:right;justify-self:end}
+.nb:hover b{color:var(--neon)}
+.body{padding:18px}
+.body section{animation:pop .28s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.sub{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:20px 0 10px;font-size:18px;font-weight:900;color:#fff}
+.sub small{font-size:13px;font-weight:500;color:var(--muted)}
+.grid{display:grid;gap:10px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+
+.row{display:flex;align-items:center;gap:12px;min-height:60px;padding:9px 12px;border:1px solid var(--line);border-left:4px solid var(--c,var(--tc));border-radius:10px;background:var(--card);text-decoration:none;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+.row:hover{transform:translateY(-2px);border-color:var(--c,var(--tc));box-shadow:0 0 14px color-mix(in srgb,var(--c,var(--tc)) 40%,transparent)}
+.row .ic{flex:none;min-width:42px;height:42px;padding:0 6px;border-radius:8px;display:grid;place-items:center;text-align:center;font-size:22px;background:color-mix(in srgb,var(--c,var(--tc)) 22%,var(--card))}
+.row .ic.txt{font-size:12px;font-weight:900;color:#fff;background:var(--c);line-height:1.15}
+.row .ic.wide{width:66px;height:46px}
+.row .tx{min-width:0;font-weight:700;font-size:15px;line-height:1.35}
+.row .tx small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);line-height:1.4}
+.tg{display:table;margin-bottom:2px;padding:0 7px;border-radius:4px;background:var(--c,var(--tc));color:#06101c;font-size:11px;font-weight:900}
+.clamp{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border:1px solid var(--line);border-top:3px solid var(--c,var(--tc));border-radius:10px;text-align:center;text-decoration:none;background:var(--card);transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+.tile:hover{transform:translateY(-3px);border-color:var(--c,var(--tc));box-shadow:0 0 14px color-mix(in srgb,var(--c,var(--tc)) 40%,transparent)}
+.tile .e{font-size:28px;line-height:1.2}
+.tile small{font-family:var(--sci);font-size:10.5px;font-weight:700;color:var(--c,var(--tc));letter-spacing:.06em}
+.tile b{font-size:14px;line-height:1.3}
+.tile .d{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* 情資：星際電報 */
+.intel{display:grid;grid-template-columns:1.25fr 1fr;gap:14px}
+.ticket{position:relative;padding:14px 20px 16px;border:1.5px solid var(--neon);border-radius:14px;background:repeating-linear-gradient(0deg,rgba(61,255,154,.05) 0 2px,transparent 2px 5px),linear-gradient(160deg,#0d2a2a,#0d1438);box-shadow:inset 0 0 26px rgba(61,255,154,.1)}
+.ticket .kind{display:flex;justify-content:space-between;gap:8px;font-family:var(--sci);font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--neon);border-bottom:1px dashed rgba(61,255,154,.5);padding-bottom:5px;margin-bottom:8px}
+.ticket h3{margin:0 0 4px;font-size:clamp(18px,2.2vw,22px);font-weight:900;line-height:1.3;color:#fff}
+.ticket h3 span{display:inline-block;padding:0 8px;border-radius:4px;background:var(--neon);color:#04140c;font-size:.7em;vertical-align:2px}
+.route{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 8px;font-weight:900;font-size:14px}
+.route i{flex:1 1 20px;min-width:20px;height:0;border-top:2px dotted var(--neon)}
+.pill{display:inline-block;padding:1px 9px;border:1px solid var(--line);border-radius:999px;background:var(--card2);font-size:12.5px;font-weight:700;margin:0 4px 6px 0}
+.pill.risk{background:#c92a2a;border-color:#c92a2a;color:#fff}
+.ticket p{margin:0 0 12px;font-size:13.5px;color:var(--muted)}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.focus{padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.focus h3{margin:0 0 6px;font-size:15px;font-weight:900;display:flex;align-items:center;gap:8px}
+.live{width:9px;height:9px;border-radius:50%;background:var(--neon);animation:ping 1.8s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(61,255,154,.6)}70%,100%{box-shadow:0 0 0 9px rgba(61,255,154,0)}}
+.focus a,.focus .ph{display:block;padding:7px 8px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:700;line-height:1.4}
+.focus a+a{border-top:1px dashed var(--line)}
+.focus a:hover{background:rgba(61,255,154,.08)}
+.focus small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.focus .ph{color:var(--muted);font-weight:500}
+.bd{display:inline-block;margin-left:4px;padding:0 5px;border-radius:4px;background:#5c1f2a;color:#ffc9c9;font-size:11px;font-weight:900}
+.bd.kev{background:#e03131;color:#fff}
+
+/* 個案 */
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.seg button{border:0;background:var(--card);padding:7px 16px;font-weight:900;font-size:14px}
+.seg button+button{border-left:1.5px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--tc);color:#1a1200}
+.case{display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid var(--line);border-top:3px solid var(--tc);border-radius:10px;background:var(--card);text-decoration:none}
+.case .no{font-size:11.5px;font-weight:900;letter-spacing:.06em;color:#ffd08a}
+.case .no .tg{display:inline-block;margin:0 6px 0 0}
+.case b{font-size:15px;line-height:1.4}
+.case small{font-size:12.5px;color:var(--muted);line-height:1.4}
+.case .acts{margin-top:auto;padding-top:6px;gap:8px}
+.sev{background:#f76707;color:#fff}.sev.urgent{background:#e03131}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
+.foot .note{flex:1 1 260px;margin:0;font-size:12px;color:var(--muted)}
+
+/* ---------- 艦隊編制與頁尾 ---------- */
+footer{max-width:1080px;margin:20px auto 0;padding:0 16px 28px;font-size:13.5px}
+.roster{padding:14px 16px;border-radius:18px;background:linear-gradient(135deg,rgba(61,255,154,.14),rgba(157,123,255,.18));border:1px solid rgba(61,255,154,.4);text-align:center}
+.roster h3{margin:0 0 2px;font-size:19px;font-weight:900;letter-spacing:.06em}
+.roster h3 b{font-family:var(--sci);color:var(--neon)}
+.roster p{margin:0 0 10px;color:var(--muted)}
+.roster ul{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0;padding:0;list-style:none}
+.roster li{padding:4px 12px;border-radius:999px;background:rgba(6,10,28,.6);border:1px solid var(--line);font-weight:700}
+.roster li b{color:var(--neon)}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 14px}
+.about div{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.about img{flex:none;width:48px;height:48px;border-radius:50%;border:2px solid var(--neon);background:#173a5c;object-fit:cover;object-position:top}
+.about div+div img{background:#3b2a6b;border-color:var(--purple)}
+.about b{display:block;font-size:15px}
+.about small{color:var(--muted)}
+.contact{text-align:center;color:var(--muted)}
+.contact a{color:var(--ink);font-weight:700}
+#verSwitch{color:var(--neon)}
+.fab{position:fixed;right:12px;bottom:12px;z-index:10;display:flex;align-items:center;gap:4px;padding:6px 14px;border:1.5px solid var(--neon);border-radius:999px;background:var(--deep);color:var(--neon);box-shadow:0 0 12px rgba(61,255,154,.4);font-weight:900;font-size:13px;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s ease,transform .2s ease}
+.fab.show{opacity:1;pointer-events:auto;transform:none}
+
+/* ---------- 手機 ---------- */
+@media (max-width:1040px){.stage{grid-template-columns:minmax(0,1fr) 440px}.stn{width:84px}.stn b{font-size:12px}}
+@media (max-width:900px){
+  .stage{grid-template-columns:minmax(0,1fr) 380px}
+  .g5{grid-template-columns:repeat(3,1fr)}.g3{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(2,1fr)}
+  .cheer{display:none}
+  .stn{--pr:15px;width:78px}.stn .e{font-size:16px}
+}
+@media (max-width:760px){
+  .wrap{padding:8px 12px 0}
+  .led{font-size:12px}.led div{padding:4px 0}
+  .stage{display:flex;flex-direction:column;gap:0}
+  .lead{display:contents}
+  .head{order:0;text-align:center}
+  .team{font-size:11px;padding:2px 10px 2px 3px}.team i{width:20px;height:20px;font-size:12px}
+  h1{margin:4px 0 0}
+  .tagline{display:none}
+  .map{order:2;margin-top:8px;border-radius:18px}
+  .map::after{display:none}
+  .bubble{order:3;min-height:62px;margin:12px 0 0;padding:7px 12px 7px 8px;gap:10px;border-radius:14px}
+  .bubble .face{width:44px;height:44px}
+  .bubble .say{font-size:14px}
+  .cta{order:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+  .cta .btn{padding:5px 6px;font-size:13px}
+  .crew,.ufo-deco{display:none}
+  .stn{--pr:13px;width:72px;gap:1px}
+  .stn .e{font-size:14px}
+  .stn .lb{padding:0 4px 1px;border-radius:5px}
+  .stn small{font-size:8.5px;letter-spacing:0}
+  .stn b{font-size:11px}
+  .train{width:26px;height:26px;margin:-13px 0 0 -13px;font-size:18px}
+  .train::after{width:20px;height:22px;margin-left:-10px}
+  .panel{margin-top:12px;border-radius:16px}
+  .sign{grid-template-columns:1fr 1fr;padding:12px 12px 8px}
+  .sign .mid{grid-column:1/-1;grid-row:1}
+  .sign .mid img{width:50px;height:50px}
+  .body{padding:14px 12px 16px}
+  .intel,.g3,.g2.stack{grid-template-columns:1fr}
+  .acts .btn.wide{flex:1 1 100%}
+  .tile .d,.ticket p{display:none!important}
+  .seg button{padding:7px 9px;font-size:13px}
+  .about{grid-template-columns:1fr}
+  footer{padding-bottom:70px}
+}
+@media (max-width:380px){.stn{width:64px}.stn b{font-size:10.5px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="led" aria-hidden="true"><div id="led"></div></div>
+
+<div class="wrap">
+<!-- ================= 舞台：船員＋星圖 ================= -->
+<header class="stage">
+  <div class="lead">
+    <div class="head">
+      <span class="team"><i>👽</i>星際資安聯邦・<b>EARTH BRANCH</b></span>
+      <h1>ISMS<i>·</i>普拉斯<i>·</i>AllanLo</h1>
+      <p class="tagline">Allan 幫客戶整理及分享的資安知識庫｜<b>星際資安導航</b>，一顆星球一個主題</p>
+    </div>
+    <div class="bubble from-a" id="bubble" aria-live="polite">
+      <img class="face" id="bFace" src="assets/img/allan-smile.webp" alt="">
+      <div><span class="nm" id="bName">Allan</span><span class="say" id="bSay">地球呼叫外星訪客，資安星際航線出發囉！</span></div>
+    </div>
+    <div class="cta">
+      <a class="btn red" id="heroThink" href="#">📚 ISMS智庫 月刊</a>
+      <a class="btn sea" href="https://allanlo.123hi.org/isms_island/" rel="noopener">🏝️ 登陸資安島</a>
+    </div>
+    <div class="crew">
+      <span class="ufo-deco" style="left:44%;top:6px" aria-hidden="true">🛸</span>
+      <span class="ufo-deco" style="left:62%;top:60px;animation-delay:-3s;font-size:22px" aria-hidden="true">👽</span>
+      <button class="a" id="whoA" aria-label="聽 Allan 說"><img src="assets/img/allan-main.webp" alt="Allan Lo 顧問" width="560" height="1128"></button>
+      <button class="b" id="whoB" aria-label="聽阿拉蕾說"><img src="assets/img/arale-wave.webp" alt="AI 小助手 阿拉蕾" width="560" height="1006"></button>
+      <div class="cheer"><b>WE COME IN PEACE</b>資安無國界，<br>連外星人也要守 27001。</div>
+    </div>
+  </div>
+
+  <nav class="map" id="map" role="tablist" aria-label="星際航線：八顆星球八個分類">
+    <svg viewBox="0 0 400 310" aria-hidden="true" id="mapSvg"></svg>
+    <span class="train" id="ufo" aria-hidden="true">🛸</span>
+  </nav>
+</header>
+
+<!-- ================= 星球名牌＋內容 ================= -->
+<main class="panel" id="panel">
+  <div class="sign">
+    <button class="nb prev" id="prevBtn"></button>
+    <div class="mid"><img id="sFace" src="assets/img/arale-wave.webp" alt=""><div><small id="sStn"></small><h2 id="sTitle"></h2><p id="sDesc"></p></div></div>
+    <button class="nb next" id="nextBtn"></button>
+  </div>
+  <div class="body">
+  <section id="p-intel" role="tabpanel">
+    <div class="intel">
+      <div class="ticket">
+        <div class="kind"><span>星際情報 月報</span><span>MONTHLY TRANSMISSION</span></div>
+        <h3>資安內外部情資蒐集紀錄 <span id="fileYear">每月 Excel</span></h3>
+        <div class="route"><span>內外部情資</span><i></i><span>🛸</span><i></i><span>A.5.7 稽核佐證</span></div>
+        <span class="pill" id="monthLabel">🗓️ 每日更新</span><span class="pill risk" id="riskPill" hidden></span>
+        <p>每日自動蒐集 TWCERT、NICS、iThome、TechNews 的漏洞與安全事件，並評估弱點處置期限；每月 Excel 下載留存，就是稽核佐證。</p>
+        <div class="acts">
+          <a class="btn red wide" id="btnXlsx" href="#">⬇️ 下載本月 Excel</a>
+          <a class="btn sm" id="btnOther" href="#" hidden></a>
+          <a class="btn sm gold" id="btnOpen" href="#">🔎 查詢與下載專區</a>
+          <a class="btn sm" href="https://allanloplus.github.io/intelligence/" rel="noopener">📊 情資戰情看板</a>
+        </div>
+      </div>
+      <div class="focus">
+        <h3><span class="live"></span><span id="focusTitle">本月焦點情資</span></h3>
+        <div id="focusList"><div class="ph">阿拉蕾正在解碼最新情資…</div></div>
+      </div>
+    </div>
+    <h3 class="sub">🎖️ 情資官養成之路 <small>下載只是第一步，四關從看懂到實戰</small></h3>
+    <div class="grid g4" id="lvs"></div>
+  </section>
+  <section id="p-courses" role="tabpanel" hidden><div class="grid g3" id="courses"></div></section>
+  <section id="p-flows" role="tabpanel" hidden><div class="grid g5" id="flows"></div></section>
+  <section id="p-park" role="tabpanel" hidden><div class="grid g2 stack" id="park"></div></section>
+  <section id="p-cases" role="tabpanel" hidden>
+    <div class="seg" id="seg">
+      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 安全檢測</button>
+    </div>
+    <div class="grid g3" id="files"></div>
+    <div class="grid g3" id="news" hidden></div>
+    <div class="grid g3" id="aicase" hidden></div>
+    <div class="foot">
+      <a class="btn sm gold" id="caseRoom" href="#">🔍 進入資安個案研究室 ↗</a>
+      <a class="btn sm" id="newsAll" href="#">📰 看全部新聞個案 ↗</a>
+      <p class="note">每案含動畫閱讀、討論互動、決策模擬與教學手冊（90 分鐘）。個案改編自公開資料，人物與公司名稱均為虛構，僅供教學討論。</p>
+    </div>
+  </section>
+  <section id="p-quiz" role="tabpanel" hidden><div class="grid g2 stack" id="quiz"></div></section>
+  <section id="p-res" role="tabpanel" hidden>
+    <h3 class="sub" style="margin-top:0">📚 教學資源</h3>
+    <div class="grid g4" id="resList"></div>
+    <h3 class="sub">📡 外部情資來源</h3>
+    <div class="grid g4" id="srcList"></div>
+  </section>
+  <section id="p-arcade" role="tabpanel" hidden><div class="grid g5" id="arcade"></div></section>
+  </div>
+</main>
+</div>
+
+<footer>
+  <div class="roster">
+    <h3>星際資安艦隊 <b>CREW</b></h3>
+    <p>資安不是一個人的事，是整艘船一起守。</p>
+    <ul>
+      <li>🧑‍🚀 管理階層 <b>定航向</b></li><li>🛡️ 資安長 <b>訂艦規</b></li><li>💻 IT <b>守護盾</b></li><li>🔍 稽核員 <b>驗航行紀錄</b></li><li>🙋 每位船員 <b>好習慣</b></li><li>👽 Allan 艦長 × 阿拉蕾 <b>帶你飛</b></li>
+    </ul>
+  </div>
+  <div class="about">
+    <div><img src="assets/img/allan-wink.webp" alt=""><span><b>Allan Lo 顧問</b><small>ISMS／PIMS 輔導顧問 · 驗證機構稽核員 · 專長資安與企業 MIS 管理</small></span></div>
+    <div><img src="assets/img/arale-laugh.webp" alt=""><span><b>阿拉蕾 ARALE</b><small>AI 小助手 · 課程動畫搭檔 · 口頭禪「幫腔上課囉！」</small></span></div>
+  </div>
+  <div class="contact">🌐 <a href="https://www.123hi.org/">www.123hi.org</a> · ✉️ <a href="mailto:allanlo.plus@gmail.com">allanlo.plus@gmail.com</a></div>
+  <div id="verSwitch" data-current="alien"></div>
+</footer>
+<script src="versions.js"></script>
+
+<button class="fab" id="fab" aria-label="回到星圖">🌌 星圖 ↑</button>
+
+<script>
+/* ================= 資料（各版首頁相同；新增資源時 index.html、home-*.html 都要一起改） ================= */
+const INTEL = "https://allanloplus.github.io/intelligence/";
+const INTEL_PAGE = "資安情資/資安情資蒐集紀錄";
+
+const SITE = "https://sites.google.com/123hi.org/isms/";
+
+const LEVELS = [
+  { ic: "📺", t: "情資作業動畫解說", d: "13 段動畫簡報：情資蒐集、脆弱性識別、AI 風險排序到稽核證據", p: "資安情資/資安情資作業動畫解說", c: "#15aabf" },
+  { ic: "🗺️", t: "內外部情資地圖", d: "內部事件與外部來源一張圖掌握", p: "資安情資/內外部情資地圖", c: "#4c6ef5" },
+  { ic: "📊", t: "資安情資戰情室", d: "內外部情資、脆弱性與處置成效儀表板，阿拉蕾語音導覽", p: "資安情資/資安情資戰情室dashboard", c: "#7950f2" },
+  { ic: "🎮", t: "情資官特訓營", d: "7 個關卡＋稽核大魔王，過關領結訓證書", p: "資安情資/遊戲學習-情資官特訓營", c: "#f08c00" }
+];
+const PARK = [
+  { ic: "🗓️", t: "ISMS 的一年", tag: "動畫", d: "每天像刷牙、每月像量血壓、每年像全身健檢：ISMS 的工作節奏", p: "isms工作觀/isms工作的一年", c: "#1c7ed6", x: 13, y: 30 },
+  { ic: "🗺️", t: "ISMS 工作地圖", tag: "互動動畫", d: "時間、流程、工作類別三種視角，看紀錄如何一天天累積", p: "isms工作觀/isms工作地圖", c: "#0ca678", x: 32, y: 68, low: true },
+  { ic: "🧭", t: "ISMS 工作地圖－系統體驗", tag: "系統體驗", d: "把程序書變成每天做得完的工作：每日巡檢、情資、月報與量測依頻率排好，點一下留紀錄", p: "isms工作觀/isms工作地圖_系統體驗", c: "#1098ad" },
+  { ic: "🏘️", t: "ISMS 資安小鎮", tag: "互動地圖", d: "點建築，阿拉蕾帶路認識各部門的 ISMS 工作與稽核準備度", p: "isms工作觀/isms資安小鎮", c: "#e8590c", x: 52, y: 28 },
+  { ic: "🎲", t: "ISMS 大富翁", tag: "桌遊 1～4 人", d: "擲骰子走完資安一年，蒐集紀錄卡、擋下事件，年底外部稽核拿驗證", p: "isms工作觀/isms大富翁遊戲", c: "#e03131", x: 70, y: 66, low: true },
+  { ic: "🏰", t: "實體安全大冒險", tag: "自由探索", d: "探索 16 個 A.7 實體安全控制項，區域安全與設備安全一次認識", p: "isms工作觀/實體安全大冒險", c: "#7048e8", x: 88, y: 30 }
+];
+const CASE_URL = "https://allanloplus.github.io/CASE/";
+const CASES = [
+  { id: "S115001", cat: "威脅情資", t: "總經理先看到新聞：PHP2Shell 情資應變的 48 小時", o: "PHP2Shell 重大漏洞外洩與緊急修補", tags: ["威脅情資", "漏洞管理", "資產盤點", "委外管理"] },
+  { id: "S111001", cat: "資訊保護", t: "倒數十天：艾倫建設的勒索軟體風暴", o: "上市公司遭勒索軟體攻擊，海量資料遭洩", tags: ["勒索軟體", "雙重勒索", "備份與復原", "重大訊息"] },
+  { id: "S111002", cat: "資訊保護", t: "補丁之後：艾倫普拉斯科技的 Log4j 供應鏈風暴", o: "Log4j 重大資安漏洞揭露半年後仍不可大意", tags: ["Log4Shell", "軟體供應鏈", "修補管理", "SBOM"] },
+  { id: "S111003", cat: "資訊保護", t: "沒收回的那把鑰匙：艾倫普拉斯傳媒的跨年直播危機", o: "離職員工偷刪前東家資料，該當何罪？", tags: ["離職管理", "帳號註銷", "雲端金鑰", "共用帳號"] },
+  { id: "S111004", cat: "資訊保護", t: "畫面不能重拍：曦光傳媒的片庫歸零事件", o: "電視台新聞片庫慘遭協力廠商刪除", tags: ["委外管理", "備份與復原", "RPO／RTO", "變更管理"] },
+  { id: "S111005", cat: "資訊保護", t: "起飛之前：艾倫普拉斯科技的營業秘密保衛戰", o: "離職時請別帶走公司的營業秘密", tags: ["營業秘密", "內部威脅", "離職管理", "日誌監控"] }
+];
+const THINKTANK = "isms智庫";   /* Allan's ISMS智庫（每月一期） */
+const AICASE = [
+  { ic: "🧭", t: "總覽：AI 系統安全檢測個案", d: "一套上線系統從盤點、檢測到報告的完整案例", p: "ai寫的個案/ai開發系統之安全檢測個案/總覽ai系統安全檢測個案" },
+  { ic: "🧾", t: "XBOM 對話教學", d: "XBOM 是什麼、怎麼做、能證明什麼，對應 SSDLC 與 ISO 27001", p: "ai寫的個案/ai開發系統之安全檢測個案/xbom-對話教學" },
+  { ic: "🔬", t: "安全檢測對話教學", d: "源碼檢測、存取控制測試、滲透測試各自證明什麼", p: "ai寫的個案/ai開發系統之安全檢測個案/安全檢測對話教學" },
+  { ic: "📑", t: "解讀第三方檢測報告", d: "先看的五件事、逐節讀法與品質判斷", p: "ai寫的個案/ai開發系統之安全檢測個案/解讀第三方檢測報告" },
+  { ic: "🧑‍🏫", t: "延伸：安全檢測顧問輔導實務", d: "顧問如何帶客戶從接案做到移交", p: "ai寫的個案/ai開發系統之安全檢測個案/延伸安全檢測顧問輔導實務" },
+  { ic: "🖥️", t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", p: "https://pms.medsigtw.com/" }
+];
+const NEWS_URL = "https://allanloplus.github.io/case_isnews/";
+const NEWS = [
+  { slug: "2026-10-synology-c3rb3r", sev: "重大", date: "2026-10-30", src: "iThome 新聞", t: "群暉 NAS 遭 C3RB3R 勒索軟體攻擊：被遺忘的更新與備份", d: "鎖定未更新的群暉 NAS 加密勒索；「沒更新、對外曝露、備份放同一台」是共同破口。附互動式勒索攻防模擬器。", tp: ["勒索軟體", "備份與復原", "漏洞管理"] },
+  { slug: "2026-10-91app-breach", sev: "重大", date: "2026-10-30", src: "今周刊", t: "91APP 資料庫遭 AI 代理攻擊：一個未更新的內部工具，波及 1,329 個品牌", d: "內部工具未更新被 AI 自主滲透工具打入，再從 GitLab 取得資料庫金鑰；SaaS 供應鏈與個資責任一次看。", tp: ["個資保護", "供應鏈", "AI 資安"] },
+  { slug: "2026-10-php2shell", sev: "緊急", date: "2026-10-29", src: "非凡商業台", t: "AI 揪出潛藏十多年的 PHP 漏洞：PHP2Shell 與資安雙面刃", d: "全球約七成網站使用的 PHP 爆出免登入 RCE 漏洞，攻擊早於修補，日本與歐洲大量預防性關站。", tp: ["漏洞管理", "事件應變", "AI 資安"] }
+];
+const ARCADE = [
+  { ic: "📖", t: "ALLAN 家族說故事劇場", d: "第一號作品《花草派》：2010 年手繪繪本，由 Allan 家族重新配音演出", u: "https://allanloplus.github.io/picture-book99/", c: "#ff8cf5" },
+  { ic: "⛰️", t: "跟著 Allan 走一趟特富野古道", d: "Allan 當領隊：鄒族獵徑、運材鐵道、交通路線與古道小遊戲", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/", c: "#69db7c" },
+  { ic: "🃏", t: "Allan 與阿拉蕾的橋牌桌", d: "四人合約橋牌：和阿拉蕾搭檔，對抗駭客小黑與釣魚怪", u: "https://allanloplus.github.io/bridge/", c: "#4dabf7" },
+  { ic: "🐷", t: "Allan 的拱豬夜市", d: "夜市開桌拱豬：♠Q 是勒索豬，♦J 是資安預算羊", u: "https://allanloplus.github.io/Gong_Zhu/", c: "#ffa94d" },
+  { ic: "🎴", t: "Allan's 資安大老二", d: "環島攻防戰：出一張牌走一站，先回台北 101 拿資安認證；鐵支＝零時差攻擊", u: "https://allanloplus.github.io/big2/", c: "#ff6b6b" },
+  { ic: "🧋", t: "Allan's 資安大富翁－快樂遊台灣", d: "22 縣市環島大富翁：吃在地美食、認養縣市當資安守護者，把韌性指數推到 100%", u: "https://allanloplus.github.io/Monopoly/", c: "#38d9a9" },
+  { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "選心情、看天氣、挑飯友，阿拉蕾從 373 道台灣美食幫你挑", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" },
+  { ic: "🌴", t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天：357 篇日誌、台北⇄檳城航線地圖與南洋奇幻之旅勳章", u: "https://allanloplus.github.io/AllanWentToNayang/", c: "#a9e34b" },
+  { ic: "🏯", t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖：嘉義市、嘉義縣、雲林縣、臺南市，語音導覽、老地圖時光機與文資護照", u: "https://cultural.123hi.org/guide/", c: "#e8a87c" },
+  { ic: "🚉", t: "Allan's 文化知識學習：影片導讀", d: "嘉義與臺南車站：同一位建築師，一座風華再現、一座風華再見？", u: "https://allanlo-g.github.io/Train_Station/", c: "#74c0fc" }
+];
+const COURSES = [
+  { big: "ISO<br>27001", badge: "互動教材", name: "ISO27001 完整線上互動教材", p: "課程動畫/iso27001完整線上互動教材", img: "allan-point", bg: "linear-gradient(160deg,#1d4ed8,#14213d)" },
+  { big: "ISO<br>27701", badge: "隱私管理", name: "ISO27701 完整線上課程", p: "課程動畫/iso27701完整線上課程", img: "arale-explain", bg: "linear-gradient(160deg,#9c36b5,#5f3dc4)" },
+  { big: "ISO<br>42001", badge: "AI 管理", name: "ISO42001 完整線上課程", p: "課程動畫/iso42001完整線上課程", img: "arale-wow", bg: "linear-gradient(160deg,#f76707,#c92a2a)" },
+  { big: "TISAX", badge: "汽車產業", name: "TISAX 要求完整解說", p: "課程動畫/tisax要求完整解說", img: "allan-think", bg: "linear-gradient(160deg,#495057,#212529)" },
+  { big: "3<br>MIN", badge: "快速入門", name: "3 分鐘和 ISO27001", p: "課程動畫/3分鐘和iso27001", img: "arale-laugh", bg: "linear-gradient(160deg,#37b24d,#087f5b)" },
+  { big: "MIND<br>MAP", badge: "心智圖", name: "用心智圖了解 ISO27001", p: "課程動畫/用心智圖了解iso27001", img: "arale-think", bg: "linear-gradient(160deg,#fab005,#e67700)" },
+  { big: "資安<br>宣導", badge: "年度必修", name: "Allan 的年度資安宣導", p: "課程動畫/allan的年度資安宣導", img: "allan-laugh", bg: "linear-gradient(160deg,#15aabf,#1864ab)" },
+  { big: "TISAX<br>EN", badge: "English", name: "ISA 2027 for TISAX — Requirements Explained", p: "課程動畫/tisax要求完整解說_英文版", img: "allan-smile", bg: "linear-gradient(160deg,#1864ab,#212529)" },
+  { big: "資安法", badge: "事件通報", name: "資通安全法－資安事件通報", p: "課程動畫/資通安全法-資安事件通報", img: "allan-surprised", bg: "linear-gradient(160deg,#e03131,#862e9c)" }
+];
+const FLOWS = [["治理", "🏛️"], ["人員安全", "👥"], ["資訊保護", "🔐"], ["資產管理", "📦"], ["存取管理", "🔑"], ["保全組態", "⚙️"], ["實體安全", "🏢"],
+  ["威脅與弱點管理", "🛡️"], ["應用程式安全", "🧩"], ["系統與網路安全", "🌐"], ["供應者安全管理", "🤝"], ["資安事件管理", "🚨"], ["持續性", "♻️"], ["資訊安全保證", "✅"], ["遵循性", "📜"]];
+const QUIZ = [["📋 ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["🧠 資安課程課後測驗", "課後測驗專區/資安課程課後測驗"], ["🕵️ ISMS Auditor 知識測驗", "課後測驗專區/isms-auditor知識測驗"], ["💻 Allan's IT 知識測驗", "課後測驗專區/allans-it知識測驗"]];
+const RES = [
+  ["27001", "ISO27001 教學資源", "教學網站", "https://sites.google.com/123hi.org/iso27001/", "#1d4ed8"],
+  ["27701", "ISO27701 教學資源", "條文解說簡報", "https://sites.google.com/view/allanlo-iso27701/iso27701%E6%A2%9D%E6%96%87%E8%A7%A3%E8%AA%AA%E7%B0%A1%E5%A0%B1", "#9c36b5"],
+  ["TX", "TISAX 教學資源", "汽車產業資安", "https://sites.google.com/123hi.org/tisax/", "#495057"],
+  ["展示", "ISMS 系統化展示", "系統實作範例", "https://sites.google.com/view/allantest001/", "#0b7285"],
+  ["▶", "YouTube－AllanLo", "上課影音", "https://www.youtube.com/channel/UCnsy7Lewl-4BIw4T5J2vV4Q", "#e03131"],
+  ["iT", "iT 邦幫忙文章", "Allan 的技術文章", "https://ithelp.ithome.com.tw/users/20151950/articles", "#2b8a3e"],
+  ["影音", "資安教學影音整理", "分類影音資源", "教學資源/allan的資安教學分類影音資源整理", "#e67700"],
+  ["地圖", "內外部情資地圖", "資安情資", "資安情資/內外部情資地圖", "#c92a2a"]
+];
+const SRC = [
+  ["NICS", "國家資通安全研究院", "漏洞新聞、漏洞公告", "https://www.nics.nat.gov.tw/", "#1d4ed8"],
+  ["TW", "TWCERT/CC", "資安新聞、通報", "https://www.twcert.org.tw/", "#0f766e"],
+  ["H", "H-ISAC", "衛福部資安分享中心", "https://hisac.nat.gov.tw/", "#be123c"],
+  ["F", "F-ISAC", "金融資安分享", "https://www.fisac.tw/", "#a16207"],
+  ["iT", "iThome 資安", "資安日報、週報", "https://www.ithome.com.tw/security", "#c2410c"],
+  ["TN", "TechNews 資安", "科技新報資安快報", "https://infosecu.technews.tw/", "#334155"],
+  ["TM", "趨勢科技研究", "威脅研究報告", "https://www.trendmicro.com/zh_tw/research.html", "#dc2626"],
+  ["月報", "政府機關資安月報", "數位發展部資安署", "https://moda.gov.tw/ACS/press/report/670", "#4338ca"]
+];
+
+
+/* 星際航線八顆星＝八個分類（順時針，從正上方的情報星開始）。
+   city/en 是星球名；ce 是星球圖示；c 是星球顏色。位置由程式排在軌道上（地圖座標 400×310）。talk：[誰, 表情, 台詞] */
+const TABS = [
+  { id: "intel", e: "📡", t: "資安情資", city: "情報星", en: "INTEL-X", ce: "🛰️", c: "#2fd879", face: "arale-wave", d: "客戶每月必下載，留存作為 ISO/IEC 27001:2022 A.5.7 威脅情資紀錄",
+    talk: [["a", "allan-point", "嗶嗶！地球情報站收到訊號，每月情資都整理好了。"], ["b", "arale-thumb", "下載留存，就是 A.5.7 威脅情資的佐證 👍"], ["a", "allan-think", "遇到高風險漏洞，記得走 A.8.8 修補流程，外星人也一樣。"]] },
+  { id: "courses", e: "🎬", t: "課程動畫", city: "學院星", en: "ACADEMIA", ce: "🪐", c: "#4c9cff", face: "arale-explain", d: "Allan 與阿拉蕾主演的完整線上課程與互動教材",
+    talk: [["b", "arale-explain", "歡迎來到學院星！外星學員也在這裡上九門課～"], ["a", "allan-smile", "27001、27701、42001、TISAX 都有完整動畫，宇宙通用。"]] },
+  { id: "flows", e: "🗺️", t: "ISMS 流程", city: "流程星雲", en: "NEBULA-15", ce: "🌀", c: "#1fc8e3", face: "arale-mini", d: "15 個運作流程，一站一支動畫，看懂整個 ISMS",
+    talk: [["b", "arale-cheer", "穿過流程星雲！A01 到 A15，一顆星一支動畫。"], ["a", "allan-point", "十五個流程串成星座，就是整個 ISMS。"]] },
+  { id: "park", e: "🎡", t: "主題樂園", city: "樂園星", en: "FUNLAND", ce: "🎠", c: "#8bd12f", face: "allan-laugh", d: "ISMS 工作觀：用動畫、地圖和遊戲，玩出對 ISMS 的整體感",
+    talk: [["a", "allan-laugh", "樂園星到了！外星人最愛的 ISMS 主題樂園。"], ["b", "arale-wow", "有小鎮、有大富翁，邊玩邊懂 ISMS！"], ["a", "allan-point", "工作地圖多了系統體驗版，點一下就留紀錄。"]] },
+  { id: "cases", e: "🕵️", t: "個案研究", city: "偵探星", en: "SHERLOCK-B", ce: "🔭", c: "#f2a300", face: "allan-think", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 開發系統的安全檢測個案",
+    talk: [["a", "allan-think", "用望遠鏡觀察地球：每則資安新聞，都是一堂管理課。"], ["b", "arale-confused", "如果是我們公司遇到，該怎麼辦？"], ["a", "allan-wink", "進研究室，一起辦案就知道！"]] },
+  { id: "quiz", e: "📝", t: "課後測驗", city: "試煉星", en: "TRIAL", ce: "☄️", c: "#ff6b5e", face: "allan-point", d: "上完課了嗎？來檢查學習成果",
+    talk: [["a", "allan-point", "試煉星！通過測驗才拿得到星際資安駕照。"], ["b", "arale-cheer", "答對送你一顆外星糖果 🍬"]] },
+  { id: "res", e: "📚", t: "教學資源", city: "知識星", en: "ARCHIVE", ce: "🌕", c: "#9d7bff", face: "allan-smile", d: "教學網站、影音文章，以及常用的外部情資來源",
+    talk: [["a", "allan-smile", "知識星是宇宙圖書館，教學網站、影音、文章都收在這。"], ["b", "arale-think", "外部情資來源像一座座電波望遠鏡，24 小時幫你聽 📡"]] },
+  { id: "arcade", e: "🕹️", t: "AI 遊樂場", city: "遊樂星", en: "JOY-8", ce: "👾", c: "#f2559c", face: "arale-laugh", d: "下課時間！Allan 用 AI 做的遊戲與小作品",
+    talk: [["b", "arale-laugh", "遊樂星到啦，下課時間！來玩 Allan 用 AI 做的遊戲～"], ["a", "allan-oops", "有幾款藏了資安梗，外星人玩了也會笑。"]] }
+];
+
+/* ================= 共用 ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const siteUrl = p => /^(https?:|#)/.test(p) ? p : SITE + p.split("/").map(encodeURIComponent).join("/");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const row = (href, ic, t, d, c, icCls = "") => `<a class="row" ${c ? `style="--c:${c}"` : ""} href="${esc(href)}" rel="noopener"><span class="ic ${icCls}">${ic}</span><span class="tx">${t}${d ? `<small>${d}</small>` : ""}</span></a>`;
+
+/* ================= 星圖 ================= */
+/* 八顆星排在橢圓軌道上（中心是地球 ISMS 母星） */
+const OX = 200, OY = 150, RX = 150, RY = 108;
+TABS.forEach((t, i) => { const a = (i / TABS.length) * 2 * Math.PI - Math.PI / 2; t.x = +(OX + RX * Math.cos(a)).toFixed(1); t.y = +(OY + RY * Math.sin(a)).toFixed(1); });
+/* 背景星星用固定亂數，每次載入都一樣 */
+let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const stars = Array.from({ length: 70 }, () => `<circle class="star${rnd() < .25 ? " tw" : ""}" cx="${(rnd() * 400).toFixed(1)}" cy="${(rnd() * 310).toFixed(1)}" r="${(rnd() * 1.1 + .3).toFixed(2)}" style="animation-delay:${(-rnd() * 4).toFixed(1)}s"/>`).join("");
+$("#mapSvg").innerHTML = `<defs>
+  <radialGradient id="earth" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#7cf5c0"/><stop offset=".55" stop-color="#1f8f8a"/><stop offset="1" stop-color="#0b2a4a"/></radialGradient>
+  <radialGradient id="glow"><stop offset="0" stop-color="#3dff9a" stop-opacity=".35"/><stop offset="1" stop-color="#3dff9a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="neb1"><stop offset="0" stop-color="#7b3fe4" stop-opacity=".45"/><stop offset="1" stop-color="#7b3fe4" stop-opacity="0"/></radialGradient>
+  <radialGradient id="neb2"><stop offset="0" stop-color="#1fc8e3" stop-opacity=".3"/><stop offset="1" stop-color="#1fc8e3" stop-opacity="0"/></radialGradient></defs>
+  <ellipse cx="70" cy="60" rx="110" ry="70" fill="url(#neb1)"/><ellipse cx="340" cy="260" rx="120" ry="70" fill="url(#neb2)"/>
+  ${stars}
+  <ellipse class="orbit" cx="${OX}" cy="${OY}" rx="${RX}" ry="${RY}"/><ellipse class="orbit2" cx="${OX}" cy="${OY}" rx="${RX}" ry="${RY}"/>
+  <circle cx="${OX}" cy="${OY}" r="58" fill="url(#glow)"/>
+  <ellipse class="ringp" cx="${OX}" cy="${OY}" rx="50" ry="11" transform="rotate(-14 ${OX} ${OY})"/>
+  <circle cx="${OX}" cy="${OY}" r="30" fill="url(#earth)" stroke="#3dff9a" stroke-width="1.2"/>
+  <text class="core" x="${OX}" y="${OY - 2}" text-anchor="middle">ISMS</text><text class="core2" x="${OX}" y="${OY + 9}" text-anchor="middle">地球母星</text>
+  ${TABS.map((t, i) => `<circle class="halo" id="ring${i}" cx="${t.x}" cy="${t.y}" r="19" style="stroke:${t.c}"/><circle class="dot" id="dot${i}" cx="${t.x}" cy="${t.y}" r="2.6"/>`).join("")}`;
+$("#map").insertAdjacentHTML("beforeend", TABS.map((t, i) => `<button class="stn" role="tab" id="t-${t.id}" aria-controls="p-${t.id}" aria-selected="false" style="--x:${t.x};--y:${t.y};--c:${t.c}"><span class="e">${t.ce}</span><span class="lb"><small>${i + 1}・${t.city}</small><b>${esc(t.t)}</b></span></button>`).join(""));
+$("#led").innerHTML = `<span>👽 星際資安通訊頻道・WE COME IN PEACE ｜ 本艦航線：${TABS.map(t => `${t.city} ${t.t}`).join(" → ")} ｜ 地球人請注意：每月情資 Excel 記得下載留存，外星稽核員也會來抽查 🛸</span>`.repeat(2);
+
+/* ================= 面板內容 ================= */
+$("#lvs").innerHTML = LEVELS.map((l, i) => row(siteUrl(l.p), l.ic, `<span class="tg">Lv.${i + 1}</span>${esc(l.t)}`, "", l.c)).join("");
+$("#courses").innerHTML = COURSES.map(c => `<a class="row" href="${esc(siteUrl(c.p))}" rel="noopener"><span class="ic txt wide" style="background:${c.bg}">${c.big}</span><span class="tx">${esc(c.name)}<small>${esc(c.badge)}</small></span></a>`).join("");
+$("#flows").innerHTML = FLOWS.map(([f, ic], i) => {
+  const no = String(i + 1).padStart(2, "0");
+  return `<a class="tile" href="${esc(siteUrl(`課程動畫/isms運作流程課程解說/a${no}_${f}流程`))}" rel="noopener"><span class="e">${ic}</span><small>A${no}</small><b>${esc(f)}</b></a>`;
+}).join("");
+$("#park").innerHTML = PARK.map(a => row(siteUrl(a.p), a.ic, `<span class="tg">${esc(a.tag)}</span>${esc(a.t)}`, esc(a.d), a.c)).join("");
+$("#files").innerHTML = CASES.map(c => `<article class="case"><span class="no">CASE ${esc(c.id)} · ${esc(c.cat)}</span><b>${esc(c.t)}</b><small>改編自：${esc(c.o)}</small>
+  <div class="acts"><a class="btn sm gold" href="${CASE_URL}#${esc(c.id)}-read" rel="noopener">📖 開始閱讀</a><a class="btn sm" href="${CASE_URL}#${esc(c.id)}-discuss" rel="noopener">💬 討論互動</a></div></article>`).join("");
+$("#news").innerHTML = NEWS.map(n => `<a class="case" href="${NEWS_URL}cases/${esc(n.slug)}/" rel="noopener"><span class="no"><span class="tg sev ${n.sev === "緊急" ? "urgent" : ""}">${esc(n.sev)}</span>${esc(n.date.replace(/-/g, "/"))} · ${esc(n.src)}</span><b>${esc(n.t)}</b><small>${esc(n.d)}</small></a>`).join("");
+$("#aicase").innerHTML = AICASE.map(a => row(siteUrl(a.p), a.ic, esc(a.t), esc(a.d))).join("");
+$("#heroThink").href = siteUrl(THINKTANK);
+$("#caseRoom").href = siteUrl("ai寫的個案/資安個案研究室");
+$("#newsAll").href = siteUrl("ai寫的個案/從新聞看個案");
+$("#seg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  $("#seg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  ["files", "news", "aicase"].forEach(v => $("#" + v).hidden = b.dataset.v !== v);
+});
+$("#quiz").innerHTML = QUIZ.map(([t, p]) => { const [ic, ...rest] = t.split(" "); return row(siteUrl(p), ic, esc(rest.join(" ")), ""); }).join("");
+const lk = ([ic, t, d, u, c]) => row(siteUrl(u), esc(ic), esc(t), esc(d), c, "txt");
+$("#resList").innerHTML = RES.map(lk).join("");
+$("#srcList").innerHTML = SRC.map(lk).join("");
+$("#arcade").innerHTML = ARCADE.map(g => `<a class="tile" style="--c:${g.c}" href="${esc(g.u)}" rel="noopener"><span class="e">${g.ic}</span><b>${esc(g.t)}</b><span class="d clamp">${esc(g.d)}</span></a>`).join("");
+
+/* ================= 對話：抵達星球時 Allan 與阿拉蕾輪流介紹 ================= */
+const who = { a: ["Allan", $("#whoA")], b: ["阿拉蕾", $("#whoB")] };
+let talk = TABS[0].talk, ti = 0, typeTimer, loopTimer;
+function speak() {
+  const [w, face, text] = talk[ti++ % talk.length], [name, el] = who[w];
+  $("#bubble").className = "bubble from-" + w;
+  $("#bFace").src = `assets/img/${face}.webp`; $("#bName").textContent = name;
+  Object.values(who).forEach(([, x]) => x.classList.remove("talk"));
+  void el.offsetWidth; el.classList.add("talk");
+  clearTimeout(typeTimer); clearTimeout(loopTimer);
+  const say = $("#bSay");
+  if (reduce) say.textContent = text;
+  else { let n = 0; say.textContent = ""; (function step() { say.textContent = text.slice(0, ++n); if (n < text.length) typeTimer = setTimeout(step, 45); })(); }
+  loopTimer = setTimeout(speak, 4800);
+}
+Object.entries(who).forEach(([w, [, el]]) => el.addEventListener("click", () => {
+  for (let k = 0; k < talk.length; k++) if (talk[(ti + k) % talk.length][0] === w) { ti += k; break; }
+  speak();
+}));
+$("#bubble").addEventListener("click", speak);
+
+/* ================= 換星球 ================= */
+const N = TABS.length, mapEl = $("#map"), train = $("#ufo");
+let cur = -1, trainAt = 0, trainTimer;
+const putTrain = i => { trainAt = i; train.style.setProperty("--x", TABS[i].x); train.style.setProperty("--yy", TABS[i].y - 24); };
+/* 飛碟沿軌道一顆一顆飛到目的地（走近的那一邊） */
+function runTrain(to) {
+  clearInterval(trainTimer);
+  if (reduce || cur < 0) return putTrain(to);
+  const fwd = (to - trainAt + N) % N, dir = fwd <= N / 2 ? 1 : -1;
+  trainTimer = setInterval(() => { if (trainAt === to) return clearInterval(trainTimer); putTrain((trainAt + dir + N) % N); }, 230);
+}
+function show(i, byUser) {
+  i = (i + N) % N;
+  const t = TABS[i], prev = TABS[(i - 1 + N) % N], next = TABS[(i + 1) % N];
+  runTrain(i); cur = i;
+  TABS.forEach((x, k) => {
+    $(`#p-${x.id}`).hidden = k !== i;
+    const b = $(`#t-${x.id}`); b.setAttribute("aria-selected", k === i); b.tabIndex = k === i ? 0 : -1;
+    $("#dot" + k).classList.toggle("on", k === i); $("#ring" + k).classList.toggle("on", k === i);
+  });
+  $("#panel").style.setProperty("--tc", t.c);
+  $("#sFace").src = `assets/img/${t.face}.webp`;
+  $("#sStn").textContent = `第 ${i + 1} 顆星・${t.city} ${t.en}`;
+  $("#sTitle").textContent = `${t.e} ${t.t}`; $("#sDesc").textContent = t.d;
+  $("#prevBtn").innerHTML = `◀ ${prev.city}<b>${esc(prev.t)}</b>`;
+  $("#nextBtn").innerHTML = `下一顆星 ${next.city} ▶<b>${esc(next.t)}</b>`;
+  talk = t.talk; ti = 0; speak();
+  if (byUser) {
+    history.replaceState(null, "", "#" + t.id);
+    /* 手機：把星球名牌捲進畫面；已經看得到就不動 */
+    const r = $("#panel").getBoundingClientRect();
+    if (r.top < 0 || r.top > innerHeight * .55) $("#panel").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }
+}
+mapEl.addEventListener("click", e => { const b = e.target.closest(".stn"); if (b) show(TABS.findIndex(t => "t-" + t.id === b.id), true); });
+mapEl.addEventListener("keydown", e => {
+  const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
+  e.preventDefault(); show(cur + d, true); $(`#t-${TABS[cur].id}`).focus();
+});
+$("#prevBtn").addEventListener("click", () => show(cur - 1, true));
+$("#nextBtn").addEventListener("click", () => show(cur + 1, true));
+const fromHash = () => Math.max(0, TABS.findIndex(t => "#" + t.id === location.hash));
+addEventListener("hashchange", () => show(fromHash()));
+show(fromHash());
+
+const fab = $("#fab");
+new IntersectionObserver(([e]) => fab.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.top < 0)).observe(mapEl);
+fab.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
+
+/* ================= 情資：每月下載與焦點（讀取情資蒐集紀錄網站，邏輯同其他版首頁） ================= */
+const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59) : new Date(); })();
+$("#btnXlsx").href = $("#btnOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
+
+/* 以中文檔名下載（跨網域連結無法指定檔名，所以先抓成 blob）；失敗就直接開啟原連結 */
+function bindDownload(a, url, name) {
+  a.href = url; a.hidden = false;
+  a.onclick = async e => {
+    if (a.dataset.busy) return e.preventDefault();
+    e.preventDefault(); a.dataset.busy = 1;
+    try {
+      const blob = await (await fetch(url)).blob(), t = document.createElement("a");
+      t.href = URL.createObjectURL(blob); t.download = name; t.target = "_self";
+      document.body.appendChild(t); t.click(); t.remove(); setTimeout(() => URL.revokeObjectURL(t.href), 4000);
+    } catch (err) { window.open(url, "_blank", "noopener"); }
+    delete a.dataset.busy;
+  };
+}
+const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
+
+(async () => {
+  const fail = () => { $("#focusList").innerHTML = `<div class="ph">請點「查詢與下載專區」查看最新情資。</div>`; };
+  let idx;
+  try { idx = await (await fetch(`${INTEL}data/index.json`, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const nowKey = TODAY.getFullYear() * 12 + TODAY.getMonth();
+  const months = Object.entries(idx.years || {}).flatMap(([y, v]) => (v.months || []).map(m => ({ ...m, year: +y })))
+    .filter(m => m.count > 0 && m.year * 12 + m.month - 1 <= nowKey).sort((a, b) => b.year * 12 + b.month - (a.year * 12 + a.month));
+  if (!months.length) return fail();
+  const latest = months[0];
+  const isThisMonth = latest.year === TODAY.getFullYear() && latest.month === TODAY.getMonth() + 1;
+
+  /* 主要下載＝客戶要留存的「完整月份」：每月 1–15 日是上個月，16 日起換成本月（累計中）；另一個月份放在旁邊 */
+  const full = months.find(m => m.year * 12 + m.month - 1 < nowKey), prog = isThisMonth ? latest : null;
+  const main = (prog && (TODAY.getDate() > 15 || !full)) ? prog : (full || latest), side = main === prog ? full : prog;
+  const yr = m => m.year === TODAY.getFullYear() ? "" : `${m.year} 年 `;
+  const label = m => m === prog ? `${yr(m)}${m.month} 月 Excel（本月累計中）` : `${yr(m)}${m.month} 月 Excel（完整月份）`;
+  $("#fileYear").textContent = `${main.year}年${main.month}月`;
+  $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
+  bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
+  const other = $("#btnOther");
+  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
+
+  let recs;
+  try { recs = await (await fetch(INTEL + latest.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const items = recs.map(r => ({ ...r, d: ymd(r.date) })).filter(x => x.title && x.d && x.d <= TODAY).sort((a, b) => b.d - a.d);
+  if (!items.length) return fail();
+  const last = items[0].d, high = items.filter(x => x.severity === "高").length, kev = items.filter(x => x.kev === "是").length;
+  $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${latest.year}年${latest.month}月）`;
+  $("#monthLabel").textContent = `🗓️ ${latest.year}年${latest.month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  if (high || kev) { $("#riskPill").hidden = false; $("#riskPill").textContent = `🚨 威脅程度高 ${high} 筆 · KEV ${kev} 筆`; }
+  TABS[0].talk[0][2] = `嗶嗶！${latest.month} 月情資已截收 ${items.length} 筆，地球人請下載。`;
+  const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
+  const badge = x => (x.kev === "是" ? `<span class="bd kev">KEV</span>` : "") + (x.severity === "高" ? `<span class="bd">高</span>` : "");
+  $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.d.getMonth() + 1}/${x.d.getDate()} · ${esc(x.source)}${badge(x)}</small>${esc(x.title)}`)).join("");
+})();
+</script>
+</body>
+</html>
+

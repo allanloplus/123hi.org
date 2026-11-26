@@ -4,7 +4,8 @@
 window.HOME_VERSIONS = [
   { id: "sticker", emo: "🎨", name: "貼紙漫畫版", file: "./" },
   { id: "classic", emo: "🌌", name: "經典版", file: "home-classic.html" },
-  { id: "taiwan", emo: "🚆", name: "台灣環島版", file: "home-taiwan.html" }
+  { id: "taiwan", emo: "🚆", name: "台灣環島版", file: "home-taiwan.html" },
+  { id: "alien", emo: "👽", name: "外星人風格版", file: "home-alien.html" }
 ];
 (function () {
   var box = document.getElementById("verSwitch"); if (!box) return;
