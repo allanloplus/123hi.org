@@ -10,6 +10,7 @@
 
 ## 結構
 - `index.html`：首頁（Google Sites「整頁嵌入」用）。各區塊資料在底部 `<script>` 的陣列（PORTALS、COURSES、LEVELS、PARK、CASES、ARCADE、QUIZ、RES、SRC…）。
+- `home2.html`：新版首頁（貼紙漫畫風，2026/11 新增；https://allanlo.123hi.org/home2.html）。舞台上 Allan 與阿拉蕾對話＋八個分類分頁（`TABS`），內容不往下堆疊。資料陣列（LEVELS、COURSES、PARK、CASES、NEWS、ARCADE、QUIZ、RES、SRC…）與情資下載邏輯是從 `index.html` 複製的，**`index.html` 增修資源或情資邏輯時，這裡也要同步**。`index.html`（經典版）Allan 指定保留。
 - `isms_island/`：Allan's 資安島（3D 資源島），資源清單在 `isms_island/data.js`；首頁新增資源時這裡也要補。
 - `medsigtw-island/`：米數資科客製版資安島。**`isms_island/data.js` 新增資源時，這裡也要同步加入**（人物改「米數顧問／AI小助手」，連到外部作品的名稱維持原樣，總部連米數官網）。
 - 資安島快取：兩座島的 `index.html`（`island.css?v=`、`app.js?v=`）與 `app.js`（`data.js?v=`、`scene.js?v=`）都帶版本號。**每次修改島的檔案，就把兩座島的版本號一起換成新值**（例如日期＋字母 `20261101b`），否則瀏覽器與 Google Sites 嵌入框會沿用舊的 data.js。

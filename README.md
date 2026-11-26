@@ -12,6 +12,12 @@ Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google S
 
 各區塊的連結與文字集中在 `index.html` 底部 `<script>` 的 `PORTALS`、`COURSES`、`FLOWS`、`CHAT`、`QUIZ`、`RES`、`SRC` 陣列，新增課程或連結只要改這裡。
 
+## 新版首頁（`home2.html`）
+另一種風格的首頁，網址 `https://allanlo.123hi.org/home2.html`，經典版 `index.html` 不受影響。
+- 上方舞台：Allan 與阿拉蕾輪流說話（點角色換下一句），情資 Excel 下載與資安島按鈕。
+- 八個分類分頁（資安情資、課程動畫、ISMS 流程、主題樂園、個案研究、課後測驗、教學資源、AI 遊樂場），點分類只換下方面板，不用一路往下捲；可用 `#courses`、`#cases` 等錨點直接開啟。
+- 資料陣列與 `index.html` 相同，新增資源時兩邊一起改。
+
 ## 情資來源
 - 首頁情資區讀取「資安內外部情資蒐集紀錄」網站 https://allanloplus.github.io/intelligence/ （每日自動蒐集）發佈的 `data/index.json` 與每月資料檔，不再使用 Google 試算表。
 - 顯示最近有資料的月份，提供該月 Excel、全年度 Excel 與歷年全年度 Excel 下載；月初會多一顆上月 Excel。跨年度自動切換，不需修改。
