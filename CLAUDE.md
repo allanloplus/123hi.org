@@ -9,8 +9,13 @@
 - 原因：曾有多個對話各自推送到不同分支，Pages 來源在分支間切換，導致網站沒更新或變回舊版。
 
 ## 結構
-- `index.html`：首頁（Google Sites「整頁嵌入」用）。各區塊資料在底部 `<script>` 的陣列（PORTALS、COURSES、LEVELS、PARK、CASES、ARCADE、QUIZ、RES、SRC…）。
-- `home2.html`：新版首頁（貼紙漫畫風，2026/11 新增；https://allanlo.123hi.org/home2.html）。舞台上 Allan 與阿拉蕾對話＋八個分類分頁（`TABS`），內容不往下堆疊。資料陣列（LEVELS、COURSES、PARK、CASES、NEWS、ARCADE、QUIZ、RES、SRC…）與情資下載邏輯是從 `index.html` 複製的，**`index.html` 增修資源或情資邏輯時，這裡也要同步**。`index.html`（經典版）Allan 指定保留。
+- **首頁版本**（頁尾可切換，清單在 `versions.js`）：
+  - `index.html`：**預設首頁＝貼紙漫畫版**（Google Sites「整頁嵌入」用）。舞台上 Allan 與阿拉蕾對話＋八個分類分頁（`TABS`），內容不往下堆疊。
+  - `home-classic.html`：經典版（深藍長頁，含 Google Sites 手機嵌入框的精簡卡片）。Allan 指定保留。
+  - 各版的資料陣列（LEVELS、COURSES、PARK、CASES、NEWS、ARCADE、QUIZ、RES、SRC…）與情資下載邏輯內容相同，**增修資源或情資邏輯時，每個版本都要同步**。
+  - **預設首頁由 Allan 決定**，沒有他的指示不要更換。訪客在頁尾切換只是連到另一個檔案，不會記住選擇。
+  - 新增版本：做成 `home-<名稱>.html`，頁尾放 `<div id="verSwitch" data-current="<id>"></div>` 並載入 `versions.js`，再到 `versions.js` 加一行。
+  - 更換預設：把現在的 `index.html` 改名為 `home-<它的名稱>.html`、把新預設改名為 `index.html`，並更新 `versions.js` 的 `file`（預設寫 `"./"`）與本段說明。
 - `isms_island/`：Allan's 資安島（3D 資源島），資源清單在 `isms_island/data.js`；首頁新增資源時這裡也要補。
 - `medsigtw-island/`：米數資科客製版資安島。**`isms_island/data.js` 新增資源時，這裡也要同步加入**（人物改「米數顧問／AI小助手」，連到外部作品的名稱維持原樣，總部連米數官網）。
 - 資安島快取：兩座島的 `index.html`（`island.css?v=`、`app.js?v=`）與 `app.js`（`data.js?v=`、`scene.js?v=`）都帶版本號。**每次修改島的檔案，就把兩座島的版本號一起換成新值**（例如日期＋字母 `20261101b`），否則瀏覽器與 Google Sites 嵌入框會沿用舊的 data.js。
@@ -19,7 +24,7 @@
 ## 情資來源（2026/11/26 起）
 - 情資改由 **資安內外部情資蒐集紀錄** 網站提供：repo `allanloplus/intelligence`，https://allanloplus.github.io/intelligence/ （每日自動蒐集；知識庫選單頁為「資安情資/資安情資蒐集紀錄」）。客戶每月下載從這裡，**不再使用 Google 試算表**。
 - 它發佈 `data/index.json`（各年度／月份的筆數、資料檔與 Excel 路徑）、`data/YYYY-MM.json`、`downloads/intel-YYYY-MM.xlsx`（每月）、`downloads/intel-YYYY.xlsx`（全年度），皆可跨網域讀取。
-- 首頁情資區（`index.html` 最後一段 script）讀 `index.json`。統計、焦點 3 則、跑馬燈顯示最近有資料的月份；**主要下載按鈕是客戶要留存的「完整月份」：每月 1–15 日為上個月，16 日起換成本月（累計中）**，另一個月份放在旁邊的次要按鈕（Allan 指定：月初客戶要下載的是上個月）。首頁不放全年度 Excel 與歷年情資（Allan 指定；需要時到查詢與下載專區）。跨年度不需改程式。測試可加 `?today=2026-12-03`。
+- 首頁情資區（各版首頁最後一段 script）讀 `index.json`。統計、焦點 3 則、跑馬燈顯示最近有資料的月份；**主要下載按鈕是客戶要留存的「完整月份」：每月 1–15 日為上個月，16 日起換成本月（累計中）**，另一個月份放在旁邊的次要按鈕（Allan 指定：月初客戶要下載的是上個月）。首頁不放全年度 Excel 與歷年情資（Allan 指定；需要時到查詢與下載專區）。跨年度不需改程式。測試可加 `?today=2026-12-03`。
 - 兩座資安島的情資港只連到知識庫的「資安情資蒐集紀錄」頁，不含年度設定。
 - 「情資戰情看板」按鈕連到新網站首頁（即其戰情看板分頁）；舊的 `allanlo-g/threat-intel-warroom`（讀 Google 試算表）已不再連結。
 

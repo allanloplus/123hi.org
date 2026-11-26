@@ -1,5 +1,5 @@
 /* Allan's 資安島：島嶼、資源、知識流與學習路線
-   資源連結與首頁 index.html 的 PORTALS／COURSES／FLOWS… 同源；首頁新增資源時，這裡也要一起補上。 */
+   資源連結與各版首頁（index.html、home-classic.html）的 COURSES／FLOWS… 同源；首頁新增資源時，這裡也要一起補上。 */
 
 export const SITE = "https://sites.google.com/123hi.org/isms/";
 /* 情資來源：每日自動蒐集的「資安內外部情資蒐集紀錄」（查詢與每月 Excel 下載），頁面嵌在知識庫網站 */

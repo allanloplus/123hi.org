@@ -7,16 +7,15 @@ Allan Lo 顧問 × AI 小助手阿拉蕾 的資安知識庫首頁，供 Google S
 2. 網址為 `https://allanlo.123hi.org/`（資安島：`https://allanlo.123hi.org/isms_island/`）。
 3. Google Sites → 插入 → 嵌入 → 「依網址」貼上網址 → 選「整頁」。
 
-## 首頁區塊
-頁首（Allan × 阿拉蕾）→ 最新情資跑馬燈 → 情資下載橫幅（Excel 下載、本月焦點 3 則、可展開線上瀏覽）→ 今天想學什麼（5 個入口）→ 課程動畫海報 → ISMS 運作流程地圖 A01–A15 → 資安小劇場 → 課後測驗 → 教學資源／外部情資來源 → 認識我們。
+## 首頁版本（頁尾可切換）
+首頁有多種風格，清單在 `versions.js`，每一頁的頁尾都有「首頁風格」切換列。預設首頁就是 `index.html`，由 Allan 決定。
 
-各區塊的連結與文字集中在 `index.html` 底部 `<script>` 的 `PORTALS`、`COURSES`、`FLOWS`、`CHAT`、`QUIZ`、`RES`、`SRC` 陣列，新增課程或連結只要改這裡。
+| 版本 | 檔案 | 說明 |
+|---|---|---|
+| 🎨 貼紙漫畫版（預設） | `index.html` | 上方舞台 Allan 與阿拉蕾輪流說話（點角色換下一句）＋八個分類分頁（資安情資、課程動畫、ISMS 流程、主題樂園、個案研究、課後測驗、教學資源、AI 遊樂場）。點分類只換下方面板；可用 `#courses`、`#cases` 等錨點直接開啟。 |
+| 🌌 經典版 | `home-classic.html` | 深藍長頁：頁首 → 情資跑馬燈 → 情資下載橫幅 → 入口 → 課程海報 → 流程地圖 → 主題樂園 → 個案研究室 → 小劇場 → 測驗 → 遊樂場 → 資源 → 認識我們。 |
 
-## 新版首頁（`home2.html`）
-另一種風格的首頁，網址 `https://allanlo.123hi.org/home2.html`，經典版 `index.html` 不受影響。
-- 上方舞台：Allan 與阿拉蕾輪流說話（點角色換下一句），情資 Excel 下載與資安島按鈕。
-- 八個分類分頁（資安情資、課程動畫、ISMS 流程、主題樂園、個案研究、課後測驗、教學資源、AI 遊樂場），點分類只換下方面板，不用一路往下捲；可用 `#courses`、`#cases` 等錨點直接開啟。
-- 資料陣列與 `index.html` 相同，新增資源時兩邊一起改。
+各版的連結與文字集中在各自底部 `<script>` 的陣列（`COURSES`、`FLOWS`、`QUIZ`、`RES`、`SRC`…），新增課程或連結時每個版本都要改。新增版本與更換預設的步驟見 `CLAUDE.md`。
 
 ## 情資來源
 - 首頁情資區讀取「資安內外部情資蒐集紀錄」網站 https://allanloplus.github.io/intelligence/ （每日自動蒐集）發佈的 `data/index.json` 與每月資料檔，不再使用 Google 試算表。
