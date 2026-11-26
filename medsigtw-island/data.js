@@ -5,7 +5,7 @@
 export const SITE = "https://sites.google.com/123hi.org/isms/";
 /* 情資來源：每日自動蒐集的「資安內外部情資蒐集紀錄」（查詢與每月 Excel 下載），頁面嵌在知識庫網站 */
 const INTEL_PAGE = SITE + ["資安情資", "資安情資蒐集紀錄"].map(encodeURIComponent).join("/");
-const WARROOM = "https://allanlo-g.github.io/threat-intel-warroom/";
+const WARROOM = "https://allanloplus.github.io/intelligence/";
 export const HOME = "https://www.medsigtw.com/";
 const CASE_URL = "https://allanloplus.github.io/CASE/";
 
@@ -39,10 +39,10 @@ export const ISLANDS = [
     d: "每日自動蒐集 TWCERT、NICS、iThome、TechNews 的漏洞與事件情報並評估處置期限，每月 Excel 下載即可留存作為稽核佐證。",
     say: ["arale-wow", "AI小助手", "情資點一下就能下載！記得對照資產清冊，評估對我們的影響喔。"],
     iso: ["A.5.7 威脅情資", "A.8.8 技術脆弱性管理"],
-    cta: ["⬇️ 下載本月情資 Excel", INTEL_PAGE],
+    cta: ["⬇️ 下載每月情資 Excel", INTEL_PAGE],
     items: [
       { t: "資安情資蒐集紀錄", d: "每日自動更新：查詢、篩選，下載每月與全年度 Excel", tag: "下載", u: INTEL_PAGE, std: ["27001"] },
-      { t: "情資戰情看板", d: "即時讀取情資表：各月統計、情資明細與來源分析", tag: "看板", u: WARROOM, std: ["27001"] },
+      { t: "情資戰情看板", d: "每月情資量、威脅程度、KEV 與處置期限分布、優先處置清單", tag: "看板", u: WARROOM, std: ["27001"] },
       { t: "情資作業動畫解說", d: "13 段動畫：情資蒐集、脆弱性識別、AI 風險排序到稽核證據", tag: "Lv.1", u: site("資安情資/資安情資作業動畫解說"), std: ["27001"] },
       { t: "內外部情資地圖", d: "內部事件與外部來源一張圖掌握", tag: "Lv.2", u: site("資安情資/內外部情資地圖"), std: ["27001"] },
       { t: "資安情資戰情室", d: "內外部情資、脆弱性與處置成效儀表板", tag: "Lv.3", u: site("資安情資/資安情資戰情室dashboard"), std: ["27001"] },

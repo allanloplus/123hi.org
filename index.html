@@ -453,7 +453,7 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
   <div class="mid">
     <div class="t">ISMS<span class="dot">·</span>普拉斯<span class="dot">·</span><span class="yr">AllanLo</span></div>
     <span class="pill">🗓️ <span id="miniMonth">資安情資每月更新</span></span>
-    <a class="btn btn-gold pulse" id="miniXlsx" href="#">📥 下載本月情資 Excel</a>
+    <a class="btn btn-gold pulse" id="miniXlsx" href="#">📥 下載每月情資 Excel</a>
     <a class="btn btn-ghost" id="miniFull" href="https://allanlo.123hi.org/">✨ 看完整首頁</a>
   </div>
   <div class="c b"><img src="assets/img/arale-tablet.webp" alt="AI 小助手 阿拉蕾"></div>
@@ -478,7 +478,7 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
         <span>✉️ <a href="mailto:allanlo.plus@gmail.com">allanlo.plus@gmail.com</a></span>
       </div>
       <div class="hero-cta">
-        <a class="btn btn-gold pulse" href="#intel" target="_self">📥 下載本月資安情資</a>
+        <a class="btn btn-gold pulse" href="#intel" target="_self">📥 下載每月資安情資</a>
         <a class="btn btn-ghost" href="#explore" target="_self">🚀 開始學習</a>
         <a class="btn btn-island" href="https://allanlo.123hi.org/isms_island/" rel="noopener" title="10 座六角島拼成的互動資源地圖">
           <svg viewBox="0 0 32 32" aria-hidden="true"><g stroke="#fff" stroke-width="1.4" stroke-linejoin="round"><path d="M9 2.5l5.6 3.2v6.5L9 15.4 3.4 12.2V5.7z" fill="#e03131"/><path d="M23 2.5l5.6 3.2v6.5L23 15.4l-5.6-3.2V5.7z" fill="#ffd23f"/><path d="M16 14.6l5.6 3.2v6.5L16 27.5l-5.6-3.2v-6.5z" fill="#2f9e44"/></g><path d="M16 17.5v6.6M13.2 20.6h5.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -515,10 +515,10 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
         <p class="lead">每日自動蒐集 TWCERT、NICS、iThome、TechNews 的漏洞與安全事件情報，並評估弱點處置期限；每月 Excel 可直接下載留存，作為稽核佐證。</p>
         <div class="intel-actions">
           <a class="btn btn-gold pulse" id="btnXlsx" href="#">⬇️ 下載本月 Excel</a>
+          <a class="btn btn-white" id="btnOther" href="#" hidden></a>
           <a class="btn btn-teal" id="btnOpen" href="#">🔎 查詢與下載專區</a>
           <a class="btn btn-white" id="btnYear" href="#" hidden></a>
-          <a class="btn btn-white" id="btnWarroom" href="https://allanlo-g.github.io/threat-intel-warroom/">📊 情資戰情看板</a>
-          <a class="btn btn-white" id="btnOther" href="#" hidden></a>
+          <a class="btn btn-white" id="btnWarroom" href="https://allanloplus.github.io/intelligence/">📊 情資戰情看板</a>
         </div>
         <div class="years" id="yearRow" hidden></div>
       </div>
@@ -763,7 +763,6 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
 <script>
 /* ================= 設定 ================= */
 
-const WARROOM = "https://allanlo-g.github.io/threat-intel-warroom/";
 /* 情資來源：每日自動蒐集的「資安內外部情資蒐集紀錄」網站（repo allanloplus/intelligence）。
    它發佈 data/index.json（年度、月份、Excel 路徑）與每月資料檔，首頁直接讀取，跨年度不需改程式。
    測試跨年度可在網址加 ?today=2027-01-05 */
@@ -1027,21 +1026,25 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   const months = Object.entries(idx.years || {}).flatMap(([y, v]) => (v.months || []).map(m => ({ ...m, year: +y })))
     .filter(m => m.count > 0 && m.year * 12 + m.month - 1 <= nowKey).sort((a, b) => b.year * 12 + b.month - (a.year * 12 + a.month));
   if (!months.length) return fail();
-  const cur = months[0], prev = months[1], Y = idx.years[cur.year];
+  const cur = months[0];
   const isThisMonth = cur.year === TODAY.getFullYear() && cur.month === TODAY.getMonth() + 1;
 
-  $("#fileYear").textContent = `_${cur.year}年${cur.month}月`;
-  $("#btnXlsx").textContent = `⬇️ 下載 ${cur.month} 月 Excel`;
-  bindDownload($("#btnXlsx"), INTEL + cur.xlsx, cur.xlsxName);
-  bindDownload($("#miniXlsx"), INTEL + cur.xlsx, cur.xlsxName);
-  $("#btnYear").textContent = `📦 ${cur.year} 全年度 Excel`;
-  bindDownload($("#btnYear"), INTEL + Y.xlsx, Y.xlsxName);
-  /* 月初（1–7 日）或本月尚無資料時，補上一個月的下載；跨年度時就是去年 12 月 */
+  /* 主要下載＝客戶要留存的「完整月份」：每月 1–10 日是上個月，之後才換成本月（累計中）；另一個月份放在旁邊。
+     跨年度時，1 月初的主要下載就是去年 12 月，全年度 Excel 也跟著是去年。 */
+  const full = months.find(m => m.year * 12 + m.month - 1 < nowKey), prog = isThisMonth ? cur : null;
+  const main = (prog && (TODAY.getDate() > 10 || !full)) ? prog : (full || cur), side = main === prog ? full : prog;
+  const yr = m => m.year === TODAY.getFullYear() ? "" : `${m.year} 年 `;
+  const label = m => m === prog ? `${yr(m)}${m.month} 月 Excel（本月累計中）` : `${yr(m)}${m.month} 月 Excel（完整月份）`;
+  const Y = idx.years[main.year];
+  $("#fileYear").textContent = `_${main.year}年${main.month}月`;
+  $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
+  bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
+  $("#miniXlsx").textContent = `📥 下載 ${yr(main)}${main.month} 月情資 Excel`;
+  bindDownload($("#miniXlsx"), INTEL + main.xlsx, main.xlsxName);
   const other = $("#btnOther");
-  if (prev && (TODAY.getDate() <= 7 || !isThisMonth)) {
-    other.textContent = `⬇️ ${prev.year === cur.year ? "" : prev.year + " 年 "}${prev.month} 月 Excel（上月）`;
-    bindDownload(other, INTEL + prev.xlsx, prev.xlsxName);
-  } else other.hidden = true;
+  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
+  $("#btnYear").textContent = `📦 ${main.year} 全年度 Excel`;
+  bindDownload($("#btnYear"), INTEL + Y.xlsx, Y.xlsxName);
   const ys = Object.keys(idx.years).map(Number).filter(y => y <= cur.year).sort((a, b) => b - a);
   $("#yearRow").hidden = ys.length < 2;
   $("#yearRow").innerHTML = "🗂️ 歷年情資（全年度 Excel）：";

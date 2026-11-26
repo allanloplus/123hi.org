@@ -18,9 +18,9 @@
 ## 情資來源（2026/11/26 起）
 - 情資改由 **資安內外部情資蒐集紀錄** 網站提供：repo `allanloplus/intelligence`，https://allanloplus.github.io/intelligence/ （每日自動蒐集；知識庫選單頁為「資安情資/資安情資蒐集紀錄」）。客戶每月下載從這裡，**不再使用 Google 試算表**。
 - 它發佈 `data/index.json`（各年度／月份的筆數、資料檔與 Excel 路徑）、`data/YYYY-MM.json`、`downloads/intel-YYYY-MM.xlsx`（每月）、`downloads/intel-YYYY.xlsx`（全年度），皆可跨網域讀取。
-- 首頁情資區（`index.html` 最後一段 script）讀 `index.json`，顯示今天以前最近有資料的月份：本月 Excel、全年度 Excel、歷年全年度 Excel、焦點 3 則、跑馬燈；每月 1–7 日或本月尚無資料時多一顆「上月 Excel」（跨年時即去年 12 月）。跨年度不需改程式。測試可加 `?today=2027-01-05`。
+- 首頁情資區（`index.html` 最後一段 script）讀 `index.json`。統計、焦點 3 則、跑馬燈顯示最近有資料的月份；**主要下載按鈕是客戶要留存的「完整月份」：每月 1–10 日為上個月，11 日起換成本月（累計中）**，另一個月份放在旁邊的次要按鈕（Allan 指定：月初客戶要下載的是上個月）。全年度 Excel 跟著主要下載的年度，跨年度不需改程式。測試可加 `?today=2026-12-03`。
 - 兩座資安島的情資港只連到知識庫的「資安情資蒐集紀錄」頁，不含年度設定。
-- 「情資戰情看板」按鈕（`allanlo-g/threat-intel-warroom`）仍讀舊的 Google 試算表，是獨立的系統。
+- 「情資戰情看板」按鈕連到新網站首頁（即其戰情看板分頁）；舊的 `allanlo-g/threat-intel-warroom`（讀 Google 試算表）已不再連結。
 
 ## 更新前後檢查
 - 選單「Allan's Tools」底下的項目（Allan's AI Map、隨意畫流程圖等）**不放進首頁與資安島**（Allan 指定）。
