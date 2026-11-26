@@ -96,14 +96,10 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .intel-card h2 .file{display:inline-block;background:var(--navy);color:var(--yellow);padding:1px 10px;border-radius:10px;font-family:ui-monospace,Consolas,monospace;font-size:.78em;margin-left:4px}
 .intel-card .lead{color:var(--muted);margin:0 0 16px;font-size:15px}
 .intel-actions{display:flex;gap:10px;flex-wrap:wrap}
-.intel-actions .btn[hidden],.years[hidden],.month-pill[hidden]{display:none}
+.intel-actions .btn[hidden],.month-pill[hidden]{display:none}
 .month-pill.hot{background:#ffe3e3;border-color:#ffa8a8;color:#c92a2a;margin-top:4px}
 .focus .bd{display:inline-block;font-size:11px;font-weight:900;border-radius:4px;padding:0 5px;margin-left:4px;background:#ffe3e3;color:#c92a2a}
 .focus .bd.kev{background:#c92a2a;color:#fff}
-.years{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;font-size:13px;color:var(--muted)}
-.years a{font-weight:700;text-decoration:none;color:var(--teal-2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:1px 10px}
-.years a:hover{border-color:var(--teal)}
-.years a.on{background:var(--navy);color:var(--yellow);border-color:var(--navy)}
 .focus{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
 .focus h3{margin:0 0 8px;font-size:16px;display:flex;align-items:center;gap:8px}
 .focus h3 .live{width:8px;height:8px;border-radius:50%;background:var(--red);animation:ping 1.8s infinite;box-shadow:0 0 0 0 rgba(229,72,77,.6)}
@@ -517,10 +513,8 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
           <a class="btn btn-gold pulse" id="btnXlsx" href="#">⬇️ 下載本月 Excel</a>
           <a class="btn btn-white" id="btnOther" href="#" hidden></a>
           <a class="btn btn-teal" id="btnOpen" href="#">🔎 查詢與下載專區</a>
-          <a class="btn btn-white" id="btnYear" href="#" hidden></a>
           <a class="btn btn-white" id="btnWarroom" href="https://allanloplus.github.io/intelligence/">📊 情資戰情看板</a>
         </div>
-        <div class="years" id="yearRow" hidden></div>
       </div>
       <div class="focus">
         <h3><span class="live"></span><span id="focusTitle">本月焦點情資</span></h3>
@@ -1035,7 +1029,6 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   const main = (prog && (TODAY.getDate() > 10 || !full)) ? prog : (full || cur), side = main === prog ? full : prog;
   const yr = m => m.year === TODAY.getFullYear() ? "" : `${m.year} 年 `;
   const label = m => m === prog ? `${yr(m)}${m.month} 月 Excel（本月累計中）` : `${yr(m)}${m.month} 月 Excel（完整月份）`;
-  const Y = idx.years[main.year];
   $("#fileYear").textContent = `_${main.year}年${main.month}月`;
   $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
   bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
@@ -1043,13 +1036,6 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   bindDownload($("#miniXlsx"), INTEL + main.xlsx, main.xlsxName);
   const other = $("#btnOther");
   if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
-  $("#btnYear").textContent = `📦 ${main.year} 全年度 Excel`;
-  bindDownload($("#btnYear"), INTEL + Y.xlsx, Y.xlsxName);
-  const ys = Object.keys(idx.years).map(Number).filter(y => y <= cur.year).sort((a, b) => b - a);
-  $("#yearRow").hidden = ys.length < 2;
-  $("#yearRow").innerHTML = "🗂️ 歷年情資（全年度 Excel）：";
-  ys.forEach(y => { const a = document.createElement("a"); a.textContent = y; a.className = y === cur.year ? "on" : ""; a.title = `下載 ${y} 年全年度 Excel`;
-    bindDownload(a, INTEL + idx.years[y].xlsx, idx.years[y].xlsxName); $("#yearRow").appendChild(a); });
 
   let recs;
   try { recs = await (await fetch(INTEL + cur.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
