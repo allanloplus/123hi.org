@@ -13,6 +13,7 @@
   - `index.html`：**預設首頁＝貼紙漫畫版**（Google Sites「整頁嵌入」用）。舞台上 Allan 與阿拉蕾對話＋八個分類分頁（`TABS`），內容不往下堆疊。
   - `home-classic.html`：經典版（深藍長頁，含 Google Sites 手機嵌入框的精簡卡片）。Allan 指定保留。
   - 各版的資料陣列（LEVELS、COURSES、PARK、CASES、NEWS、ARCADE、QUIZ、RES、SRC…）與情資下載邏輯內容相同，**增修資源或情資邏輯時，每個版本都要同步**。
+  - 貼紙漫畫版最上方**不放直接下載 Excel 的按鈕**（Allan 指定）；資安情資是預設開啟的第一個分類，下載鈕在該面板內。舞台上的兩顆按鈕是「ISMS智庫 月刊」與「逛資安島」。
   - **預設首頁由 Allan 決定**，沒有他的指示不要更換。訪客在頁尾切換只是連到另一個檔案，不會記住選擇。
   - 新增版本：做成 `home-<名稱>.html`，頁尾放 `<div id="verSwitch" data-current="<id>"></div>` 並載入 `versions.js`，再到 `versions.js` 加一行。
   - 更換預設：把現在的 `index.html` 改名為 `home-<它的名稱>.html`、把新預設改名為 `index.html`，並更新 `versions.js` 的 `file`（預設寫 `"./"`）與本段說明。
@@ -29,7 +30,7 @@
 - 「情資戰情看板」按鈕連到新網站首頁（即其戰情看板分頁）；舊的 `allanlo-g/threat-intel-warroom`（讀 Google 試算表）已不再連結。
 
 ## 更新前後檢查
-- 選單「Allan's Tools」底下的項目（Allan's AI Map、隨意畫流程圖等）**不放進首頁與資安島**（Allan 指定）。
+- 選單「Allan's Tools」底下的項目（Allan's AI Map、隨意畫流程圖、簽名工作坊、Allan Lo的今天和明天等）**不放進首頁與資安島**（Allan 指定）。
 - 新增連結前，先抓 https://sites.google.com/123hi.org/isms/ 的選單比對實際網址。
 - 嵌入的 GitHub 作品可 clone `https://github.com/allanloplus/<repo>` 讀內容（預設分支多半是 `claude/...`，不是 `main`）。
 - 推送前確認：桌機／手機無橫向捲動、手機嵌入框（約 390×575）精簡卡片正常、站內連結都回應 200。

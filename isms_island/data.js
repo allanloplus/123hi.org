@@ -30,6 +30,7 @@ export const ISLANDS = [
     items: [
       { t: "ISMS·普拉斯 首頁", d: "情資、課程、測驗、遊戲一頁看完", tag: "首頁", u: HOME, std: ["27001"] },
       { t: "ISMS 知識庫網站", d: "Google Sites 完整版", tag: "網站", u: SITE, std: ["27001", "27701", "42001", "TISAX", "CSMA"] },
+      { t: "Allan's ISMS智庫", d: "每月一期：本期宣導、內部 ISMS、外部法規、情資雷達與小遊戲", tag: "月刊", u: site("isms智庫"), std: ["27001"] },
       { t: "來信與 Allan 討論", d: "allanlo.plus@gmail.com", tag: "Email", u: "mailto:allanlo.plus@gmail.com" }
     ]
   },
@@ -115,6 +116,14 @@ export const ISLANDS = [
         ["#002", "2026-10-91app-breach", "91APP 資料庫遭 AI 代理攻擊：一個未更新的內部工具，波及 1,329 個品牌", "今周刊 2026/10/30"],
         ["#001", "2026-10-php2shell", "AI 揪出潛藏十多年的 PHP 漏洞：PHP2Shell 與資安雙面刃", "非凡商業台 2026/10/29"]
       ].map(([no, slug, t, src]) => ({ t, d: `從新聞，看個案｜${src}`, tag: `新聞${no}`, u: `https://allanloplus.github.io/case_isnews/cases/${slug}/`, std: ["27001", "27701"] })))
+      .concat([
+        ["總覽：AI 系統安全檢測個案", "一套上線系統從盤點、檢測到報告的完整案例", "總覽ai系統安全檢測個案"],
+        ["XBOM 對話教學", "XBOM 是什麼、怎麼做、能證明什麼", "xbom-對話教學"],
+        ["安全檢測對話教學", "源碼檢測、存取控制測試、滲透測試各自證明什麼", "安全檢測對話教學"],
+        ["解讀第三方檢測報告", "先看的五件事、逐節讀法與品質判斷", "解讀第三方檢測報告"],
+        ["延伸：安全檢測顧問輔導實務", "顧問如何帶客戶從接案做到移交", "延伸安全檢測顧問輔導實務"]
+      ].map(([t, d, p]) => ({ t, d, tag: "AI 檢測", u: site("ai寫的個案/ai開發系統之安全檢測個案/" + p), std: ["27001"] })))
+      .concat([{ t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", tag: "系統", u: "https://pms.medsigtw.com/", std: ["27001"] }])
   },
   {
     id: "park", t: "ISMS 主題樂園", en: "THEME PARK", ic: "🎡", c: "#2f9e44", row: 2, col: 1, kind: "park",
@@ -125,6 +134,7 @@ export const ISLANDS = [
     items: [
       { t: "ISMS 的一年", d: "每天、每月、每年的 ISMS 工作節奏", tag: "動畫", u: site("isms工作觀/isms工作的一年"), std: ["27001"] },
       { t: "ISMS 工作地圖", d: "時間、流程、工作類別三種視角", tag: "互動動畫", u: site("isms工作觀/isms工作地圖"), std: ["27001"] },
+      { t: "ISMS 工作地圖－系統體驗", d: "把程序書變成每天做得完的工作，點一下留紀錄", tag: "系統體驗", u: site("isms工作觀/isms工作地圖_系統體驗"), std: ["27001"] },
       { t: "ISMS 資安小鎮", d: "點建築，認識各部門的 ISMS 工作與稽核準備度", tag: "互動地圖", u: site("isms工作觀/isms資安小鎮"), std: ["27001"] },
       { t: "ISMS 大富翁", d: "擲骰子走完資安一年，年底外部稽核拿驗證", tag: "桌遊 1～4 人", u: site("isms工作觀/isms大富翁遊戲"), std: ["27001"] },
       { t: "實體安全大冒險", d: "探索 16 個 A.7 實體安全控制項", tag: "自由探索", u: site("isms工作觀/實體安全大冒險"), std: ["27001"] }
@@ -174,8 +184,8 @@ export const ISLANDS = [
       { t: "資安大富翁－快樂遊台灣", d: "22 縣市環島，把韌性指數推到 100%", tag: "大富翁", u: "https://allanloplus.github.io/Monopoly/" },
       { t: "Allan 在哪裡？要吃甚麼？", d: "阿拉蕾從 373 道台灣美食幫你挑", tag: "美食", u: "https://allanloplus.github.io/What-to-eat/" },
       { t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天的人生紀念頁", tag: "南洋", u: "https://allanloplus.github.io/AllanWentToNayang/" },
-      { t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖", tag: "文化", u: "https://cultural.123hi.org/" },
-      { t: "影片導讀：嘉義與臺南車站", d: "Allan's 文化知識學習", tag: "導讀", u: "https://allanlo-g.github.io/Train_Station" }
+      { t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖", tag: "文化", u: "https://cultural.123hi.org/guide/" },
+      { t: "影片導讀：嘉義與臺南車站", d: "Allan's 文化知識學習", tag: "導讀", u: "https://allanlo-g.github.io/Train_Station/" }
     ]
   }
 ];
