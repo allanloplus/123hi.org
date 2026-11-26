@@ -15,11 +15,12 @@
 - 資安島快取：兩座島的 `index.html`（`island.css?v=`、`app.js?v=`）與 `app.js`（`data.js?v=`、`scene.js?v=`）都帶版本號。**每次修改島的檔案，就把兩座島的版本號一起換成新值**（例如日期＋字母 `20261101b`），否則瀏覽器與 Google Sites 嵌入框會沿用舊的 data.js。
 - `assets/img/`：Allan 與阿拉蕾角色素材。
 
-## 情資試算表年度切換
-- 每年一份試算表，月份分頁命名「YYYY年M月」。年度對應表以**情資戰情看板**（repo `allanlo-g/threat-intel-warroom`，https://allanlo-g.github.io/threat-intel-warroom/ ）的 `config/companies.json` 為準；首頁載入時會讀它並覆蓋 `index.html` 內的備用清單 `SHEETS`。
-- 注意：看板 `maintenance.html`「年度設定」的修改只存在該瀏覽器，要按「匯出 companies.json」並上傳到看板 repo 的 `config/` 才會對所有人（含首頁）生效。
-- 首頁邏輯：從今天的月份往回找最近有資料的月份（可跨年）；按鈕、檔名、線上瀏覽都指向該月份所在年度。1–2 月多一顆「去年 12 月情資」按鈕；新年度尚無資料時多一顆「開啟新年度情資表」。測試可加 `?today=2027-01-05`。
-- 兩座資安島的 `data.js` 也各有一份 `SHEETS`（依日期切換，不讀 companies.json）；新增年度時三處一起補。
+## 情資來源（2026/11/26 起）
+- 情資改由 **資安內外部情資蒐集紀錄** 網站提供：repo `allanloplus/intelligence`，https://allanloplus.github.io/intelligence/ （每日自動蒐集；知識庫選單頁為「資安情資/資安情資蒐集紀錄」）。客戶每月下載從這裡，**不再使用 Google 試算表**。
+- 它發佈 `data/index.json`（各年度／月份的筆數、資料檔與 Excel 路徑）、`data/YYYY-MM.json`、`downloads/intel-YYYY-MM.xlsx`（每月）、`downloads/intel-YYYY.xlsx`（全年度），皆可跨網域讀取。
+- 首頁情資區（`index.html` 最後一段 script）讀 `index.json`，顯示今天以前最近有資料的月份：本月 Excel、全年度 Excel、歷年全年度 Excel、焦點 3 則、跑馬燈；每月 1–7 日或本月尚無資料時多一顆「上月 Excel」（跨年時即去年 12 月）。跨年度不需改程式。測試可加 `?today=2027-01-05`。
+- 兩座資安島的情資港只連到知識庫的「資安情資蒐集紀錄」頁，不含年度設定。
+- 「情資戰情看板」按鈕（`allanlo-g/threat-intel-warroom`）仍讀舊的 Google 試算表，是獨立的系統。
 
 ## 更新前後檢查
 - 選單「Allan's Tools」底下的項目（Allan's AI Map、隨意畫流程圖等）**不放進首頁與資安島**（Allan 指定）。

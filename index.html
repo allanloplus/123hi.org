@@ -96,7 +96,10 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .intel-card h2 .file{display:inline-block;background:var(--navy);color:var(--yellow);padding:1px 10px;border-radius:10px;font-family:ui-monospace,Consolas,monospace;font-size:.78em;margin-left:4px}
 .intel-card .lead{color:var(--muted);margin:0 0 16px;font-size:15px}
 .intel-actions{display:flex;gap:10px;flex-wrap:wrap}
-.intel-actions .btn[hidden],.years[hidden]{display:none}
+.intel-actions .btn[hidden],.years[hidden],.month-pill[hidden]{display:none}
+.month-pill.hot{background:#ffe3e3;border-color:#ffa8a8;color:#c92a2a;margin-top:4px}
+.focus .bd{display:inline-block;font-size:11px;font-weight:900;border-radius:4px;padding:0 5px;margin-left:4px;background:#ffe3e3;color:#c92a2a}
+.focus .bd.kev{background:#c92a2a;color:#fff}
 .years{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;font-size:13px;color:var(--muted)}
 .years a{font-weight:700;text-decoration:none;color:var(--teal-2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:1px 10px}
 .years a:hover{border-color:var(--teal)}
@@ -112,7 +115,7 @@ h1 .yr{background:linear-gradient(90deg,var(--cyan),var(--yellow),var(--cyan));b
 .viewer summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--teal-2);padding:8px 16px;border-radius:999px;background:#fff;border:2px dashed var(--teal)}
 .viewer summary::-webkit-details-marker{display:none}
 .viewer[open] summary{border-style:solid}
-.viewer iframe{display:block;width:100%;height:600px;border:0;margin-top:14px;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
+.viewer iframe{display:block;width:100%;height:760px;border:0;margin-top:14px;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
 
 /* ============ PORTALS ============ */
 .portals{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -507,12 +510,13 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
       <span class="ribbon">📌 客戶每月必下載</span>
       <img class="mascot" src="assets/img/arale-wave.webp" alt="" aria-hidden="true">
       <div>
-        <span class="month-pill">🗓️ <span id="monthLabel">每月更新</span></span>
+        <span class="month-pill">🗓️ <span id="monthLabel">每日更新</span></span> <span class="month-pill hot" id="riskPill" hidden></span>
         <h2>資安內外部情資蒐集紀錄<span class="file" id="fileYear">_2026</span></h2>
-        <p class="lead">彙整 NICS、TWCERT、iThome、TechNews 等來源的漏洞與安全事件情報，可直接下載留存作為稽核佐證。</p>
+        <p class="lead">每日自動蒐集 TWCERT、NICS、iThome、TechNews 的漏洞與安全事件情報，並評估弱點處置期限；每月 Excel 可直接下載留存，作為稽核佐證。</p>
         <div class="intel-actions">
-          <a class="btn btn-gold pulse" id="btnXlsx" href="#">⬇️ 下載 Excel</a>
-          <a class="btn btn-teal" id="btnOpen" href="#">🔎 開啟情資表</a>
+          <a class="btn btn-gold pulse" id="btnXlsx" href="#">⬇️ 下載本月 Excel</a>
+          <a class="btn btn-teal" id="btnOpen" href="#">🔎 查詢與下載專區</a>
+          <a class="btn btn-white" id="btnYear" href="#" hidden></a>
           <a class="btn btn-white" id="btnWarroom" href="https://allanlo-g.github.io/threat-intel-warroom/">📊 情資戰情看板</a>
           <a class="btn btn-white" id="btnOther" href="#" hidden></a>
         </div>
@@ -524,7 +528,7 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
       </div>
     </div>
     <details class="viewer reveal" id="viewer">
-      <summary>📊 線上瀏覽 <span id="viewerYear">2026</span> 年完整情資表（含各月份分頁）</summary>
+      <summary>📊 線上查詢情資（可依月份、來源、威脅程度、KEV 篩選，或搜尋 CVE）</summary>
       <iframe id="sheetFrame" title="資安內外部情資蒐集紀錄"></iframe>
     </details>
 
@@ -758,17 +762,14 @@ html.compact .mini{display:block;position:fixed;inset:0;overflow:hidden;color:#f
 
 <script>
 /* ================= 設定 ================= */
-/* 各年度情資試算表：以「情資戰情看板」的年度設定（config/companies.json）為準，載入時自動同步；
-   下方清單只在讀不到該設定時備用。每個試算表的月份分頁需命名為「YYYY年M月」。
-   測試跨年度可在網址加 ?today=2027-01-05 */
+
 const WARROOM = "https://allanlo-g.github.io/threat-intel-warroom/";
-const SHEETS = {
-  2023: "1XX7wOGIsqktwYtBwsm5MgEEwylPA66eRYluutCbLOxs",
-  2024: "1pXtjAIvuW07Jtf1HMUGG5Jro2ehTQgCbT3ciID7KQ4A",
-  2025: "1C7bt8Qj2c3QgUOwLUoka6YFOuKdWrQH_TNs8HFkD__c",
-  2026: "1lxBMegXKCiBZZpnD16WTp4hZm3P6tgvnH5lqQ5q1V0I",
-  2027: "1uaeoVFTOhvtMGheo6LFPMJoQbMFVEIFfC7I7jtlIZXE"
-};
+/* 情資來源：每日自動蒐集的「資安內外部情資蒐集紀錄」網站（repo allanloplus/intelligence）。
+   它發佈 data/index.json（年度、月份、Excel 路徑）與每月資料檔，首頁直接讀取，跨年度不需改程式。
+   測試跨年度可在網址加 ?today=2027-01-05 */
+const INTEL = "https://allanloplus.github.io/intelligence/";
+const INTEL_PAGE = "資安情資/資安情資蒐集紀錄";
+
 const SITE = "https://sites.google.com/123hi.org/isms/";
 
 const PORTALS = [
@@ -994,95 +995,74 @@ function setTickerSpeed() {
 }
 setTickerSpeed();
 
-/* ================= 情資：下載、線上瀏覽、本月焦點（跨年度自動切換） ================= */
-const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(); })();
-const sheetBase = y => `https://docs.google.com/spreadsheets/d/${SHEETS[y]}`;
-const sheetYears = () => Object.keys(SHEETS).map(Number).filter(y => SHEETS[y]).sort((a, b) => b - a);
-/* 今年有設定就用今年，否則用最近的過去年度 */
-const currentYear = () => { const ys = sheetYears(), y = TODAY.getFullYear(); return ys.find(v => v <= y) ?? ys[ys.length - 1]; };
-
-/* year：下載按鈕與線上瀏覽指向的年度；month：該年度已顯示資料的月份（可為 null） */
-function applyIntel(year, month) {
-  const base = sheetBase(year), nowY = TODAY.getFullYear(), nowM = TODAY.getMonth() + 1;
-  $("#fileYear").textContent = `_${year}`;
-  $("#btnXlsx").textContent = `⬇️ 下載 ${year} 年 Excel`;
-  $("#btnXlsx").href = $("#miniXlsx").href = `${base}/export?format=xlsx`;
-  $("#btnOpen").textContent = `🔎 開啟 ${year} 情資表`;
-  $("#btnOpen").href = `${base}/edit`;
-  $("#viewerYear").textContent = year;
-  const frame = $("#sheetFrame"), embed = `${base}/htmlembed`;
-  frame.dataset.src = embed;
-  if ($("#viewer").open && frame.getAttribute("src") !== embed) frame.src = embed;
-
-  /* 跨年度時的第二個檔案：年初補上去年 12 月；新年度還沒資料時補上新年度的表 */
-  const other = $("#btnOther");
-  if (year === nowY && nowM <= 2 && SHEETS[year - 1]) {
-    other.textContent = `⬇️ ${year - 1} 年 12 月情資（${year - 1} 年度檔）`;
-    other.href = `${sheetBase(year - 1)}/export?format=xlsx`; other.hidden = false;
-  } else if (year < nowY && SHEETS[nowY]) {
-    other.textContent = `🔎 開啟 ${nowY} 情資表（新年度）`;
-    other.href = `${sheetBase(nowY)}/edit`; other.hidden = false;
-  } else other.hidden = true;
-
-  const ys = sheetYears().filter(y => y <= Math.max(nowY, year));
-  $("#yearRow").hidden = ys.length < 2;
-  $("#yearRow").innerHTML = "🗂️ 歷年情資：" + ys.map(y => `<a class="${y === year ? "on" : ""}" href="${sheetBase(y)}/edit" rel="noopener" title="開啟 ${y} 年情資表">${y}</a>`).join("");
-}
+/* ================= 情資：每月下載、線上查詢、本月焦點（讀取情資蒐集紀錄網站） ================= */
+const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59) : new Date(); })();
+const intelPage = siteUrl(INTEL_PAGE);
 $("#miniFull").href = location.href.split(/[?#]/)[0];
-$("#viewer").addEventListener("toggle", e => { const f = $("#sheetFrame"); if (e.target.open && f.getAttribute("src") !== f.dataset.src) f.src = f.dataset.src; });
-applyIntel(currentYear(), null);
+$("#btnXlsx").href = $("#miniXlsx").href = $("#btnOpen").href = intelPage;   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
+$("#viewer").addEventListener("toggle", e => { const f = $("#sheetFrame"); if (e.target.open && !f.getAttribute("src")) f.src = INTEL + "#detail"; });
 
-const cellText = c => c ? String(c.f ?? c.v ?? "").trim() : "";
-function cellDate(c) {
-  if (!c || c.v == null) return null;
-  const m = String(c.v).match(/^Date\((\d+),(\d+),(\d+)/);
-  if (m) return new Date(+m[1], +m[2], +m[3]);
-  const d = String(c.f ?? c.v).match(/(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
-  return d ? new Date(+d[1], +d[2] - 1, +d[3]) : null;
+/* 以中文檔名下載（跨網域連結無法指定檔名，所以先抓成 blob）；失敗就直接開啟原連結 */
+function bindDownload(a, url, name) {
+  a.href = url; a.hidden = false;
+  a.onclick = async e => {
+    if (a.dataset.busy) return e.preventDefault();
+    e.preventDefault(); a.dataset.busy = 1;
+    try {
+      const blob = await (await fetch(url)).blob(), t = document.createElement("a");
+      t.href = URL.createObjectURL(blob); t.download = name; t.target = "_self";
+      document.body.appendChild(t); t.click(); t.remove(); setTimeout(() => URL.revokeObjectURL(t.href), 4000);
+    } catch (err) { window.open(url, "_blank", "noopener"); }
+    delete a.dataset.busy;
+  };
 }
-/* 依分頁名稱讀取；分頁不存在時 Google 會回傳第一個分頁，所以再以日期過濾 */
-async function loadMonth(y, m) {
-  if (!SHEETS[y]) return [];
-  const res = await fetch(`${sheetBase(y)}/gviz/tq?tqx=out:json&headers=0&sheet=${encodeURIComponent(`${y}年${m}月`)}`);
-  const txt = await res.text();
-  const data = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
-  if (data.status !== "ok") return [];
-  const rows = data.table.rows.map(r => r.c || []);
-  const h = rows.findIndex(r => r.some(c => /資料標題/.test(cellText(c))));
-  if (h < 0) return [];
-  const head = rows[h].map(cellText), col = re => head.findIndex(x => re.test(x));
-  const C = { date: Math.max(0, col(/日期/)), src: col(/^資料來源/), title: col(/標題/), url: col(/網址|連結/) };
-  return rows.slice(h + 1).map(r => ({ date: cellDate(r[C.date]), src: cellText(r[C.src]), title: cellText(r[C.title]), url: cellText(r[C.url]) }))
-    .filter(x => x.title && x.date && x.date <= TODAY && x.date.getFullYear() === y && x.date.getMonth() + 1 === m)
-    .sort((a, b) => b.date - a.date);
-}
-/* 與情資戰情看板的「年度設定」同步（匯出並上傳 companies.json 後，首頁就會跟著換） */
-async function syncSheets() {
-  const cfg = await (await fetch(`${WARROOM}config/companies.json`, { cache: "no-store" })).json();
-  const co = (cfg.companies || []).find(c => c.id === cfg.defaultCompany) || (cfg.companies || [])[0];
-  Object.entries(co?.years || {}).forEach(([y, id]) => { if (/^\d{4}$/.test(y) && /^[\w-]{20,}$/.test(id)) SHEETS[y] = id; });
-}
+const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
+
 (async () => {
-  await syncSheets().catch(() => {});
-  applyIntel(currentYear(), null);
-  /* 從今天的月份往回找最近有資料的月份，可跨年度（例如 2027 年 1 月初仍顯示 2026 年 12 月） */
-  let y = TODAY.getFullYear(), m = TODAY.getMonth() + 1, items = [];
-  for (let k = 0; k < 4 && !items.length; k++) {
-    items = await loadMonth(y, m).catch(() => []);
-    if (!items.length && --m < 1) { m = 12; y--; }
-  }
-  if (!items.length) { $("#focusList").innerHTML = `<div class="ph">請點「開啟情資表」查看最新內容。</div>`; return; }
-  const last = items[0].date, year = last.getFullYear(), month = last.getMonth() + 1;
-  const isThisMonth = year === TODAY.getFullYear() && month === TODAY.getMonth() + 1;
-  applyIntel(year, month);
-  $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${year}年${month}月）`;
-  $("#monthLabel").textContent = `${year}年${month}月 · 已整理 ${items.length} 筆 · 最新 ${month}/${last.getDate()}`;
-  $("#miniMonth").textContent = `${month}月情資已整理 ${items.length} 筆`;
+  const fail = () => { $("#focusList").innerHTML = `<div class="ph">請點「查詢與下載專區」查看最新情資。</div>`; };
+  let idx;
+  try { idx = await (await fetch(`${INTEL}data/index.json`, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  /* 所有有資料的月份，由新到舊；只取今天（含）以前的 */
+  const nowKey = TODAY.getFullYear() * 12 + TODAY.getMonth();
+  const months = Object.entries(idx.years || {}).flatMap(([y, v]) => (v.months || []).map(m => ({ ...m, year: +y })))
+    .filter(m => m.count > 0 && m.year * 12 + m.month - 1 <= nowKey).sort((a, b) => b.year * 12 + b.month - (a.year * 12 + a.month));
+  if (!months.length) return fail();
+  const cur = months[0], prev = months[1], Y = idx.years[cur.year];
+  const isThisMonth = cur.year === TODAY.getFullYear() && cur.month === TODAY.getMonth() + 1;
+
+  $("#fileYear").textContent = `_${cur.year}年${cur.month}月`;
+  $("#btnXlsx").textContent = `⬇️ 下載 ${cur.month} 月 Excel`;
+  bindDownload($("#btnXlsx"), INTEL + cur.xlsx, cur.xlsxName);
+  bindDownload($("#miniXlsx"), INTEL + cur.xlsx, cur.xlsxName);
+  $("#btnYear").textContent = `📦 ${cur.year} 全年度 Excel`;
+  bindDownload($("#btnYear"), INTEL + Y.xlsx, Y.xlsxName);
+  /* 月初（1–7 日）或本月尚無資料時，補上一個月的下載；跨年度時就是去年 12 月 */
+  const other = $("#btnOther");
+  if (prev && (TODAY.getDate() <= 7 || !isThisMonth)) {
+    other.textContent = `⬇️ ${prev.year === cur.year ? "" : prev.year + " 年 "}${prev.month} 月 Excel（上月）`;
+    bindDownload(other, INTEL + prev.xlsx, prev.xlsxName);
+  } else other.hidden = true;
+  const ys = Object.keys(idx.years).map(Number).filter(y => y <= cur.year).sort((a, b) => b - a);
+  $("#yearRow").hidden = ys.length < 2;
+  $("#yearRow").innerHTML = "🗂️ 歷年情資（全年度 Excel）：";
+  ys.forEach(y => { const a = document.createElement("a"); a.textContent = y; a.className = y === cur.year ? "on" : ""; a.title = `下載 ${y} 年全年度 Excel`;
+    bindDownload(a, INTEL + idx.years[y].xlsx, idx.years[y].xlsxName); $("#yearRow").appendChild(a); });
+
+  let recs;
+  try { recs = await (await fetch(INTEL + cur.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const items = recs.map(r => ({ ...r, d: ymd(r.date) })).filter(x => x.title && x.d && x.d <= TODAY).sort((a, b) => b.d - a.d);
+  if (!items.length) return fail();
+  const last = items[0].d, high = items.filter(x => x.severity === "高").length, kev = items.filter(x => x.kev === "是").length;
+  $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${cur.year}年${cur.month}月）`;
+  $("#monthLabel").textContent = `${cur.year}年${cur.month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  if (high || kev) { $("#riskPill").hidden = false; $("#riskPill").textContent = `🚨 威脅程度高 ${high} 筆 · 已知被利用（KEV）${kev} 筆`; }
+  $("#miniMonth").textContent = `${cur.month}月情資已整理 ${items.length} 筆`;
   window.__compactLayout && window.__compactLayout();
-  lines.heroAllan[1] = `${month}月情資已整理 ${items.length} 筆 📥`;
+  lines.heroAllan[1] = `${cur.month}月情資已整理 ${items.length} 筆 📥`;
   const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
-  $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.date.getMonth() + 1}/${x.date.getDate()} · ${esc(x.src)}</small>${esc(x.title)}`)).join("");
-  const tick = items.slice(0, 15).map(x => link(x, `<span class="tsrc">[${esc(x.src)}]</span>${esc(x.title)}`)).join("");
+  const badge = x => (x.kev === "是" ? `<span class="bd kev">KEV</span>` : "") + (x.severity === "高" ? `<span class="bd">高</span>` : "");
+  $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.d.getMonth() + 1}/${x.d.getDate()} · ${esc(x.source)}${badge(x)}</small>${esc(x.title)}`)).join("");
+  const tick = items.slice(0, 15).map(x => link(x, `<span class="tsrc">[${esc(x.source)}]</span>${esc(x.title)}`)).join("");
   $("#tickerTrack").innerHTML = tick + tick;
   setTickerSpeed();
 })();
