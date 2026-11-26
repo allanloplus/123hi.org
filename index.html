@@ -1023,10 +1023,10 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   const cur = months[0];
   const isThisMonth = cur.year === TODAY.getFullYear() && cur.month === TODAY.getMonth() + 1;
 
-  /* 主要下載＝客戶要留存的「完整月份」：每月 1–10 日是上個月，之後才換成本月（累計中）；另一個月份放在旁邊。
+  /* 主要下載＝客戶要留存的「完整月份」：每月 1–15 日是上個月，之後才換成本月（累計中）；另一個月份放在旁邊。
      跨年度時，1 月初的主要下載就是去年 12 月，全年度 Excel 也跟著是去年。 */
   const full = months.find(m => m.year * 12 + m.month - 1 < nowKey), prog = isThisMonth ? cur : null;
-  const main = (prog && (TODAY.getDate() > 10 || !full)) ? prog : (full || cur), side = main === prog ? full : prog;
+  const main = (prog && (TODAY.getDate() > 15 || !full)) ? prog : (full || cur), side = main === prog ? full : prog;
   const yr = m => m.year === TODAY.getFullYear() ? "" : `${m.year} 年 `;
   const label = m => m === prog ? `${yr(m)}${m.month} 月 Excel（本月累計中）` : `${yr(m)}${m.month} 月 Excel（完整月份）`;
   $("#fileYear").textContent = `_${main.year}年${main.month}月`;
