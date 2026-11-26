@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISMS·普拉斯·AllanLo｜花見・櫻下資安（賞櫻風格版）</title>
+<meta name="description" content="Allan 幫客戶整理及分享的資安知識庫：每月資安內外部情資、課程動畫、課後測驗與教學資源。賞櫻風格版：櫻花樹下的八枚短冊，接住花瓣抽一支資安籤。">
+<base target="_blank">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+/* 賞櫻風格版首頁「花見・櫻下資安」：
+   一棵櫻花樹，枝上掛著八枚短冊（直書）＝八個分類；點短冊，花瓣隨風吹起，下方卷軸展開成該分類內容。
+   飄落的花瓣可以「接住」，抽一支資安御神籤。晝櫻／夜櫻可切換（傍晚 6 點到清晨 6 點預設夜櫻，掛上提燈）。
+   其他版本見 versions.js（頁尾可切換）；資料陣列與情資邏輯與各版首頁相同。 */
+:root{
+  --ink:#4a3a44; --muted:#8a7680; --washi:#fffaf5; --washi2:#fbf1ea; --line:#efdcd6; --shu:#d4483b; --sumi:#3b2f36;
+  --sky1:#fde8ef; --sky2:#f7d7e4; --sky3:#e7dcf3; --far:#d9cfe6; --mid:#c6dcc2; --near:#a9cd9b; --soil:#94bf88;
+  --bl1:#ffe1ea; --bl2:#ffc9d8; --bl3:#f9b0c6; --bl4:#fff1f5; --bl5:#f39ab6; --bark:#5b4249; --tc:#c2185b;
+  --kai:"LXGW WenKai TC","Noto Serif TC","Kaiti TC","STKaiti",serif; --serif:"Noto Serif TC","Songti TC",serif;
+}
+body.night{
+  --sky1:#141a3d; --sky2:#2b2357; --sky3:#6b3c6e; --far:#2c2a4f; --mid:#263a3a; --near:#1f3326; --soil:#1a2b20;
+  --bl1:#ffe6ef; --bl2:#ffd0e0; --bl3:#f7b3cb; --bl4:#fff6fa; --bl5:#ec9ab8; --bark:#2b2128;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans TC",system-ui,-apple-system,"Microsoft JhengHei",sans-serif;font-weight:500;line-height:1.6;overflow-x:hidden;background:#fbf3ef;transition:background .8s}
+body.night{background:#1b1730}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--shu);outline-offset:2px}
+
+/* ---------- 頁面飄落的花瓣（裝飾） ---------- */
+.fall{position:fixed;top:-20px;z-index:6;width:11px;height:9px;border-radius:80% 0 80% 0;background:linear-gradient(135deg,#ffd3e0,#f6a2bd);opacity:.75;pointer-events:none;animation:fall linear infinite}
+@keyframes fall{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(60px,52vh) rotate(200deg)}100%{transform:translate(-20px,106vh) rotate(420deg)}}
+
+/* ---------- 舞台（櫻花樹） ---------- */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--sky1) 0,var(--sky2) 45%,var(--sky3) 68%,var(--soil) 68.2%,var(--soil));transition:background .8s}
+.stage{position:relative;width:min(100%,1300px);margin:0 auto;aspect-ratio:1200/640;container-type:inline-size}
+.scene{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.scene .hz{transition:fill .8s}
+.far{fill:var(--far)}.midh{fill:var(--mid)}.near{fill:var(--near)}
+.b1{fill:var(--bl1)}.b2{fill:var(--bl2)}.b3{fill:var(--bl3)}.b4{fill:var(--bl4)}.b5{fill:var(--bl5)}
+.crown circle{transition:fill .8s}
+.bark{stroke:var(--bark);fill:none;stroke-linecap:round;transition:stroke .8s}
+.sun{transition:opacity .8s}.moon,.lanterns,.stars{opacity:0;transition:opacity .8s}
+body.night .sun{opacity:0} body.night .moon,body.night .lanterns,body.night .stars{opacity:1}
+body.night .crown{filter:url(#wc) drop-shadow(0 0 6px rgba(255,190,215,.35))}
+.mist{fill:url(#mistg)}
+#petals{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
+
+/* 短冊 */
+.tz{position:absolute;left:calc(var(--x) / 1200 * 100%);top:calc(var(--y) / 640 * 100%);z-index:3;display:flex;flex-direction:column;align-items:center;margin-left:-2.2cqw;width:4.4cqw;border:0;padding:0;background:none;transform-origin:50% 0;animation:sway 4.6s ease-in-out infinite;animation-delay:var(--d);-webkit-tap-highlight-color:transparent}
+.tz .str{width:1px;height:calc(var(--len) / 1200 * 100cqw);background:linear-gradient(#b5333a,#d4483b)}
+.tz .knot{width:6px;height:6px;margin-top:-2px;border-radius:50%;background:var(--shu)}
+.tz .pp{position:relative;display:flex;flex-direction:column;align-items:center;gap:.4cqw;width:100%;min-height:12.5cqw;padding:.9cqw 0 1cqw;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 24%,#fff),color-mix(in srgb,var(--c) 12%,#fffaf5));box-shadow:0 .4cqw 1cqw rgba(120,60,80,.18),inset 0 0 0 1px rgba(255,255,255,.7);transition:background .4s,transform .3s,box-shadow .3s}
+.tz .pp::before{content:"";position:absolute;top:.5cqw;left:50%;width:.6cqw;height:.6cqw;margin-left:-.3cqw;border-radius:50%;background:rgba(0,0,0,.12)}
+.tz small{margin-top:.6cqw;font-family:var(--kai);font-size:max(10px,1.05cqw);color:var(--c);writing-mode:vertical-rl;letter-spacing:.1em}
+.tz b{font-family:var(--kai);font-weight:700;font-size:max(12px,1.6cqw);line-height:1.15;color:var(--sumi);writing-mode:vertical-rl;text-orientation:upright;letter-spacing:.06em}
+.tz:hover .pp{transform:translateY(-.3cqw) rotate(-2deg);box-shadow:0 .8cqw 1.6cqw rgba(120,60,80,.25)}
+.tz[aria-selected="true"]{animation-duration:2.4s}
+.tz[aria-selected="true"] .pp{background:linear-gradient(180deg,#e45b4c,#c63c31);box-shadow:0 0 0 2px #fff,0 0 22px rgba(255,140,160,.9)}
+.tz[aria-selected="true"] b,.tz[aria-selected="true"] small{color:#fff}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+
+/* 標題（掛軸） */
+.titlecard{position:absolute;right:2.5%;top:6%;width:33%;z-index:3;text-align:center}
+.titlecard .eb{font-family:var(--kai);font-size:max(12px,1.25cqw);letter-spacing:.4em;color:var(--shu)}
+h1{margin:.3cqw 0 0;font-family:var(--serif);font-weight:900;font-size:clamp(22px,2.7cqw,36px);line-height:1.2;color:var(--sumi);white-space:nowrap;transition:color .8s}
+h1 i{font-style:normal;color:var(--shu)}
+.titlecard p{margin:.5cqw 0 0;font-size:max(12px,1.2cqw);color:var(--muted);transition:color .8s}
+body.night h1{color:#fff3f7} body.night .titlecard p{color:#e6cfe0}
+.verse{display:flex;justify-content:center;gap:1.2cqw;margin:1.6cqw auto 0;font-family:var(--kai);font-size:max(13px,1.6cqw);line-height:1.7;color:var(--sumi);transition:color .8s}
+.verse span{writing-mode:vertical-rl;letter-spacing:.22em}
+.verse .seal{writing-mode:horizontal-tb;align-self:flex-end;display:grid;place-items:center;width:2.6cqw;height:2.6cqw;min-width:24px;min-height:24px;border-radius:3px;background:var(--shu);color:#fff;font-family:var(--serif);font-size:max(11px,1.2cqw);letter-spacing:0;transform:rotate(-4deg)}
+body.night .verse{color:#ffe9f1}
+.acts-h{display:flex;flex-wrap:wrap;justify-content:center;gap:.8cqw;margin-top:1.2cqw}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:rgba(255,250,245,.92);font-weight:700;font-size:14.5px;line-height:1.3;text-decoration:none;text-align:center;color:var(--ink);box-shadow:0 2px 8px rgba(160,80,110,.12);transition:transform .15s ease,box-shadow .15s ease,background .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(200,90,130,.22)}
+.btn.shu{background:linear-gradient(135deg,#e2574a,#c63c31);border-color:transparent;color:#fff}
+.btn.pk{background:linear-gradient(135deg,#ffd6e2,#f6b3c9);border-color:transparent;color:#5a2638}
+.btn.sm{padding:6px 12px;font-size:13px}
+
+/* 對話（和紙便箋） */
+.talk{position:absolute;right:27%;bottom:5%;width:28%;z-index:3;display:flex;gap:1cqw;align-items:flex-start;padding:1.1cqw 1.3cqw;border-radius:4px;background:rgba(255,250,245,.94);box-shadow:0 6px 20px rgba(120,60,80,.18);font-family:var(--kai)}
+.talk::after{content:"";position:absolute;right:-10px;bottom:22px;border:10px solid transparent;border-left-color:rgba(255,250,245,.94);border-right:0}
+.talk .face{flex:none;width:max(40px,4.2cqw);height:max(40px,4.2cqw);border-radius:50%;background:#fde3ea;object-fit:cover;object-position:top;box-shadow:0 0 0 2px #fff,0 0 0 3px var(--bl3)}
+.talk .nm{display:block;font-size:max(12px,1.1cqw);color:var(--shu)}
+.talk .say{display:block;font-size:max(14px,1.45cqw);line-height:1.55;color:var(--sumi);min-height:3.1em}
+.duo{position:absolute;right:.5%;bottom:1%;height:45%;z-index:3;display:flex;align-items:flex-end}
+.duo button{height:100%;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
+.duo button.b{height:90%}
+.duo img{height:100%;width:auto;filter:drop-shadow(0 6px 6px rgba(80,40,60,.22));transform-origin:bottom center}
+.duo .speak img{animation:nod .5s ease-in-out 2}
+@keyframes nod{50%{transform:translateY(-6px) rotate(-1deg)}}
+body.night .duo img{filter:drop-shadow(0 0 10px rgba(255,180,120,.35)) brightness(.88)}
+.catch{position:absolute;left:1.5%;bottom:3%;z-index:5;display:flex;align-items:center;gap:6px;padding:5px 12px;border:0;border-radius:999px;background:rgba(255,250,245,.88);font-family:var(--kai);font-size:max(12px,1.2cqw);color:var(--ink);box-shadow:0 2px 10px rgba(120,60,80,.15)}
+.catch b{color:var(--shu)}
+.mode{position:absolute;left:1.5%;top:3%;z-index:5;padding:5px 12px;border:0;border-radius:999px;background:rgba(255,250,245,.85);font-family:var(--kai);font-size:max(12px,1.2cqw);box-shadow:0 2px 10px rgba(120,60,80,.15)}
+
+/* ---------- 卷軸（內容） ---------- */
+.wrap{max-width:1100px;margin:0 auto;padding:26px 16px 0}
+.scroll{position:relative;padding:22px 0;scroll-margin-top:12px}
+.scroll::before,.scroll::after{content:"";position:absolute;left:-8px;right:-8px;height:22px;border-radius:11px;background:linear-gradient(180deg,#8b5a3c,#5e3a26 60%,#7a4c31);box-shadow:0 3px 8px rgba(60,30,20,.3);z-index:1}
+.scroll::before{top:0}.scroll::after{bottom:0}
+.paper{position:relative;margin:0 6px;background:
+  radial-gradient(circle at 20% 30%,rgba(214,180,170,.10) 0 1px,transparent 2px) 0 0/23px 29px,
+  radial-gradient(circle at 70% 80%,rgba(214,180,170,.12) 0 1px,transparent 2px) 0 0/31px 19px,
+  linear-gradient(180deg,var(--washi),var(--washi2));box-shadow:0 10px 30px rgba(120,60,80,.12);overflow:hidden}
+.paper.open{animation:unroll .8s cubic-bezier(.3,.7,.3,1)}
+@keyframes unroll{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+.paper::before{content:"";position:absolute;right:-60px;top:-50px;width:240px;height:240px;background:radial-gradient(circle,rgba(249,176,198,.28),transparent 65%);pointer-events:none}
+.sh{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:22px 24px 16px;border-bottom:1px solid var(--line)}
+.sh .mid{display:flex;align-items:center;gap:18px;min-width:0}
+.tate{flex:none;writing-mode:vertical-rl;font-family:var(--kai);font-size:17px;line-height:1.7;letter-spacing:.2em;color:var(--tc);padding-left:14px;border-left:1px solid color-mix(in srgb,var(--tc) 35%,transparent)}
+.sh small{display:block;font-family:var(--kai);font-size:14px;letter-spacing:.3em;color:var(--tc)}
+.sh h2{margin:2px 0 0;font-family:var(--kai);font-weight:700;font-size:clamp(26px,3.4vw,36px);line-height:1.25;color:var(--sumi)}
+.sh p{margin:4px 0 0;font-size:14px;color:var(--muted);max-width:520px}
+.sh .seal{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:4px;background:var(--shu);color:#fff;font-family:var(--serif);font-weight:900;font-size:24px;transform:rotate(5deg);box-shadow:inset 0 0 0 3px rgba(255,255,255,.35)}
+.nb{border:0;background:none;padding:6px 4px;font-family:var(--kai);font-size:13.5px;color:var(--muted);line-height:1.35;text-align:left}
+.nb b{display:block;font-size:16px;color:var(--sumi)}
+.nb.next{text-align:right;justify-self:end}
+.nb:hover b{color:var(--shu)}
+.body{padding:20px 24px 26px}
+.sub{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:22px 0 10px;font-family:var(--kai);font-size:19px;font-weight:700;color:var(--sumi)}
+.sub::before{content:"❀";color:var(--bl5)}
+.sub small{font-family:"Noto Sans TC",sans-serif;font-size:13px;font-weight:500;color:var(--muted)}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+
+.row,.tile,.case{position:relative;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.72);text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.row::after,.tile::after,a.case::after{content:"🌸";position:absolute;right:8px;top:6px;font-size:13px;opacity:0;transform:rotate(-40deg) scale(.6);transition:opacity .25s,transform .35s}
+.row:hover,.tile:hover,a.case:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--c,var(--tc)) 50%,var(--line));box-shadow:0 8px 20px rgba(200,100,140,.16)}
+.row:hover::after,.tile:hover::after,a.case:hover::after{opacity:1;transform:rotate(0) scale(1)}
+.row{display:flex;align-items:center;gap:12px;min-height:62px;padding:10px 26px 10px 12px}
+.row .ic{flex:none;min-width:44px;height:44px;padding:0 6px;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:21px;background:color-mix(in srgb,var(--c,var(--tc)) 14%,#fff)}
+.row .ic.txt{border-radius:8px;font-size:12px;font-weight:700;color:#fff;background:var(--c);line-height:1.15}
+.row .ic.wide{width:66px;height:46px}
+.row .tx{min-width:0;font-weight:700;font-size:15px;line-height:1.4}
+.row .tx small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);line-height:1.45}
+.tg{display:table;margin-bottom:2px;padding:0 8px;border-radius:999px;background:color-mix(in srgb,var(--c,var(--tc)) 16%,#fff);color:color-mix(in srgb,var(--c,var(--tc)) 85%,#000);font-size:11.5px;font-weight:700}
+.clamp{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;text-align:center}
+.tile .e{font-size:28px;line-height:1.2}
+.tile small{font-family:var(--kai);font-size:13px;color:var(--c,var(--tc))}
+.tile b{font-size:14px;line-height:1.35}
+.tile .d{font-size:12px;color:var(--muted);line-height:1.45}
+
+/* 情資：花信 */
+.intel{display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
+.ticket{position:relative;padding:18px 20px 18px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,247,250,.9));border:1px solid var(--line);overflow:hidden}
+.ticket::before{content:"";position:absolute;left:0;right:0;top:0;height:16px;background:radial-gradient(circle at 50% 100%,transparent 6px,#f6b3c9 6px 7px,transparent 7px 10px,#f6b3c9 10px 11px,transparent 11px) 0 0/22px 16px;opacity:.8}
+.ticket .kind{display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-family:var(--kai);font-size:14px;letter-spacing:.2em;color:var(--shu);border-bottom:1px dashed #f0c4cf;padding-bottom:6px;margin-bottom:10px}
+.ticket h3{margin:0 0 6px;font-family:var(--kai);font-size:clamp(19px,2.2vw,23px);font-weight:700;line-height:1.35;color:var(--sumi)}
+.ticket h3 span{display:inline-block;padding:0 10px;border-radius:999px;background:var(--shu);color:#fff;font-family:"Noto Sans TC",sans-serif;font-size:.62em;vertical-align:3px}
+.route{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;font-weight:700;font-size:14px}
+.route i{flex:1 1 20px;min-width:20px;height:0;border-top:1px dashed var(--bl5)}
+.pill{display:inline-block;padding:1px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px;font-weight:700;margin:0 4px 6px 0}
+.pill.risk{background:#fbe3e0;border-color:#f3b9b1;color:#a32d22}
+.ticket p{margin:0 0 12px;font-size:13.5px;color:var(--muted)}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.focus{padding:16px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.72)}
+.focus h3{margin:0 0 6px;font-family:var(--kai);font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+.live{width:9px;height:9px;border-radius:50%;background:var(--bl5);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(243,154,182,.7)}70%,100%{box-shadow:0 0 0 10px rgba(243,154,182,0)}}
+.focus a,.focus .ph{display:block;padding:8px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:700;line-height:1.45}
+.focus a+a{border-top:1px dashed var(--line)}
+.focus a:hover{background:#fff0f4}
+.focus small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.focus .ph{color:var(--muted);font-weight:500}
+.bd{display:inline-block;margin-left:4px;padding:0 6px;border-radius:999px;background:#fde2e4;color:#b3261e;font-size:11px;font-weight:700}
+.bd.kev{background:#c63c31;color:#fff}
+
+/* 個案 */
+.seg{display:inline-flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);border-radius:999px;background:#fff;padding:6px 16px;font-weight:700;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--tc);border-color:var(--tc);color:#fff}
+.case{display:flex;flex-direction:column;gap:4px;padding:13px 14px}
+.case .no{font-size:12px;font-weight:700;color:#a0612b}
+.case .no .tg{display:inline-block;margin:0 6px 0 0}
+.case b{font-size:15px;line-height:1.45}
+.case small{font-size:12.5px;color:var(--muted);line-height:1.45}
+.case .acts{margin-top:auto;padding-top:6px;gap:8px}
+.sev{background:#fde3cf!important;color:#a14a0b!important}.sev.urgent{background:#c63c31!important;color:#fff!important}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.foot .note{flex:1 1 260px;margin:0;font-size:12px;color:var(--muted)}
+
+/* ---------- 資安御神籤 ---------- */
+.omi{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(60,30,45,.35);backdrop-filter:blur(3px)}
+.omi .card{position:relative;display:flex;flex-direction:row-reverse;gap:16px;align-items:stretch;padding:26px 24px 20px;max-width:min(420px,calc(100% - 32px));border-radius:6px;background:linear-gradient(180deg,#fffaf5,#fbefe8);box-shadow:0 20px 60px rgba(60,20,40,.35);animation:omi .5s cubic-bezier(.3,1.4,.5,1)}
+@keyframes omi{from{transform:translateY(30px) scale(.9);opacity:0}}
+.omi .head{writing-mode:vertical-rl;display:flex;align-items:center;gap:10px;padding-left:14px;border-left:1px solid #f0c4cf;font-family:var(--kai)}
+.omi .head small{font-size:14px;letter-spacing:.3em;color:var(--muted)}
+.omi .head b{font-family:var(--serif);font-weight:900;font-size:42px;color:var(--shu);letter-spacing:.1em}
+.omi .tx{display:flex;flex-direction:column;justify-content:space-between;gap:14px;min-width:0}
+.omi .no{font-family:var(--kai);font-size:13px;color:var(--muted)}
+.omi p{margin:0;font-family:var(--kai);font-size:19px;line-height:1.7;color:var(--sumi)}
+.omi .ref{font-size:12.5px;color:var(--tc)}
+
+/* ---------- 頁尾 ---------- */
+footer{max-width:1100px;margin:28px auto 0;padding:0 16px 30px;font-size:13.5px}
+.haiku{display:flex;justify-content:center;align-items:flex-end;gap:22px;padding:20px 10px 26px;font-family:var(--kai);font-size:20px;line-height:1.6;color:var(--sumi);transition:color .8s}
+.haiku span{writing-mode:vertical-rl;letter-spacing:.28em}
+.haiku .by{font-size:14px;color:var(--muted);letter-spacing:.2em}
+.haiku .seal{writing-mode:horizontal-tb;display:grid;place-items:center;width:34px;height:34px;border-radius:3px;background:var(--shu);color:#fff;font-family:var(--serif);font-size:15px;letter-spacing:0;transform:rotate(-6deg)}
+body.night .haiku{color:#ffe9f1} body.night .haiku .by{color:#cdb7c8}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 14px}
+.about>div{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:rgba(255,250,245,.9)}
+.about img{flex:none;width:50px;height:50px;border-radius:50%;background:#fde3ea;object-fit:cover;object-position:top;box-shadow:0 0 0 2px #fff,0 0 0 3px var(--bl3)}
+.about b{display:block;font-size:15px}
+.about small{color:var(--muted)}
+.contact{text-align:center;color:var(--muted)}
+.contact a{color:var(--ink);font-weight:700}
+body.night .contact,body.night .contact a{color:#e6cfe0}
+#verSwitch{color:var(--shu)}
+body.night #verSwitch{color:#ffc9da}
+.fab{position:fixed;right:12px;bottom:12px;z-index:10;display:flex;align-items:center;gap:4px;padding:7px 15px;border:0;border-radius:999px;background:linear-gradient(135deg,#ffd6e2,#f6b3c9);color:#5a2638;box-shadow:0 4px 14px rgba(200,90,130,.3);font-family:var(--kai);font-size:14px;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s ease,transform .2s ease}
+.fab.show{opacity:1;pointer-events:auto;transform:none}
+
+/* ---------- 手機 ---------- */
+@media (max-width:900px){
+  .g5{grid-template-columns:repeat(3,1fr)}.g3{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(2,1fr)}
+  .talk{right:31%;width:36%}
+}
+@media (max-width:760px){
+  .hero{background:linear-gradient(180deg,var(--sky1) 0,var(--sky2) 50%,var(--sky3) 74%,var(--soil) 74.2%,var(--soil))}
+  .stage{aspect-ratio:3/4}
+  .titlecard{position:relative;right:auto;top:auto;width:auto;padding:14px 12px 0}
+  .head-m{position:relative;z-index:3}
+  .verse{display:none}
+  .titlecard p{display:none}
+  .acts-h{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .acts-h .btn{padding:6px 8px;font-size:13px}
+  .acts-h .btn.night-t{display:none}
+  .tz{left:calc(var(--mx) * 1%);top:calc(var(--my) * 1%);width:9.5cqw;margin-left:-4.75cqw}
+  .tz .str{height:calc(var(--len) / 1200 * 220cqw)}
+  .tz .pp{min-height:27cqw;gap:1cqw;padding:2cqw 0}
+  .tz b{font-size:3.5cqw}
+  .tz small{font-size:2.7cqw;margin-top:1.2cqw}
+  .duo{display:none}
+  .talk{position:relative;right:auto;bottom:auto;width:auto;margin:12px 12px 0;padding:10px 12px;gap:10px}
+  .talk::after{display:none}
+  .talk .say{min-height:0}
+  .catch{font-size:12px;bottom:2%}
+  .mode{font-size:12px}
+  .wrap{padding:18px 10px 0}
+  .scroll::before,.scroll::after{left:-4px;right:-4px;height:18px}
+  .paper{margin:0 4px}
+  .sh{grid-template-columns:1fr 1fr;padding:16px 14px 12px}
+  .sh .mid{grid-column:1/-1;grid-row:1;gap:12px}
+  .tate{font-size:14px;padding-left:10px}
+  .sh .seal{width:38px;height:38px;font-size:19px}
+  .body{padding:16px 12px 20px}
+  .intel,.g3,.g2.stack{grid-template-columns:1fr}
+  .acts .btn.wide{flex:1 1 100%}
+  .tile .d,.ticket p{display:none!important}
+  .about{grid-template-columns:1fr}
+  .haiku{font-size:17px;gap:16px}
+  footer{padding-bottom:70px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.fall{display:none}}
+</style>
+</head>
+<body>
+<!-- ================= 櫻花樹舞台 ================= -->
+<header class="hero" id="hero">
+  <div class="stage" id="stage">
+    <svg class="scene" id="scene" viewBox="0 0 1200 640" aria-hidden="true"></svg>
+    <canvas id="petals" aria-hidden="true"></canvas>
+    <button class="mode" id="modeBtn" aria-pressed="false">🌙 夜櫻</button>
+
+    <div class="titlecard" id="titlecard">
+      <div class="eb">花見・櫻下資安</div>
+      <h1>ISMS<i>·</i>普拉斯<i>·</i>AllanLo</h1>
+      <p>Allan 幫客戶整理及分享的資安知識庫</p>
+      <div class="acts-h">
+        <a class="btn shu" id="heroThink" href="#">📚 ISMS智庫 月刊</a>
+        <a class="btn pk" href="https://allanlo.123hi.org/isms_island/" rel="noopener">🏝️ 逛資安島</a>
+      </div>
+      <div class="verse" aria-label="櫻花年年開，資安日日守。"><span class="seal">普</span><span>資安日日守</span><span>櫻花年年開</span></div>
+    </div>
+
+    <nav id="tzs" role="tablist" aria-label="櫻花樹上的八枚短冊：八個分類"></nav>
+
+    <div class="talk" id="talk" aria-live="polite">
+      <img class="face" id="tFace" src="assets/img/allan-smile.webp" alt="">
+      <div><span class="nm" id="tName">Allan</span><span class="say" id="tSay">春天到了，一起到櫻花樹下走走吧。</span></div>
+    </div>
+    <div class="duo">
+      <button class="a" id="whoA" aria-label="聽 Allan 說"><img src="assets/img/allan-main.webp" alt="Allan Lo 顧問" width="560" height="1128"></button>
+      <button class="b" id="whoB" aria-label="聽阿拉蕾說"><img src="assets/img/arale-wave.webp" alt="AI 小助手 阿拉蕾" width="560" height="1006"></button>
+    </div>
+    <button class="catch" id="catchBtn">🌸 接住飄落的花瓣，抽一支資安籤 · <b id="caught">0</b> 片</button>
+  </div>
+</header>
+
+<!-- ================= 卷軸 ================= -->
+<div class="wrap">
+<main class="scroll" id="panel">
+  <div class="paper" id="paper">
+  <div class="sh">
+    <button class="nb prev" id="prevBtn"></button>
+    <div class="mid"><div class="tate" id="sPoem"></div><div><small id="sNo"></small><h2 id="sTitle"></h2><p id="sDesc"></p></div><span class="seal" id="sSeal"></span></div>
+    <button class="nb next" id="nextBtn"></button>
+  </div>
+  <div class="body">
+  <section id="p-intel" role="tabpanel">
+    <div class="intel">
+      <div class="ticket">
+        <div class="kind"><span>花信・每月情資</span><span>每日更新</span></div>
+        <h3>資安內外部情資蒐集紀錄 <span id="fileYear">每月 Excel</span></h3>
+        <div class="route"><span>內外部情資</span><i></i><span>🌸</span><i></i><span>A.5.7 稽核佐證</span></div>
+        <span class="pill" id="monthLabel">🗓️ 每日更新</span><span class="pill risk" id="riskPill" hidden></span>
+        <p>每日自動蒐集 TWCERT、NICS、iThome、TechNews 的漏洞與安全事件，並評估弱點處置期限；每月 Excel 下載留存，就是稽核佐證。</p>
+        <div class="acts">
+          <a class="btn shu wide" id="btnXlsx" href="#">⬇️ 下載本月 Excel</a>
+          <a class="btn sm" id="btnOther" href="#" hidden></a>
+          <a class="btn sm pk" id="btnOpen" href="#">🔎 查詢與下載專區</a>
+          <a class="btn sm" href="https://allanloplus.github.io/intelligence/" rel="noopener">📊 情資戰情看板</a>
+        </div>
+      </div>
+      <div class="focus">
+        <h3><span class="live"></span><span id="focusTitle">本月焦點情資</span></h3>
+        <div id="focusList"><div class="ph">阿拉蕾正在把最新情資一片片收好…</div></div>
+      </div>
+    </div>
+    <h3 class="sub">情資官養成之路 <small>下載只是第一步，四關從看懂到實戰</small></h3>
+    <div class="grid g4" id="lvs"></div>
+  </section>
+  <section id="p-courses" role="tabpanel" hidden><div class="grid g3" id="courses"></div></section>
+  <section id="p-flows" role="tabpanel" hidden><div class="grid g5" id="flows"></div></section>
+  <section id="p-park" role="tabpanel" hidden><div class="grid g2 stack" id="park"></div></section>
+  <section id="p-cases" role="tabpanel" hidden>
+    <div class="seg" id="seg">
+      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 安全檢測</button>
+    </div>
+    <div class="grid g3" id="files"></div>
+    <div class="grid g3" id="news" hidden></div>
+    <div class="grid g3" id="aicase" hidden></div>
+    <div class="foot">
+      <a class="btn sm pk" id="caseRoom" href="#">🔍 進入資安個案研究室 ↗</a>
+      <a class="btn sm" id="newsAll" href="#">📰 看全部新聞個案 ↗</a>
+      <p class="note">每案含動畫閱讀、討論互動、決策模擬與教學手冊（90 分鐘）。個案改編自公開資料，人物與公司名稱均為虛構，僅供教學討論。</p>
+    </div>
+  </section>
+  <section id="p-quiz" role="tabpanel" hidden><div class="grid g2 stack" id="quiz"></div></section>
+  <section id="p-res" role="tabpanel" hidden>
+    <h3 class="sub" style="margin-top:0">教學資源</h3>
+    <div class="grid g4" id="resList"></div>
+    <h3 class="sub">外部情資來源</h3>
+    <div class="grid g4" id="srcList"></div>
+  </section>
+  <section id="p-arcade" role="tabpanel" hidden><div class="grid g5" id="arcade"></div></section>
+  </div>
+  </div>
+</main>
+</div>
+
+<footer>
+  <div class="haiku" aria-label="花會謝，好習慣不會；年年春來，資安常在。Allan 與阿拉蕾">
+    <span class="by">Allan × 阿拉蕾</span><span>年年春來　資安常在</span><span>花會謝　好習慣不會</span><span class="seal">守</span>
+  </div>
+  <div class="about">
+    <div><img src="assets/img/allan-wink.webp" alt=""><span><b>Allan Lo 顧問</b><small>ISMS／PIMS 輔導顧問 · 驗證機構稽核員 · 專長資安與企業 MIS 管理</small></span></div>
+    <div><img src="assets/img/arale-laugh.webp" alt=""><span><b>阿拉蕾 ARALE</b><small>AI 小助手 · 課程動畫搭檔 · 口頭禪「幫腔上課囉！」</small></span></div>
+  </div>
+  <div class="contact">🌐 <a href="https://www.123hi.org/">www.123hi.org</a> · ✉️ <a href="mailto:allanlo.plus@gmail.com">allanlo.plus@gmail.com</a></div>
+  <div id="verSwitch" data-current="sakura"></div>
+</footer>
+<script src="versions.js"></script>
+
+<div class="omi" id="omi" hidden role="dialog" aria-modal="true" aria-labelledby="omiLv">
+  <div class="card">
+    <div class="head"><small>資安御神籤</small><b id="omiLv">大吉</b></div>
+    <div class="tx"><span class="no" id="omiNo"></span><p id="omiTx"></p><span class="ref" id="omiRef"></span>
+      <div class="acts"><button class="btn shu sm" id="omiOk" target="_self">收下這支籤 🌸</button><button class="btn sm" id="omiAgain">再接一片</button></div></div>
+  </div>
+</div>
+<button class="fab" id="fab" aria-label="回到櫻花樹下">🌸 回到櫻花樹下 ↑</button>
+
+<script>
+/* ================= 資料（各版首頁相同；新增資源時 index.html、home-*.html 都要一起改） ================= */
+const INTEL = "https://allanloplus.github.io/intelligence/";
+const INTEL_PAGE = "資安情資/資安情資蒐集紀錄";
+
+const SITE = "https://sites.google.com/123hi.org/isms/";
+
+const LEVELS = [
+  { ic: "📺", t: "情資作業動畫解說", d: "13 段動畫簡報：情資蒐集、脆弱性識別、AI 風險排序到稽核證據", p: "資安情資/資安情資作業動畫解說", c: "#15aabf" },
+  { ic: "🗺️", t: "內外部情資地圖", d: "內部事件與外部來源一張圖掌握", p: "資安情資/內外部情資地圖", c: "#4c6ef5" },
+  { ic: "📊", t: "資安情資戰情室", d: "內外部情資、脆弱性與處置成效儀表板，阿拉蕾語音導覽", p: "資安情資/資安情資戰情室dashboard", c: "#7950f2" },
+  { ic: "🎮", t: "情資官特訓營", d: "7 個關卡＋稽核大魔王，過關領結訓證書", p: "資安情資/遊戲學習-情資官特訓營", c: "#f08c00" }
+];
+const PARK = [
+  { ic: "🗓️", t: "ISMS 的一年", tag: "動畫", d: "每天像刷牙、每月像量血壓、每年像全身健檢：ISMS 的工作節奏", p: "isms工作觀/isms工作的一年", c: "#1c7ed6", x: 13, y: 30 },
+  { ic: "🗺️", t: "ISMS 工作地圖", tag: "互動動畫", d: "時間、流程、工作類別三種視角，看紀錄如何一天天累積", p: "isms工作觀/isms工作地圖", c: "#0ca678", x: 32, y: 68, low: true },
+  { ic: "🧭", t: "ISMS 工作地圖－系統體驗", tag: "系統體驗", d: "把程序書變成每天做得完的工作：每日巡檢、情資、月報與量測依頻率排好，點一下留紀錄", p: "isms工作觀/isms工作地圖_系統體驗", c: "#1098ad" },
+  { ic: "🏘️", t: "ISMS 資安小鎮", tag: "互動地圖", d: "點建築，阿拉蕾帶路認識各部門的 ISMS 工作與稽核準備度", p: "isms工作觀/isms資安小鎮", c: "#e8590c", x: 52, y: 28 },
+  { ic: "🎲", t: "ISMS 大富翁", tag: "桌遊 1～4 人", d: "擲骰子走完資安一年，蒐集紀錄卡、擋下事件，年底外部稽核拿驗證", p: "isms工作觀/isms大富翁遊戲", c: "#e03131", x: 70, y: 66, low: true },
+  { ic: "🏰", t: "實體安全大冒險", tag: "自由探索", d: "探索 16 個 A.7 實體安全控制項，區域安全與設備安全一次認識", p: "isms工作觀/實體安全大冒險", c: "#7048e8", x: 88, y: 30 }
+];
+const CASE_URL = "https://allanloplus.github.io/CASE/";
+const CASES = [
+  { id: "S115001", cat: "威脅情資", t: "總經理先看到新聞：PHP2Shell 情資應變的 48 小時", o: "PHP2Shell 重大漏洞外洩與緊急修補", tags: ["威脅情資", "漏洞管理", "資產盤點", "委外管理"] },
+  { id: "S111001", cat: "資訊保護", t: "倒數十天：艾倫建設的勒索軟體風暴", o: "上市公司遭勒索軟體攻擊，海量資料遭洩", tags: ["勒索軟體", "雙重勒索", "備份與復原", "重大訊息"] },
+  { id: "S111002", cat: "資訊保護", t: "補丁之後：艾倫普拉斯科技的 Log4j 供應鏈風暴", o: "Log4j 重大資安漏洞揭露半年後仍不可大意", tags: ["Log4Shell", "軟體供應鏈", "修補管理", "SBOM"] },
+  { id: "S111003", cat: "資訊保護", t: "沒收回的那把鑰匙：艾倫普拉斯傳媒的跨年直播危機", o: "離職員工偷刪前東家資料，該當何罪？", tags: ["離職管理", "帳號註銷", "雲端金鑰", "共用帳號"] },
+  { id: "S111004", cat: "資訊保護", t: "畫面不能重拍：曦光傳媒的片庫歸零事件", o: "電視台新聞片庫慘遭協力廠商刪除", tags: ["委外管理", "備份與復原", "RPO／RTO", "變更管理"] },
+  { id: "S111005", cat: "資訊保護", t: "起飛之前：艾倫普拉斯科技的營業秘密保衛戰", o: "離職時請別帶走公司的營業秘密", tags: ["營業秘密", "內部威脅", "離職管理", "日誌監控"] }
+];
+const THINKTANK = "isms智庫";   /* Allan's ISMS智庫（每月一期） */
+const AICASE = [
+  { ic: "🧭", t: "總覽：AI 系統安全檢測個案", d: "一套上線系統從盤點、檢測到報告的完整案例", p: "ai寫的個案/ai開發系統之安全檢測個案/總覽ai系統安全檢測個案" },
+  { ic: "🧾", t: "XBOM 對話教學", d: "XBOM 是什麼、怎麼做、能證明什麼，對應 SSDLC 與 ISO 27001", p: "ai寫的個案/ai開發系統之安全檢測個案/xbom-對話教學" },
+  { ic: "🔬", t: "安全檢測對話教學", d: "源碼檢測、存取控制測試、滲透測試各自證明什麼", p: "ai寫的個案/ai開發系統之安全檢測個案/安全檢測對話教學" },
+  { ic: "📑", t: "解讀第三方檢測報告", d: "先看的五件事、逐節讀法與品質判斷", p: "ai寫的個案/ai開發系統之安全檢測個案/解讀第三方檢測報告" },
+  { ic: "🧑‍🏫", t: "延伸：安全檢測顧問輔導實務", d: "顧問如何帶客戶從接案做到移交", p: "ai寫的個案/ai開發系統之安全檢測個案/延伸安全檢測顧問輔導實務" },
+  { ic: "🖥️", t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", p: "https://pms.medsigtw.com/" }
+];
+const NEWS_URL = "https://allanloplus.github.io/case_isnews/";
+const NEWS = [
+  { slug: "2026-10-synology-c3rb3r", sev: "重大", date: "2026-10-30", src: "iThome 新聞", t: "群暉 NAS 遭 C3RB3R 勒索軟體攻擊：被遺忘的更新與備份", d: "鎖定未更新的群暉 NAS 加密勒索；「沒更新、對外曝露、備份放同一台」是共同破口。附互動式勒索攻防模擬器。", tp: ["勒索軟體", "備份與復原", "漏洞管理"] },
+  { slug: "2026-10-91app-breach", sev: "重大", date: "2026-10-30", src: "今周刊", t: "91APP 資料庫遭 AI 代理攻擊：一個未更新的內部工具，波及 1,329 個品牌", d: "內部工具未更新被 AI 自主滲透工具打入，再從 GitLab 取得資料庫金鑰；SaaS 供應鏈與個資責任一次看。", tp: ["個資保護", "供應鏈", "AI 資安"] },
+  { slug: "2026-10-php2shell", sev: "緊急", date: "2026-10-29", src: "非凡商業台", t: "AI 揪出潛藏十多年的 PHP 漏洞：PHP2Shell 與資安雙面刃", d: "全球約七成網站使用的 PHP 爆出免登入 RCE 漏洞，攻擊早於修補，日本與歐洲大量預防性關站。", tp: ["漏洞管理", "事件應變", "AI 資安"] }
+];
+const ARCADE = [
+  { ic: "📖", t: "ALLAN 家族說故事劇場", d: "第一號作品《花草派》：2010 年手繪繪本，由 Allan 家族重新配音演出", u: "https://allanloplus.github.io/picture-book99/", c: "#ff8cf5" },
+  { ic: "⛰️", t: "跟著 Allan 走一趟特富野古道", d: "Allan 當領隊：鄒族獵徑、運材鐵道、交通路線與古道小遊戲", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/", c: "#69db7c" },
+  { ic: "🃏", t: "Allan 與阿拉蕾的橋牌桌", d: "四人合約橋牌：和阿拉蕾搭檔，對抗駭客小黑與釣魚怪", u: "https://allanloplus.github.io/bridge/", c: "#4dabf7" },
+  { ic: "🐷", t: "Allan 的拱豬夜市", d: "夜市開桌拱豬：♠Q 是勒索豬，♦J 是資安預算羊", u: "https://allanloplus.github.io/Gong_Zhu/", c: "#ffa94d" },
+  { ic: "🎴", t: "Allan's 資安大老二", d: "環島攻防戰：出一張牌走一站，先回台北 101 拿資安認證；鐵支＝零時差攻擊", u: "https://allanloplus.github.io/big2/", c: "#ff6b6b" },
+  { ic: "🧋", t: "Allan's 資安大富翁－快樂遊台灣", d: "22 縣市環島大富翁：吃在地美食、認養縣市當資安守護者，把韌性指數推到 100%", u: "https://allanloplus.github.io/Monopoly/", c: "#38d9a9" },
+  { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "選心情、看天氣、挑飯友，阿拉蕾從 373 道台灣美食幫你挑", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" },
+  { ic: "🌴", t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天：357 篇日誌、台北⇄檳城航線地圖與南洋奇幻之旅勳章", u: "https://allanloplus.github.io/AllanWentToNayang/", c: "#a9e34b" },
+  { ic: "🏯", t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖：嘉義市、嘉義縣、雲林縣、臺南市，語音導覽、老地圖時光機與文資護照", u: "https://cultural.123hi.org/guide/", c: "#e8a87c" },
+  { ic: "🚉", t: "Allan's 文化知識學習：影片導讀", d: "嘉義與臺南車站：同一位建築師，一座風華再現、一座風華再見？", u: "https://allanlo-g.github.io/Train_Station/", c: "#74c0fc" }
+];
+const COURSES = [
+  { big: "ISO<br>27001", badge: "互動教材", name: "ISO27001 完整線上互動教材", p: "課程動畫/iso27001完整線上互動教材", img: "allan-point", bg: "linear-gradient(160deg,#1d4ed8,#14213d)" },
+  { big: "ISO<br>27701", badge: "隱私管理", name: "ISO27701 完整線上課程", p: "課程動畫/iso27701完整線上課程", img: "arale-explain", bg: "linear-gradient(160deg,#9c36b5,#5f3dc4)" },
+  { big: "ISO<br>42001", badge: "AI 管理", name: "ISO42001 完整線上課程", p: "課程動畫/iso42001完整線上課程", img: "arale-wow", bg: "linear-gradient(160deg,#f76707,#c92a2a)" },
+  { big: "TISAX", badge: "汽車產業", name: "TISAX 要求完整解說", p: "課程動畫/tisax要求完整解說", img: "allan-think", bg: "linear-gradient(160deg,#495057,#212529)" },
+  { big: "3<br>MIN", badge: "快速入門", name: "3 分鐘和 ISO27001", p: "課程動畫/3分鐘和iso27001", img: "arale-laugh", bg: "linear-gradient(160deg,#37b24d,#087f5b)" },
+  { big: "MIND<br>MAP", badge: "心智圖", name: "用心智圖了解 ISO27001", p: "課程動畫/用心智圖了解iso27001", img: "arale-think", bg: "linear-gradient(160deg,#fab005,#e67700)" },
+  { big: "資安<br>宣導", badge: "年度必修", name: "Allan 的年度資安宣導", p: "課程動畫/allan的年度資安宣導", img: "allan-laugh", bg: "linear-gradient(160deg,#15aabf,#1864ab)" },
+  { big: "TISAX<br>EN", badge: "English", name: "ISA 2027 for TISAX — Requirements Explained", p: "課程動畫/tisax要求完整解說_英文版", img: "allan-smile", bg: "linear-gradient(160deg,#1864ab,#212529)" },
+  { big: "資安法", badge: "事件通報", name: "資通安全法－資安事件通報", p: "課程動畫/資通安全法-資安事件通報", img: "allan-surprised", bg: "linear-gradient(160deg,#e03131,#862e9c)" }
+];
+const FLOWS = [["治理", "🏛️"], ["人員安全", "👥"], ["資訊保護", "🔐"], ["資產管理", "📦"], ["存取管理", "🔑"], ["保全組態", "⚙️"], ["實體安全", "🏢"],
+  ["威脅與弱點管理", "🛡️"], ["應用程式安全", "🧩"], ["系統與網路安全", "🌐"], ["供應者安全管理", "🤝"], ["資安事件管理", "🚨"], ["持續性", "♻️"], ["資訊安全保證", "✅"], ["遵循性", "📜"]];
+const QUIZ = [["📋 ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["🧠 資安課程課後測驗", "課後測驗專區/資安課程課後測驗"], ["🕵️ ISMS Auditor 知識測驗", "課後測驗專區/isms-auditor知識測驗"], ["💻 Allan's IT 知識測驗", "課後測驗專區/allans-it知識測驗"]];
+const RES = [
+  ["27001", "ISO27001 教學資源", "教學網站", "https://sites.google.com/123hi.org/iso27001/", "#1d4ed8"],
+  ["27701", "ISO27701 教學資源", "條文解說簡報", "https://sites.google.com/view/allanlo-iso27701/iso27701%E6%A2%9D%E6%96%87%E8%A7%A3%E8%AA%AA%E7%B0%A1%E5%A0%B1", "#9c36b5"],
+  ["TX", "TISAX 教學資源", "汽車產業資安", "https://sites.google.com/123hi.org/tisax/", "#495057"],
+  ["展示", "ISMS 系統化展示", "系統實作範例", "https://sites.google.com/view/allantest001/", "#0b7285"],
+  ["▶", "YouTube－AllanLo", "上課影音", "https://www.youtube.com/channel/UCnsy7Lewl-4BIw4T5J2vV4Q", "#e03131"],
+  ["iT", "iT 邦幫忙文章", "Allan 的技術文章", "https://ithelp.ithome.com.tw/users/20151950/articles", "#2b8a3e"],
+  ["影音", "資安教學影音整理", "分類影音資源", "教學資源/allan的資安教學分類影音資源整理", "#e67700"],
+  ["地圖", "內外部情資地圖", "資安情資", "資安情資/內外部情資地圖", "#c92a2a"]
+];
+const SRC = [
+  ["NICS", "國家資通安全研究院", "漏洞新聞、漏洞公告", "https://www.nics.nat.gov.tw/", "#1d4ed8"],
+  ["TW", "TWCERT/CC", "資安新聞、通報", "https://www.twcert.org.tw/", "#0f766e"],
+  ["H", "H-ISAC", "衛福部資安分享中心", "https://hisac.nat.gov.tw/", "#be123c"],
+  ["F", "F-ISAC", "金融資安分享", "https://www.fisac.tw/", "#a16207"],
+  ["iT", "iThome 資安", "資安日報、週報", "https://www.ithome.com.tw/security", "#c2410c"],
+  ["TN", "TechNews 資安", "科技新報資安快報", "https://infosecu.technews.tw/", "#334155"],
+  ["TM", "趨勢科技研究", "威脅研究報告", "https://www.trendmicro.com/zh_tw/research.html", "#dc2626"],
+  ["月報", "政府機關資安月報", "數位發展部資安署", "https://moda.gov.tw/ACS/press/report/670", "#4338ca"]
+];
+
+
+
+/* 櫻花樹上的八枚短冊＝八個分類。
+   x/y：短冊掛在枝上的位置（舞台座標 1200×640）；len：繩長；mx/my：手機版位置（%）。
+   no：其一～其八；kigo：卷軸小標；poem：卷軸左側直書詩句；seal：印章字；talk：[誰, 表情, 台詞] */
+const TABS = [
+  { id: "intel", e: "📡", t: "資安情資", no: "其一", kigo: "花信", seal: "報", x: 70, y: 237, len: 20, mx: 13, my: 18, c: "#c2185b", face: "arale-wave",
+    poem: "一枝報春信　情資每月新", d: "客戶每月必下載，留存作為 ISO/IEC 27001:2022 A.5.7 威脅情資紀錄",
+    talk: [["a", "allan-point", "櫻花每年準時開，情資也每月準時整理好了。"], ["b", "arale-thumb", "下載留存，就是 A.5.7 威脅情資的佐證 🌸"], ["a", "allan-think", "遇到高風險漏洞，記得走 A.8.8 修補流程。"]] },
+  { id: "courses", e: "🎬", t: "課程動畫", no: "其二", kigo: "花下講堂", seal: "學", x: 155, y: 267, len: 52, mx: 36, my: 13, c: "#5b6bbf", face: "arale-explain",
+    poem: "花下聽講學　春風化雨時", d: "Allan 與阿拉蕾主演的完整線上課程與互動教材",
+    talk: [["b", "arale-explain", "在櫻花樹下上課，心情都變好了～九門課任你挑！"], ["a", "allan-smile", "27001、27701、42001、TISAX 都有完整動畫。"]] },
+  { id: "flows", e: "🗺️", t: "ISMS 流程", no: "其三", kigo: "花徑", seal: "徑", x: 240, y: 316, len: 28, mx: 59, my: 18, c: "#3f8f6b", face: "arale-mini",
+    poem: "十五道花徑　步步見全貌", d: "15 個運作流程，一站一支動畫，看懂整個 ISMS",
+    talk: [["b", "arale-cheer", "A01 到 A15，像十五道花徑，一條一支動畫。"], ["a", "allan-point", "走完一圈，就看見整個 ISMS 的風景。"]] },
+  { id: "park", e: "🎡", t: "主題樂園", no: "其四", kigo: "花之庭", seal: "遊", x: 400, y: 299, len: 62, mx: 82, my: 14, c: "#d9822b", face: "allan-laugh",
+    poem: "花間嬉遊處　玩中悟制度", d: "ISMS 工作觀：用動畫、地圖和遊戲，玩出對 ISMS 的整體感",
+    talk: [["a", "allan-laugh", "ISMS 也可以玩：小鎮、大富翁、工作地圖。"], ["b", "arale-wow", "邊賞花邊玩，邊懂 ISMS！"], ["a", "allan-point", "工作地圖還有系統體驗版，點一下就留紀錄。"]] },
+  { id: "cases", e: "🕵️", t: "個案研究", no: "其五", kigo: "落花", seal: "鑑", x: 485, y: 261, len: 24, mx: 24.5, my: 44, c: "#8d5a97", face: "allan-think",
+    poem: "落花知風向　往事作明鏡", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 開發系統的安全檢測個案",
+    talk: [["a", "allan-think", "落花知風向：每則資安新聞，都是一堂管理課。"], ["b", "arale-confused", "如果是我們公司遇到，該怎麼辦？"], ["a", "allan-wink", "人物與公司都是虛構的，一起討論就知道。"]] },
+  { id: "quiz", e: "📝", t: "課後測驗", no: "其六", kigo: "春試", seal: "試", x: 570, y: 238, len: 56, mx: 47.5, my: 48, c: "#d84a3a", face: "allan-point",
+    poem: "春試一盞茶　溫故而知新", d: "上完課了嗎？來檢查學習成果",
+    talk: [["a", "allan-point", "賞完花，喝杯茶，順便測驗一下學習成果。"], ["b", "arale-cheer", "答對送你一片幸運花瓣 🌸"]] },
+  { id: "res", e: "📚", t: "教學資源", no: "其七", kigo: "花書庫", seal: "書", x: 655, y: 232, len: 34, mx: 70.5, my: 43, c: "#2f7f8f", face: "allan-smile",
+    poem: "滿樹皆是書　信手拈來讀", d: "教學網站、影音文章，以及常用的外部情資來源",
+    talk: [["a", "allan-smile", "教學網站、影音、文章，還有外部情資來源，都收在這。"], ["b", "arale-think", "像滿樹的花，隨手就能摘一朵來讀。"]] },
+  { id: "arcade", e: "🕹️", t: "AI 遊樂場", no: "其八", kigo: "花見宴", seal: "樂", x: 740, y: 238, len: 50, mx: 93, my: 47, c: "#c4477a", face: "arale-laugh",
+    poem: "花見正歡時　暫且放輕鬆", d: "下課時間！Allan 用 AI 做的遊戲與小作品",
+    talk: [["b", "arale-laugh", "花見時間！來玩 Allan 用 AI 做的遊戲～"], ["a", "allan-oops", "有幾款藏了資安梗，賞花之餘笑一笑。"]] }
+];
+/* 資安御神籤：接住花瓣抽一支（[籤運, 籤文, 對應條文]） */
+const OMIKUJI = [
+  ["大吉", "密碼長一點，再加上多因子認證，賊人望而卻步。", "A.5.17 鑑別資訊"],
+  ["吉", "可疑郵件先別點，打通電話確認，比什麼都安全。", "A.6.3 資安意識"],
+  ["中吉", "重要資料做 3-2-1 備份：三份、兩種媒體、一份放異地。", "A.8.13 資訊備份"],
+  ["小吉", "離座記得鎖螢幕，Windows + L，一秒完成。", "A.7.7 桌面淨空與螢幕淨空"],
+  ["末吉", "高風險漏洞別拖延，依處置期限修補。", "A.8.8 技術脆弱性管理"],
+  ["吉", "離職同仁的帳號當天停用，權限定期審查。", "A.5.18 存取權限"],
+  ["中吉", "來路不明的隨身碟，像路邊的果子，不要撿來吃。", "A.7.10 儲存媒體"],
+  ["大吉", "供應商也是資安的一部分，合約先寫清楚。", "A.5.20 供應者協議"],
+  ["吉", "在咖啡店處理公務，請先連上 VPN。", "A.6.7 遠距工作"],
+  ["小吉", "發生事件先通報，別一個人默默處理。", "A.6.8 資安事件通報"],
+  ["中吉", "最小權限：需要多少，就給多少。", "A.5.15 存取控制"],
+  ["吉", "把資料貼進 AI 工具前，先想想它是不是機密。", "A.5.10 資訊可接受使用"],
+  ["大吉", "每月下載情資留存，稽核來時從容不迫。", "A.5.7 威脅情資"],
+  ["末吉", "日誌沒人看，等於沒有記。定期檢視才有用。", "A.8.15 存錄"]
+];
+
+/* ================= 共用 ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const siteUrl = p => /^(https?:|#)/.test(p) ? p : SITE + p.split("/").map(encodeURIComponent).join("/");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const row = (href, ic, t, d, c, icCls = "") => `<a class="row" ${c ? `style="--c:${c}"` : ""} href="${esc(href)}" rel="noopener"><span class="ic ${icCls}">${ic}</span><span class="tx">${t}${d ? `<small>${d}</small>` : ""}</span></a>`;
+
+
+/* ================= 櫻花樹場景 ================= */
+let seed = 23; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+/* 枝幹：[x1, y1, x2, y2, 粗細] */
+const BR = [[290, 660, 300, 520, 58], [300, 520, 318, 400, 46], [318, 400, 330, 330, 36],
+  [322, 384, 220, 300, 24], [220, 300, 120, 250, 15], [120, 250, 40, 230, 9], [220, 300, 196, 196, 9],
+  [330, 330, 350, 220, 22], [350, 220, 330, 118, 12], [350, 220, 420, 150, 8],
+  [330, 344, 450, 270, 25], [450, 270, 580, 235, 17], [580, 235, 700, 230, 11], [700, 230, 800, 252, 7], [450, 270, 470, 170, 10], [580, 235, 622, 150, 8], [700, 230, 742, 170, 5]];
+const blob = [];
+BR.forEach(([x1, y1, x2, y2, w], i) => {
+  if (i < 2) return;
+  const n = Math.round(Math.hypot(x2 - x1, y2 - y1) / 14);
+  for (let k = 0; k <= n; k++) {
+    const t = k / n, cx = x1 + (x2 - x1) * t, cy = y1 + (y2 - y1) * t;
+    for (let m = 0; m < 3; m++) blob.push([cx + (rnd() - .5) * 90, cy - 18 + (rnd() - .62) * 80, 14 + rnd() * 30, 1 + Math.floor(rnd() * 5), .5 + rnd() * .45]);
+  }
+});
+blob.sort((a, b) => b[2] - a[2]);
+const hill = (y, amp, step, cls, op = 1) => { let d = `M-600,${y}`; for (let x = -600; x <= 1800; x += step) d += ` Q${x + step / 2},${y - amp * (.4 + rnd() * .8)} ${x + step},${y + (rnd() - .5) * amp * .3}`; return `<path class="hz ${cls}" opacity="${op}" d="${d} L1800,700 L-600,700 Z"/>`; };
+const lantern = Array.from({ length: 6 }, (_, i) => { const x = 50 + i * 112, y = 40 + Math.sin((i + .5) / 6.5 * Math.PI) * 30; return `<g transform="translate(${x},${y})"><line x1="0" y1="-12" x2="0" y2="-2" stroke="#3a2a30"/><ellipse cx="0" cy="14" rx="22" ry="26" fill="#ffb15c" opacity=".35" filter="url(#glow)"/><rect x="-7" y="-3" width="14" height="4" fill="#3a2a30"/><ellipse cx="0" cy="14" rx="11" ry="15" fill="#ff7a45"/><path d="M-11,9 H11 M-11,14 H11 M-10,19 H10" stroke="#e0522f" stroke-width="1"/><rect x="-7" y="27" width="14" height="4" fill="#3a2a30"/></g>`; }).join("");
+const ground = Array.from({ length: 90 }, () => `<ellipse class="b${2 + Math.floor(rnd() * 3)}" cx="${(rnd() * 1300 - 50).toFixed(0)}" cy="${(560 + rnd() * 90).toFixed(0)}" rx="${(3 + rnd() * 4).toFixed(1)}" ry="${(1.6 + rnd() * 1.6).toFixed(1)}" transform="rotate(${(rnd() * 60 - 30).toFixed(0)})" style="transform-box:fill-box;transform-origin:center"/>`).join("");
+const stars = Array.from({ length: 50 }, () => `<circle cx="${(rnd() * 1200).toFixed(0)}" cy="${(rnd() * 300).toFixed(0)}" r="${(rnd() * 1.3 + .3).toFixed(1)}" fill="#fff" opacity="${(.4 + rnd() * .6).toFixed(2)}"/>`).join("");
+$("#scene").innerHTML = `<defs>
+  <filter id="wc" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="12"/></filter>
+  <filter id="glow"><feGaussianBlur stdDeviation="6"/></filter>
+  <radialGradient id="sung"><stop offset="0" stop-color="#fff6e8"/><stop offset=".4" stop-color="#ffe6d6" stop-opacity=".7"/><stop offset="1" stop-color="#ffd9e4" stop-opacity="0"/></radialGradient>
+  <linearGradient id="mistg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+  <g class="stars">${stars}</g>
+  <circle class="sun" cx="742" cy="70" r="140" fill="url(#sung)"/>
+  <g class="moon"><circle cx="742" cy="66" r="60" fill="#fff2d8" opacity=".25" filter="url(#glow)"/><circle cx="742" cy="66" r="36" fill="#fff6e4"/><circle cx="729" cy="56" r="6" fill="#f1e2c4"/><circle cx="753" cy="78" r="4" fill="#f1e2c4"/></g>
+  ${hill(420, 60, 160, "far")}
+  <g class="hz far" transform="translate(840,372) scale(.85)"><rect x="-26" y="0" width="5" height="34"/><rect x="21" y="0" width="5" height="34"/><rect x="-34" y="-7" width="68" height="5" rx="2"/><rect x="-28" y="4" width="56" height="3"/></g>
+  <rect class="mist" x="-600" y="380" width="2400" height="90"/>
+  ${hill(470, 40, 220, "midh")}
+  ${hill(520, 26, 300, "near")}
+  <g>${ground}</g>
+  <g>${BR.map(([x1, y1, x2, y2, w]) => `<path class="bark" stroke-width="${w}" d="M${x1},${y1} Q${(x1 + x2) / 2 + (rnd() - .5) * 20},${(y1 + y2) / 2 + (rnd() - .5) * 16} ${x2},${y2}"/>`).join("")}</g>
+  <g class="crown" filter="url(#wc)">${blob.map(([x, y, r, c, o]) => `<circle class="b${c}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" opacity="${o.toFixed(2)}"/>`).join("")}</g>
+  <path d="M-20,26 Q300,92 640,30" fill="none" stroke="#3a2a30" stroke-width="1.2" class="lanterns"/><g class="lanterns">${lantern}</g>`;
+
+/* 短冊 */
+$("#tzs").innerHTML = TABS.map((t, i) => `<button class="tz" role="tab" id="t-${t.id}" aria-controls="p-${t.id}" aria-selected="false" style="--x:${t.x};--y:${t.y};--len:${t.len};--mx:${t.mx};--my:${t.my};--c:${t.c};--d:${(-i * .7).toFixed(1)}s"><span class="str"></span><span class="knot"></span><span class="pp"><small>${t.no}</small><b>${esc(t.t)}</b></span></button>`).join("");
+
+/* 頁面上一直飄落的幾片花瓣（裝飾） */
+if (!reduce) document.body.insertAdjacentHTML("beforeend", Array.from({ length: 9 }, (_, i) => `<span class="fall" aria-hidden="true" style="left:${(i * 11 + rnd() * 8).toFixed(0)}%;animation-duration:${(13 + rnd() * 10).toFixed(1)}s;animation-delay:${(-rnd() * 20).toFixed(1)}s;transform:scale(${(.7 + rnd() * .6).toFixed(2)})"></span>`).join(""));
+
+/* ================= 花瓣（canvas）：飄落、吹起、可以接住 ================= */
+const cv = $("#petals"), ctx = cv.getContext("2d"), stage = $("#stage");
+let W = 0, H = 0, DPR = 1, petals = [], tick = 0;
+function resize() { DPR = Math.min(2, devicePixelRatio || 1); W = stage.clientWidth; H = stage.clientHeight; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
+const newPetal = (x, y, vx, vy) => ({ x: x ?? rnd() * W * 1.1 - W * .05, y: y ?? -20 - rnd() * H * .6, vx: vx ?? .2 + rnd() * .6, vy: vy ?? .5 + rnd() * .8, r: rnd() * 6.28, vr: (rnd() - .5) * .05, f: rnd() * 6.28, vf: .03 + rnd() * .05, s: 5 + rnd() * 5, burst: vx !== undefined });
+function petalCount() { return reduce ? 0 : W < 500 ? 22 : 42; }
+function drawPetal(p) {
+  ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.scale(Math.cos(p.f) * .8 + .2, 1);
+  const s = p.s; ctx.beginPath(); ctx.moveTo(0, s);
+  ctx.bezierCurveTo(s * 1.1, s * .3, s * .8, -s * .9, s * .18, -s); ctx.lineTo(0, -s * .72); ctx.lineTo(-s * .18, -s);
+  ctx.bezierCurveTo(-s * .8, -s * .9, -s * 1.1, s * .3, 0, s); ctx.closePath();
+  const night = document.body.classList.contains("night");
+  ctx.fillStyle = night ? "rgba(255,226,238,.9)" : "rgba(249,170,196,.88)"; ctx.fill();
+  ctx.fillStyle = night ? "rgba(255,255,255,.55)" : "rgba(255,230,238,.7)"; ctx.beginPath(); ctx.ellipse(0, -s * .1, s * .25, s * .55, 0, 0, 6.28); ctx.fill();
+  ctx.restore();
+}
+function frame() {
+  tick += 1; const wind = Math.sin(tick / 180) * .5 + .3;
+  ctx.clearRect(0, 0, W, H);
+  while (petals.filter(p => !p.burst).length < petalCount()) petals.push(newPetal());
+  petals = petals.filter(p => {
+    if (p.burst) { p.vx *= .985; p.vy = p.vy * .985 + .03; } else { p.x += wind * .6; }
+    p.x += p.vx + Math.sin(p.f) * .35; p.y += p.vy; p.r += p.vr; p.f += p.vf;
+    drawPetal(p);
+    return p.y < H + 20 && p.x > -40 && p.x < W + 40;
+  });
+  requestAnimationFrame(frame);
+}
+resize(); addEventListener("resize", resize);
+if (!reduce) requestAnimationFrame(frame);
+function burst(el) {
+  if (reduce) return;
+  const a = el.getBoundingClientRect(), b = stage.getBoundingClientRect(), x = a.left - b.left + a.width / 2, y = a.top - b.top + a.height / 2;
+  for (let i = 0; i < 18; i++) { const ang = rnd() * 6.28, sp = 1.5 + rnd() * 3.5; petals.push(newPetal(x, y, Math.cos(ang) * sp + 1, Math.sin(ang) * sp - 1.5)); }
+}
+
+/* 接住花瓣 → 抽一支資安籤 */
+let caught = 0, lastOmi = -1;
+function omikuji() {
+  let k; do k = Math.floor(Math.random() * OMIKUJI.length); while (k === lastOmi && OMIKUJI.length > 1); lastOmi = k;
+  const [lv, tx, ref] = OMIKUJI[k];
+  $("#omiLv").textContent = lv; $("#omiTx").textContent = tx; $("#omiRef").textContent = `📜 ISO/IEC 27001:2022 ${ref}`;
+  $("#omiNo").textContent = `第 ${String(k + 1).padStart(2, "0")} 番 · 你接住了第 ${caught} 片花瓣`;
+  $("#omi").hidden = false; $("#omiOk").focus();
+}
+const closeOmi = () => { $("#omi").hidden = true; };
+$("#omiOk").addEventListener("click", closeOmi);
+$("#omiAgain").addEventListener("click", closeOmi);
+$("#omi").addEventListener("click", e => { if (e.target.id === "omi") closeOmi(); });
+addEventListener("keydown", e => { if (e.key === "Escape" && !$("#omi").hidden) closeOmi(); });
+function caughtOne() { caught += 1; $("#caught").textContent = caught; omikuji(); }
+stage.addEventListener("click", e => {
+  if (e.target.closest("button,a")) return;
+  const b = stage.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
+  let best = null, bd = W < 500 ? 34 : 26;
+  petals.forEach(p => { const d = Math.hypot(p.x - x, p.y - y); if (d < bd) { bd = d; best = p; } });
+  if (best) { petals.splice(petals.indexOf(best), 1); caughtOne(); }
+});
+$("#catchBtn").addEventListener("click", caughtOne);
+
+/* 晝櫻／夜櫻：傍晚 6 點到清晨 6 點預設夜櫻 */
+function setNight(on) { document.body.classList.toggle("night", on); $("#modeBtn").textContent = on ? "☀️ 晝櫻" : "🌙 夜櫻"; $("#modeBtn").setAttribute("aria-pressed", on); }
+{ const h = new Date().getHours(), q = location.search.match(/[?&]mode=(day|night)/); setNight(q ? q[1] === "night" : h >= 18 || h < 6); }
+$("#modeBtn").addEventListener("click", () => setNight(!document.body.classList.contains("night")));
+
+/* ================= 面板內容 ================= */
+$("#lvs").innerHTML = LEVELS.map((l, i) => row(siteUrl(l.p), l.ic, `<span class="tg">Lv.${i + 1}</span>${esc(l.t)}`, "", l.c)).join("");
+$("#courses").innerHTML = COURSES.map(c => `<a class="row" href="${esc(siteUrl(c.p))}" rel="noopener"><span class="ic txt wide" style="background:${c.bg}">${c.big}</span><span class="tx">${esc(c.name)}<small>${esc(c.badge)}</small></span></a>`).join("");
+$("#flows").innerHTML = FLOWS.map(([f, ic], i) => {
+  const no = String(i + 1).padStart(2, "0");
+  return `<a class="tile" href="${esc(siteUrl(`課程動畫/isms運作流程課程解說/a${no}_${f}流程`))}" rel="noopener"><span class="e">${ic}</span><small>A${no}</small><b>${esc(f)}</b></a>`;
+}).join("");
+$("#park").innerHTML = PARK.map(a => row(siteUrl(a.p), a.ic, `<span class="tg">${esc(a.tag)}</span>${esc(a.t)}`, esc(a.d), a.c)).join("");
+$("#files").innerHTML = CASES.map(c => `<article class="case"><span class="no">CASE ${esc(c.id)} · ${esc(c.cat)}</span><b>${esc(c.t)}</b><small>改編自：${esc(c.o)}</small>
+  <div class="acts"><a class="btn sm gold" href="${CASE_URL}#${esc(c.id)}-read" rel="noopener">📖 開始閱讀</a><a class="btn sm" href="${CASE_URL}#${esc(c.id)}-discuss" rel="noopener">💬 討論互動</a></div></article>`).join("");
+$("#news").innerHTML = NEWS.map(n => `<a class="case" href="${NEWS_URL}cases/${esc(n.slug)}/" rel="noopener"><span class="no"><span class="tg sev ${n.sev === "緊急" ? "urgent" : ""}">${esc(n.sev)}</span>${esc(n.date.replace(/-/g, "/"))} · ${esc(n.src)}</span><b>${esc(n.t)}</b><small>${esc(n.d)}</small></a>`).join("");
+$("#aicase").innerHTML = AICASE.map(a => row(siteUrl(a.p), a.ic, esc(a.t), esc(a.d))).join("");
+$("#heroThink").href = siteUrl(THINKTANK);
+$("#caseRoom").href = siteUrl("ai寫的個案/資安個案研究室");
+$("#newsAll").href = siteUrl("ai寫的個案/從新聞看個案");
+$("#seg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  $("#seg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  ["files", "news", "aicase"].forEach(v => $("#" + v).hidden = b.dataset.v !== v);
+});
+$("#quiz").innerHTML = QUIZ.map(([t, p]) => { const [ic, ...rest] = t.split(" "); return row(siteUrl(p), ic, esc(rest.join(" ")), ""); }).join("");
+const lk = ([ic, t, d, u, c]) => row(siteUrl(u), esc(ic), esc(t), esc(d), c, "txt");
+$("#resList").innerHTML = RES.map(lk).join("");
+$("#srcList").innerHTML = SRC.map(lk).join("");
+$("#arcade").innerHTML = ARCADE.map(g => `<a class="tile" style="--c:${g.c}" href="${esc(g.u)}" rel="noopener"><span class="e">${g.ic}</span><b>${esc(g.t)}</b><span class="d clamp">${esc(g.d)}</span></a>`).join("");
+
+
+/* ================= 對話：Allan 與阿拉蕾在樹下輪流說 ================= */
+const who = { a: ["Allan", $("#whoA")], b: ["阿拉蕾", $("#whoB")] };
+let talk = TABS[0].talk, ti = 0, typeTimer, loopTimer;
+function speak() {
+  const [w, face, text] = talk[ti++ % talk.length], [name, el] = who[w];
+  $("#tFace").src = `assets/img/${face}.webp`; $("#tName").textContent = name;
+  Object.values(who).forEach(([, x]) => x.classList.remove("speak")); void el.offsetWidth; el.classList.add("speak");
+  clearTimeout(typeTimer); clearTimeout(loopTimer);
+  const say = $("#tSay");
+  if (reduce) say.textContent = text;
+  else { let n = 0; say.textContent = ""; (function step() { say.textContent = text.slice(0, ++n); if (n < text.length) typeTimer = setTimeout(step, 55); })(); }
+  loopTimer = setTimeout(speak, 5600);
+}
+Object.entries(who).forEach(([w, [, el]]) => el.addEventListener("click", () => {
+  for (let k = 0; k < talk.length; k++) if (talk[(ti + k) % talk.length][0] === w) { ti += k; break; }
+  speak();
+}));
+$("#talk").addEventListener("click", speak);
+
+/* ================= 換短冊：花瓣吹起、卷軸展開 ================= */
+const N = TABS.length;
+let cur = -1;
+function show(i, byUser) {
+  i = (i + N) % N;
+  const t = TABS[i], prev = TABS[(i - 1 + N) % N], nx = TABS[(i + 1) % N];
+  TABS.forEach((x, k) => { const b = $(`#t-${x.id}`); b.setAttribute("aria-selected", k === i); b.tabIndex = k === i ? 0 : -1; $(`#p-${x.id}`).hidden = k !== i; });
+  if (byUser) burst($(`#t-${t.id} .pp`));
+  cur = i;
+  const paper = $("#paper"); paper.classList.remove("open"); void paper.offsetWidth; paper.classList.add("open");
+  $("#panel").style.setProperty("--tc", t.c);
+  $("#sPoem").innerHTML = t.poem.split("　").map(esc).join("<br>"); $("#sSeal").textContent = t.seal;
+  $("#sNo").textContent = `${t.no}・${t.kigo}`; $("#sTitle").textContent = `${t.e} ${t.t}`; $("#sDesc").textContent = t.d;
+  $("#prevBtn").innerHTML = `◀ ${prev.no}<b>${esc(prev.t)}</b>`;
+  $("#nextBtn").innerHTML = `${nx.no} ▶<b>${esc(nx.t)}</b>`;
+  talk = t.talk; ti = 0; speak();
+  if (byUser) {
+    history.replaceState(null, "", "#" + t.id);
+    const r = $("#panel").getBoundingClientRect();
+    if (r.top < 0 || r.top > innerHeight * .8) setTimeout(() => $("#panel").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }), 450);
+  }
+}
+$("#tzs").addEventListener("click", e => { const b = e.target.closest(".tz"); if (b) show(TABS.findIndex(t => "t-" + t.id === b.id), true); });
+$("#tzs").addEventListener("keydown", e => {
+  const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
+  e.preventDefault(); show(cur + d, true); $(`#t-${TABS[cur].id}`).focus();
+});
+$("#prevBtn").addEventListener("click", () => show(cur - 1, true));
+$("#nextBtn").addEventListener("click", () => show(cur + 1, true));
+const fromHash = () => Math.max(0, TABS.findIndex(t => "#" + t.id === location.hash));
+addEventListener("hashchange", () => show(fromHash()));
+show(fromHash());
+
+/* 手機：標題移到樹的上方 */
+const mq = matchMedia("(max-width:760px)");
+function placeTitle() {
+  const card = $("#titlecard"), talkEl = $("#talk");
+  if (mq.matches) { $("#hero").insertBefore(card, $("#stage")); $("#hero").appendChild(talkEl); $("#scene").setAttribute("preserveAspectRatio", "xMinYMax slice"); }
+  else { $("#stage").insertBefore(card, $("#tzs")); $("#stage").insertBefore(talkEl, $(".duo")); $("#scene").setAttribute("preserveAspectRatio", "xMidYMid meet"); }
+  resize();
+}
+mq.addEventListener("change", placeTitle); placeTitle();
+
+const fab = $("#fab");
+new IntersectionObserver(([e]) => fab.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.top < 0)).observe(stage);
+fab.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
+
+/* ================= 情資：每月下載與焦點（讀取情資蒐集紀錄網站，邏輯同其他版首頁） ================= */
+const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59) : new Date(); })();
+$("#btnXlsx").href = $("#btnOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
+
+/* 以中文檔名下載（跨網域連結無法指定檔名，所以先抓成 blob）；失敗就直接開啟原連結 */
+function bindDownload(a, url, name) {
+  a.href = url; a.hidden = false;
+  a.onclick = async e => {
+    if (a.dataset.busy) return e.preventDefault();
+    e.preventDefault(); a.dataset.busy = 1;
+    try {
+      const blob = await (await fetch(url)).blob(), t = document.createElement("a");
+      t.href = URL.createObjectURL(blob); t.download = name; t.target = "_self";
+      document.body.appendChild(t); t.click(); t.remove(); setTimeout(() => URL.revokeObjectURL(t.href), 4000);
+    } catch (err) { window.open(url, "_blank", "noopener"); }
+    delete a.dataset.busy;
+  };
+}
+const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
+
+(async () => {
+  const fail = () => { $("#focusList").innerHTML = `<div class="ph">請點「查詢與下載專區」查看最新情資。</div>`; };
+  let idx;
+  try { idx = await (await fetch(`${INTEL}data/index.json`, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const nowKey = TODAY.getFullYear() * 12 + TODAY.getMonth();
+  const months = Object.entries(idx.years || {}).flatMap(([y, v]) => (v.months || []).map(m => ({ ...m, year: +y })))
+    .filter(m => m.count > 0 && m.year * 12 + m.month - 1 <= nowKey).sort((a, b) => b.year * 12 + b.month - (a.year * 12 + a.month));
+  if (!months.length) return fail();
+  const latest = months[0];
+  const isThisMonth = latest.year === TODAY.getFullYear() && latest.month === TODAY.getMonth() + 1;
+
+  /* 主要下載＝客戶要留存的「完整月份」：每月 1–15 日是上個月，16 日起換成本月（累計中）；另一個月份放在旁邊 */
+  const full = months.find(m => m.year * 12 + m.month - 1 < nowKey), prog = isThisMonth ? latest : null;
+  const main = (prog && (TODAY.getDate() > 15 || !full)) ? prog : (full || latest), side = main === prog ? full : prog;
+  const yr = m => m.year === TODAY.getFullYear() ? "" : `${m.year} 年 `;
+  const label = m => m === prog ? `${yr(m)}${m.month} 月 Excel（本月累計中）` : `${yr(m)}${m.month} 月 Excel（完整月份）`;
+  $("#fileYear").textContent = `${main.year}年${main.month}月`;
+  $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
+  bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
+  const other = $("#btnOther");
+  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
+
+  let recs;
+  try { recs = await (await fetch(INTEL + latest.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const items = recs.map(r => ({ ...r, d: ymd(r.date) })).filter(x => x.title && x.d && x.d <= TODAY).sort((a, b) => b.d - a.d);
+  if (!items.length) return fail();
+  const last = items[0].d, high = items.filter(x => x.severity === "高").length, kev = items.filter(x => x.kev === "是").length;
+  $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${latest.year}年${latest.month}月）`;
+  $("#monthLabel").textContent = `🗓️ ${latest.year}年${latest.month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  if (high || kev) { $("#riskPill").hidden = false; $("#riskPill").textContent = `🚨 威脅程度高 ${high} 筆 · KEV ${kev} 筆`; }
+  TABS[0].talk[0][2] = `${latest.month} 月的情資已整理 ${items.length} 筆，像花瓣一樣一片片收好了。`;
+  const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
+  const badge = x => (x.kev === "是" ? `<span class="bd kev">KEV</span>` : "") + (x.severity === "高" ? `<span class="bd">高</span>` : "");
+  $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.d.getMonth() + 1}/${x.d.getDate()} · ${esc(x.source)}${badge(x)}</small>${esc(x.title)}`)).join("");
+})();
+</script>
+</body>
+</html>
+

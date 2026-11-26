@@ -3,9 +3,10 @@
    換預設首頁、新增版本的步驟見 CLAUDE.md「首頁版本」。 */
 window.HOME_VERSIONS = [
   { id: "sticker", emo: "🎨", name: "貼紙漫畫版", file: "./" },
-  { id: "classic", emo: "🌌", name: "經典版", file: "home-classic.html" },
   { id: "taiwan", emo: "🚆", name: "台灣環島版", file: "home-taiwan.html" },
-  { id: "alien", emo: "👽", name: "外星人風格版", file: "home-alien.html" }
+  { id: "alien", emo: "👽", name: "外星人風格版", file: "home-alien.html" },
+  { id: "sakura", emo: "🌸", name: "賞櫻風格版", file: "home-sakura.html" },
+  { id: "classic", emo: "🌌", name: "經典版", file: "home-classic.html" }   /* Allan 指定：經典版放最後 */
 ];
 (function () {
   var box = document.getElementById("verSwitch"); if (!box) return;
