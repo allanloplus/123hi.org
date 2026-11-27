@@ -59,6 +59,19 @@ h1 i{font-style:normal;color:var(--gold);margin:0 .15em}
 .btn.gold:hover{background:linear-gradient(135deg,#fff0c4,#d9a957)}
 .btn.sm{padding:5px 13px;font-size:13.5px}
 
+/* ---------- 本月資安神諭（情資下載，放最上方：客戶最常用） ---------- */
+.odl{position:relative;display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:860px;margin:18px auto 0;padding:14px 18px 14px 16px;border:1px solid var(--gold);border-radius:12px;background:radial-gradient(ellipse at 0 50%,rgba(217,181,106,.22),transparent 55%),linear-gradient(135deg,rgba(58,24,56,.85),rgba(21,27,66,.9));box-shadow:0 0 0 4px rgba(13,18,48,.7),0 0 0 5px rgba(217,181,106,.35),0 0 34px rgba(217,181,106,.25)}
+.odl .l{display:flex;align-items:center;gap:12px;min-width:0}
+.odl .ic{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;font-size:26px;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.5),transparent 30%),radial-gradient(circle,#6d55b8,#2b1d5c);box-shadow:0 0 18px rgba(150,120,255,.55)}
+.odl b{display:block;font-size:18px;letter-spacing:.12em;color:var(--gold2)}
+.odl b em{font-style:normal;font-family:var(--la);font-size:14px;color:var(--gold);letter-spacing:.1em;margin-left:6px}
+.odl small{display:block;font-family:"Noto Sans TC",sans-serif;font-size:13px;color:var(--ink);opacity:.85;line-height:1.5}
+.odl small .rk{color:#ffb3c1;font-weight:700}
+.odl .r{display:flex;flex-direction:column;align-items:stretch;gap:6px;flex:none}
+.btn.dl{padding:11px 22px;font-size:16.5px;font-weight:900;animation:dlglow 2.6s ease-in-out infinite}
+@keyframes dlglow{50%{box-shadow:0 0 26px rgba(241,220,164,.75)}}
+.odl .r .sm2{display:flex;gap:6px;justify-content:flex-end}
+
 /* ---------- 牌桌 ---------- */
 .table{position:relative;height:340px;margin:16px auto 0;max-width:1100px;--sp:min(122px,11.4vw);--cw:min(112px,10.4vw)}
 .table::before{content:"";position:absolute;left:50%;top:44%;width:min(1000px,96vw);height:300px;transform:translate(-50%,-30%);border-radius:50%;background:radial-gradient(ellipse at 50% 40%,rgba(107,42,90,.75),rgba(58,24,56,.6) 45%,transparent 70%)}
@@ -231,6 +244,11 @@ footer{max-width:1100px;margin:48px auto 0;padding:0 16px 30px;font-size:14px;te
   .orn{display:none}
   .cta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
   .cta .btn{padding:6px;font-size:13.5px}
+  .odl{flex-direction:column;align-items:stretch;gap:10px;margin-top:12px;padding:12px}
+  .odl .ic{width:40px;height:40px;font-size:20px}
+  .odl b{font-size:16px}
+  .odl .r .sm2{justify-content:stretch}.odl .r .sm2 .btn{flex:1}
+  .btn.dl{font-size:15.5px;padding:10px 12px}
   .table{height:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:12px 10px;margin-top:12px;padding:10px 4px 4px;overflow:hidden}
   .table::before{width:100%;height:100%;top:50%;transform:translate(-50%,-50%)}
   .zodiac{width:360px;height:360px;margin:-180px 0 0 -180px}
@@ -280,6 +298,12 @@ footer{max-width:1100px;margin:48px auto 0;padding:0 16px 30px;font-size:14px;te
   <p>Allan 幫客戶整理及分享的資安知識庫｜翻開一張牌，看見一個主題</p>
   <div class="cta"><a class="btn gold" id="heroThink" href="#">📚 ISMS智庫 月刊</a><a class="btn" href="https://allanlo.123hi.org/isms_island/" rel="noopener">🏝️ 逛資安島</a></div>
 </header>
+
+<!-- ================= 本月資安神諭：情資下載（Allan 指定要醒目） ================= -->
+<section class="odl" aria-label="本月資安情資下載">
+  <div class="l"><span class="ic" aria-hidden="true">🔮</span><div><b>本月資安神諭<em>Monthly Oracle</em></b><small id="heroMeta">資安內外部情資蒐集紀錄・每日更新・留存作為 A.5.7 稽核佐證</small></div></div>
+  <div class="r"><a class="btn gold dl" id="heroXlsx" href="#">⬇️ 下載本月情資 Excel</a><span class="sm2"><a class="btn sm" id="heroOther" href="#" hidden></a><a class="btn sm" id="heroOpen" href="#">🔎 查詢與下載專區</a></span></div>
+</section>
 
 <!-- ================= 牌桌：八張大阿爾克那 ================= -->
 <nav class="table deck" id="table" role="tablist" aria-label="八張塔羅牌：八個分類">
@@ -697,7 +721,7 @@ $("#drawBtn").addEventListener("click", drawThree);
 
 /* ================= 情資：每月下載與焦點（讀取情資蒐集紀錄網站，邏輯同其他版首頁） ================= */
 const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59) : new Date(); })();
-$("#btnXlsx").href = $("#btnOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
+$("#btnXlsx").href = $("#btnOpen").href = $("#heroXlsx").href = $("#heroOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
 
 /* 以中文檔名下載（跨網域連結無法指定檔名，所以先抓成 blob）；失敗就直接開啟原連結 */
 function bindDownload(a, url, name) {
@@ -734,8 +758,9 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   $("#fileYear").textContent = `${main.year}年${main.month}月`;
   $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
   bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
+  $("#heroXlsx").textContent = `⬇️ 下載 ${label(main)}`; bindDownload($("#heroXlsx"), INTEL + main.xlsx, main.xlsxName);
   const other = $("#btnOther");
-  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
+  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); $("#heroOther").textContent = `⬇️ ${side.month} 月${side === prog ? "（累計中）" : "（完整月份）"}`; bindDownload($("#heroOther"), INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
 
   let recs;
   try { recs = await (await fetch(INTEL + latest.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
@@ -744,6 +769,7 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   const last = items[0].d, high = items.filter(x => x.severity === "高").length, kev = items.filter(x => x.kev === "是").length;
   $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${latest.year}年${latest.month}月）`;
   $("#monthLabel").textContent = `🗓️ ${latest.year}年${latest.month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  $("#heroMeta").innerHTML = `${latest.year}年${latest.month}月已整理 <b style="display:inline;font-size:inherit;letter-spacing:0">${items.length}</b> 筆・最新 ${last.getMonth() + 1}/${last.getDate()}` + (high || kev ? `・<span class="rk">高風險 ${high}・KEV ${kev}</span>` : "") + `<br>每月下載留存，就是 A.5.7 威脅情資的稽核佐證`;
   if (high || kev) { $("#riskPill").hidden = false; $("#riskPill").textContent = `🚨 威脅程度高 ${high} 筆 · KEV ${kev} 筆`; }
   TABS[0].talk[0][2] = `我翻開了「隱者」——${latest.month} 月情資已整理 ${items.length} 筆，提燈照見暗處。`;
   const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
