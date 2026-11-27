@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISMS·普拉斯·AllanLo</title>
+<meta name="description" content="Allan 幫客戶整理及分享的資安知識庫：每月資安內外部情資、課程動畫、課後測驗與教學資源。">
+<base target="_blank">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+/* 貼紙漫畫版首頁：一個舞台＋八個分類分頁，內容不往下堆疊。其他版本見 versions.js（頁首切換列）；首頁 index.html 依星期轉向，星期一轉到本頁 */
+:root{
+  --ink:#1c2340; --muted:#5a6178; --paper:#fff7e6; --card:#fff; --sun:#ffd24a;
+  --coral:#ee4f38; --teal:#0e9d97; --tc:#ee4f38;
+  --bd:2.5px solid var(--ink); --sh:4px 4px 0 var(--ink); --r:18px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Noto Sans TC",system-ui,-apple-system,"Microsoft JhengHei",sans-serif;font-weight:500;line-height:1.55;overflow-x:hidden;
+  background:radial-gradient(rgba(28,35,64,.09) 1.2px,transparent 1.4px) 0 0/18px 18px,var(--paper)}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:1080px;margin:0 auto;padding:16px 16px 0}
+:focus-visible{outline:3px solid #3b6cf0;outline-offset:2px}
+
+/* ---------- 舞台 ---------- */
+.stage{position:relative;display:grid;grid-template-columns:170px minmax(0,1fr) 236px;grid-template-areas:"a title b" "a bubble b" "a cta b";column-gap:18px;align-items:center;
+  padding:22px 22px 0;border:var(--bd);border-radius:28px;box-shadow:var(--sh);overflow:hidden;
+  background:radial-gradient(rgba(255,255,255,.55) 2px,transparent 2.4px) 0 0/16px 16px,linear-gradient(180deg,#ffdc66,#ffc934)}
+.deco{position:absolute;font-size:26px;opacity:.9;animation:float 5s ease-in-out infinite;pointer-events:none}
+@keyframes float{50%{transform:translateY(-10px) rotate(8deg)}}
+.who{align-self:end;display:flex;justify-content:center;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
+.who img{width:auto;transform-origin:bottom center;filter:drop-shadow(3px 4px 0 rgba(28,35,64,.25))}
+.who.a{grid-area:a}.who.a img{height:300px;animation:sway 5s ease-in-out infinite}
+.who.b{grid-area:b}.who.b img{height:286px;animation:hop 3.4s ease-in-out infinite}
+.who.talk img{animation:talk .5s ease-in-out 2}
+@keyframes sway{50%{transform:rotate(1.5deg) translateY(-5px)}}
+@keyframes hop{0%,40%,100%{transform:translateY(0)}20%{transform:translateY(-12px) rotate(-1deg)}}
+@keyframes talk{50%{transform:translateY(-10px) scale(1.03)}}
+.title{grid-area:title;text-align:center;align-self:end}
+h1{margin:0;font-size:clamp(26px,4.6vw,48px);font-weight:900;line-height:1.15;white-space:nowrap;letter-spacing:.01em}
+h1 i{font-style:normal;color:var(--coral)}
+h1 em{font-style:normal;background:linear-gradient(transparent 62%,#fff 62%)}
+.tagline{margin:6px 0 0;font-weight:700;font-size:clamp(13px,1.6vw,17px)}
+.bubble{grid-area:bubble;position:relative;display:flex;align-items:center;gap:12px;min-height:84px;margin:14px 0;padding:10px 16px 10px 12px;background:#fff;border:var(--bd);border-radius:20px;box-shadow:var(--sh)}
+.bubble::after{content:"";position:absolute;top:50%;width:16px;height:16px;background:#fff;border:var(--bd);border-top:0;border-right:0;margin-top:-8px}
+.bubble.from-a::after{left:-10px;transform:rotate(45deg)}
+.bubble.from-b::after{right:-10px;transform:rotate(-135deg)}
+.bubble .face{flex:none;width:54px;height:54px;border-radius:50%;border:var(--bd);background:#dff3ff;object-fit:cover;object-position:top}
+.bubble.from-b .face{background:#fff1b8}
+.bubble .nm{display:block;font-size:12px;font-weight:900;color:var(--muted)}
+.bubble .say{font-weight:700;font-size:16px;line-height:1.45}
+.cta{grid-area:cta;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-self:start;padding-bottom:24px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border:var(--bd);border-radius:999px;box-shadow:3px 3px 0 var(--ink);background:#fff;font-weight:900;font-size:15px;line-height:1.3;text-decoration:none;text-align:center;transition:transform .12s ease,box-shadow .12s ease}
+.btn:hover{transform:translate(-1px,-2px);box-shadow:5px 6px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.btn.hot{background:var(--coral);color:#fff}
+.btn.sea{background:var(--teal);color:#fff}
+.btn.sun{background:var(--sun)}
+.btn.sm{padding:6px 12px;font-size:13px;box-shadow:2px 2px 0 var(--ink)}
+.wig{animation:wig 3.2s ease-in-out infinite}
+@keyframes wig{0%,86%,100%{rotate:0deg}90%{rotate:-3deg}95%{rotate:3deg}}
+
+/* ---------- 分類 ---------- */
+.tabs{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin:18px 0 16px;scroll-margin-top:8px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;border:var(--bd);border-radius:var(--r);background:#fff;box-shadow:3px 3px 0 var(--ink);font-weight:900;font-size:15px;line-height:1.25;transition:transform .12s ease,box-shadow .12s ease,background .12s ease;-webkit-tap-highlight-color:transparent}
+.tab .e{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--c) 22%,#fff);transition:transform .2s ease}
+.tab small{font-size:11px;font-weight:700;color:var(--muted)}
+.tab:hover{transform:translate(-1px,-3px);box-shadow:5px 7px 0 var(--ink)}
+.tab:hover .e{transform:rotate(-10deg) scale(1.12)}
+.tab[aria-selected="true"]{background:var(--c);color:#fff;transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.tab[aria-selected="true"] .e{background:#fff}
+.tab[aria-selected="true"] small{color:#fff;opacity:.92}
+
+/* ---------- 內容面板 ---------- */
+.panel{position:relative;background:var(--card);border:var(--bd);border-radius:24px;box-shadow:var(--sh);padding:20px;border-top:10px solid var(--tc)}
+.panel section{animation:pop .28s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.phead{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.phead img{flex:none;width:60px;height:60px;border-radius:50%;border:var(--bd);background:color-mix(in srgb,var(--tc) 18%,#fff);object-fit:cover;object-position:top}
+.phead h2{margin:0;font-size:clamp(20px,2.6vw,26px);font-weight:900;line-height:1.25}
+.phead p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.sub{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:20px 0 10px;font-size:17px;font-weight:900}
+.sub small{font-size:13px;font-weight:500;color:var(--muted)}
+.grid{display:grid;gap:10px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+
+.row{position:relative;display:flex;align-items:center;gap:12px;min-height:60px;padding:9px 12px;border:2px solid var(--ink);border-radius:14px;background:#fff;text-decoration:none;transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
+.row:hover{transform:translate(-1px,-2px);box-shadow:3px 4px 0 var(--ink);background:color-mix(in srgb,var(--c,var(--tc)) 10%,#fff)}
+.row .ic{flex:none;min-width:42px;height:42px;padding:0 6px;border-radius:12px;display:grid;place-items:center;text-align:center;font-size:22px;background:color-mix(in srgb,var(--c,var(--tc)) 20%,#fff)}
+.row .ic.txt{font-size:12px;font-weight:900;color:#fff;background:var(--c);line-height:1.15}
+.row .ic.wide{width:66px;height:46px}
+.row .tx{min-width:0;font-weight:700;font-size:15px;line-height:1.35}
+.row .tx small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);line-height:1.4}
+.row .tg{display:table;margin-bottom:2px;padding:0 7px;border-radius:999px;background:var(--c,var(--tc));color:#fff;font-size:11px;font-weight:900;vertical-align:1px}
+.clamp{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+.tile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border:2px solid var(--ink);border-radius:14px;text-align:center;text-decoration:none;background:#fff;transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
+.tile:hover{transform:translate(-1px,-3px) rotate(-1deg);box-shadow:3px 4px 0 var(--ink);background:color-mix(in srgb,var(--c,var(--tc)) 12%,#fff)}
+.tile .e{font-size:28px;line-height:1.2}
+.tile small{font-size:11px;font-weight:900;color:var(--c,var(--tc));letter-spacing:.06em}
+.tile b{font-size:14px;line-height:1.3}
+.tile .d{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* 情資 */
+.intel{display:grid;grid-template-columns:1.25fr 1fr;gap:14px}
+.dl{padding:16px;border:var(--bd);border-radius:var(--r);background:#fff3c9}
+.pill{display:inline-block;padding:2px 10px;border:2px solid var(--ink);border-radius:999px;background:#fff;font-size:12.5px;font-weight:700;margin:0 4px 4px 0}
+.pill.risk{background:var(--coral);color:#fff}
+.dl h3{margin:6px 0 4px;font-size:clamp(18px,2.2vw,22px);font-weight:900;line-height:1.3}
+.dl h3 span{display:inline-block;padding:0 8px;border-radius:8px;background:var(--ink);color:var(--sun);font-size:.72em;vertical-align:2px}
+.dl p{margin:0 0 12px;font-size:13.5px;color:#4a4f63}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.focus{padding:14px;border:var(--bd);border-radius:var(--r);background:#fff}
+.focus h3{margin:0 0 6px;font-size:15px;font-weight:900;display:flex;align-items:center;gap:8px}
+.live{width:9px;height:9px;border-radius:50%;background:var(--coral);animation:ping 1.8s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(238,79,56,.6)}70%,100%{box-shadow:0 0 0 9px rgba(238,79,56,0)}}
+.focus a,.focus .ph{display:block;padding:7px 8px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:700;line-height:1.4}
+.focus a+a{border-top:1.5px dashed #d9dbe4}
+.focus a:hover{background:#fff3c9}
+.focus small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.focus .ph{color:var(--muted);font-weight:500}
+.bd{display:inline-block;margin-left:4px;padding:0 5px;border-radius:4px;background:#ffe1dc;color:#c0321d;font-size:11px;font-weight:900}
+.bd.kev{background:#c0321d;color:#fff}
+
+/* 個案 */
+.seg{display:inline-flex;border:var(--bd);border-radius:999px;overflow:hidden;margin-bottom:12px}
+.seg button{border:0;background:#fff;padding:7px 16px;font-weight:900;font-size:14px}
+.seg button+button{border-left:var(--bd)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.case{display:flex;flex-direction:column;gap:4px;padding:12px;border:2px solid var(--ink);border-radius:14px;background:#fffaf0}
+.case .no{font-size:11.5px;font-weight:900;letter-spacing:.06em;color:#8a5a1c}
+.case b{font-size:15px;line-height:1.4}
+.case small{font-size:12.5px;color:var(--muted);line-height:1.4}
+.case .acts{margin-top:auto;padding-top:6px;gap:8px}
+.news .sev{background:#e8590c}.news .sev.urgent{background:#c0321d}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
+.foot .note{flex:1 1 260px;margin:0;font-size:12px;color:var(--muted)}
+.next{display:flex;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:2px dashed #d9dbe4}
+
+/* ---------- 頁尾 ---------- */
+footer{max-width:1080px;margin:22px auto 0;padding:0 16px 28px;font-size:13.5px}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.about div{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2px solid var(--ink);border-radius:14px;background:#fff}
+.about img{flex:none;width:48px;height:48px;border-radius:50%;border:2px solid var(--ink);background:#dff3ff;object-fit:cover;object-position:top}
+.about div+div img{background:#fff1b8}
+.about b{display:block;font-size:15px}
+.about small{color:var(--muted)}
+.contact{text-align:center;color:var(--muted)}
+.contact a{color:var(--ink);font-weight:700}
+.fab{position:fixed;right:12px;bottom:12px;z-index:10;display:flex;align-items:center;gap:4px;padding:4px 12px 4px 4px;border:var(--bd);border-radius:999px;background:var(--sun);box-shadow:3px 3px 0 var(--ink);font-weight:900;font-size:13px;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s ease,transform .2s ease}
+.fab.show{opacity:1;pointer-events:auto;transform:none}
+.fab img{width:38px;height:38px;border-radius:50%;background:#fff;object-fit:cover;object-position:top}
+
+/* ---------- 手機 ---------- */
+@media (max-width:900px){
+  .g5{grid-template-columns:repeat(3,1fr)}.g3{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(2,1fr)}
+  .tab small{display:none}
+}
+@media (max-width:700px){
+  .wrap{padding:10px 12px 0}
+  .stage{grid-template-columns:74px minmax(0,1fr) 108px;grid-template-areas:"title title title" "bubble bubble bubble" "a cta b";column-gap:8px;padding:12px 12px 0;border-radius:22px}
+  .deco{display:none}
+  .who.a img{height:148px}.who.b img{height:135px}
+  .tagline{margin-top:2px}
+  .bubble{min-height:72px;margin:10px 0 12px;padding:8px 12px 8px 10px;gap:10px;border-radius:16px}
+  .bubble::after{top:auto;bottom:-10px;margin:0}
+  .bubble.from-a::after{left:26px;transform:rotate(-45deg)}
+  .bubble.from-b::after{right:42px;transform:rotate(-45deg)}
+  .bubble .face{width:46px;height:46px}
+  .bubble .say{font-size:14px}
+  .cta{flex-direction:column;align-items:stretch;gap:8px;align-self:center;padding-bottom:10px}
+  .cta .btn{padding:8px 6px;font-size:13px}
+  .tabs{grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+  .tab{padding:7px 2px 6px;font-size:13px;border-radius:14px}
+  .tab .e{width:36px;height:36px;font-size:20px}
+  .panel{padding:14px 12px 16px;border-radius:20px}
+  .phead img{width:50px;height:50px}
+  .intel,.g3,.g2.stack{grid-template-columns:1fr}
+  .acts .btn.wide{flex:1 1 100%}
+  .tile .d,.dl p{display:none!important}
+  .seg button{padding:7px 9px;font-size:13px}
+  .dl h3{margin-bottom:10px}
+  .about{grid-template-columns:1fr}
+  footer{padding-bottom:76px}   /* 讓頁尾的版本切換不被右下角「分類」浮動鈕蓋住 */
+}
+@media (max-width:370px){.who.b img{height:118px}.stage{grid-template-columns:68px minmax(0,1fr) 94px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* 前往情資下載（Allan 指定：舞台加一顆按鈕，跳到下載區，不直接下載） */
+.dlflash{animation:dlflash 2.2s ease-out}
+@keyframes dlflash{0%,100%{box-shadow:none}20%,55%{box-shadow:0 0 0 5px rgba(255,190,40,.95),0 0 30px rgba(255,190,40,.6)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================= 舞台：Allan × 阿拉蕾 ================= -->
+<header class="stage">
+  <span class="deco" style="right:23.5%;bottom:9%;animation-delay:-2s" aria-hidden="true">🛡️</span>
+  <span class="deco" style="left:25%;bottom:9%;animation-delay:-3.4s" aria-hidden="true">🔑</span>
+  <button class="who a" id="whoA" aria-label="聽 Allan 說"><img src="assets/img/allan-main.webp" alt="Allan Lo 顧問" width="560" height="1128"></button>
+  <div class="title">
+    <h1>ISMS<i>·</i>普拉斯<i>·</i><em>AllanLo</em></h1>
+    <p class="tagline">Allan 幫客戶整理及分享的資安知識庫</p>
+  </div>
+  <div class="bubble from-a" id="bubble" aria-live="polite">
+    <img class="face" id="bFace" src="assets/img/allan-smile.webp" alt="">
+    <div><span class="nm" id="bName">Allan</span><span class="say" id="bSay">大家好，我是 Allan！</span></div>
+  </div>
+  <div class="cta">
+    <a class="btn sun" id="goIntel" href="#intel" target="_self">📥 前往情資下載</a>
+    <a class="btn hot wig" id="heroThink" href="#">📚 ISMS智庫 月刊</a>
+    <a class="btn sea" href="https://allanlo.123hi.org/isms_island/" rel="noopener">🏝️ 逛資安島</a>
+  </div>
+  <button class="who b" id="whoB" aria-label="聽阿拉蕾說"><img src="assets/img/arale-tablet.webp" alt="AI 小助手 阿拉蕾" width="700" height="875"></button>
+</header>
+
+<!-- ================= 八個分類 ================= -->
+<nav class="tabs" id="tabs" role="tablist" aria-label="網站分類"></nav>
+
+<main class="panel" id="panel">
+  <section id="p-intel" role="tabpanel">
+    <div class="phead"></div>
+    <div class="intel">
+      <div class="dl">
+        <span class="pill" id="monthLabel">🗓️ 每日更新</span><span class="pill risk" id="riskPill" hidden></span>
+        <h3>資安內外部情資蒐集紀錄 <span id="fileYear">每月 Excel</span></h3>
+        <p>每日自動蒐集 TWCERT、NICS、iThome、TechNews 的漏洞與安全事件，並評估弱點處置期限；每月 Excel 下載留存，就是稽核佐證。</p>
+        <div class="acts">
+          <a class="btn hot wide" id="btnXlsx" href="#">⬇️ 下載本月 Excel</a>
+          <a class="btn sm" id="btnOther" href="#" hidden></a>
+          <a class="btn sm sun" id="btnOpen" href="#">🔎 查詢與下載專區</a>
+          <a class="btn sm" href="https://allanloplus.github.io/intelligence/" rel="noopener">📊 情資戰情看板</a>
+        </div>
+      </div>
+      <div class="focus">
+        <h3><span class="live"></span><span id="focusTitle">本月焦點情資</span></h3>
+        <div id="focusList"><div class="ph">阿拉蕾正在整理最新情資…</div></div>
+      </div>
+    </div>
+    <h3 class="sub">🎖️ 情資官養成之路 <small>下載只是第一步，四關從看懂到實戰</small></h3>
+    <div class="grid g4" id="lvs"></div>
+  </section>
+
+  <section id="p-courses" role="tabpanel" hidden><div class="phead"></div><div class="grid g3" id="courses"></div></section>
+
+  <section id="p-flows" role="tabpanel" hidden><div class="phead"></div><div class="grid g5" id="flows"></div></section>
+
+  <section id="p-park" role="tabpanel" hidden><div class="phead"></div><div class="grid g2 stack" id="park"></div></section>
+
+  <section id="p-cases" role="tabpanel" hidden>
+    <div class="phead"></div>
+    <div class="seg" id="seg">
+      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 安全檢測</button>
+    </div>
+    <div class="grid g3" id="files"></div>
+    <div class="grid g3 news" id="news" hidden></div>
+    <div class="grid g3" id="aicase" hidden></div>
+    <div class="foot">
+      <a class="btn sm sun" id="caseRoom" href="#">🔍 進入資安個案研究室 ↗</a>
+      <a class="btn sm" id="newsAll" href="#">📰 看全部新聞個案 ↗</a>
+      <p class="note">每案含動畫閱讀、討論互動、決策模擬與教學手冊（90 分鐘）。個案改編自公開資料，人物與公司名稱均為虛構，僅供教學討論。</p>
+    </div>
+  </section>
+
+  <section id="p-quiz" role="tabpanel" hidden><div class="phead"></div><div class="grid g2 stack" id="quiz"></div></section>
+
+  <section id="p-res" role="tabpanel" hidden>
+    <div class="phead"></div>
+    <h3 class="sub" style="margin-top:0">📚 教學資源</h3>
+    <div class="grid g4" id="resList"></div>
+    <h3 class="sub">📡 外部情資來源</h3>
+    <div class="grid g4" id="srcList"></div>
+  </section>
+
+  <section id="p-arcade" role="tabpanel" hidden><div class="phead"></div><div class="grid g5" id="arcade"></div></section>
+
+  <div class="next"><button class="btn sm" id="nextBtn"></button></div>
+</main>
+</div>
+
+<footer>
+  <div class="about">
+    <div><img src="assets/img/allan-wink.webp" alt=""><span><b>Allan Lo 顧問</b><small>ISMS／PIMS 輔導顧問 · 驗證機構稽核員 · 專長資安與企業 MIS 管理</small></span></div>
+    <div><img src="assets/img/arale-laugh.webp" alt=""><span><b>阿拉蕾 ARALE</b><small>AI 小助手 · 課程動畫搭檔 · 口頭禪「幫腔上課囉！」</small></span></div>
+  </div>
+  <div class="contact">🌐 <a href="https://www.123hi.org/">www.123hi.org</a> · ✉️ <a href="mailto:allanlo.plus@gmail.com">allanlo.plus@gmail.com</a></div>
+  <div id="verSwitch" data-current="sticker"></div>
+</footer>
+<script src="versions.js"></script>
+
+<button class="fab" id="fab" aria-label="回到分類"><img src="assets/img/arale-cheer.webp" alt="">分類 ↑</button>
+
+<script>
+/* ================= 資料（各版首頁相同；新增資源時 home-*.html 也要一起改） ================= */
+const INTEL = "https://allanloplus.github.io/intelligence/";
+const INTEL_PAGE = "資安情資/資安情資蒐集紀錄";
+
+const SITE = "https://www.123hi.org/";
+
+const LEVELS = [
+  { ic: "📺", t: "情資作業動畫解說", d: "13 段動畫簡報：情資蒐集、脆弱性識別、AI 風險排序到稽核證據", p: "資安情資/資安情資作業動畫解說", c: "#15aabf" },
+  { ic: "🗺️", t: "內外部情資地圖", d: "內部事件與外部來源一張圖掌握", p: "資安情資/內外部情資地圖", c: "#4c6ef5" },
+  { ic: "📊", t: "資安情資戰情室", d: "內外部情資、脆弱性與處置成效儀表板，阿拉蕾語音導覽", p: "資安情資/資安情資戰情室dashboard", c: "#7950f2" },
+  { ic: "🎮", t: "情資官特訓營", d: "7 個關卡＋稽核大魔王，過關領結訓證書", p: "資安情資/遊戲學習-情資官特訓營", c: "#f08c00" }
+];
+const PARK = [
+  { ic: "🗓️", t: "ISMS 的一年", tag: "動畫", d: "每天像刷牙、每月像量血壓、每年像全身健檢：ISMS 的工作節奏", p: "isms工作觀/isms工作的一年", c: "#1c7ed6", x: 13, y: 30 },
+  { ic: "🗺️", t: "ISMS 工作地圖", tag: "互動動畫", d: "時間、流程、工作類別三種視角，看紀錄如何一天天累積", p: "isms工作觀/isms工作地圖", c: "#0ca678", x: 32, y: 68, low: true },
+  { ic: "🧭", t: "ISMS 工作地圖－系統體驗", tag: "系統體驗", d: "把程序書變成每天做得完的工作：每日巡檢、情資、月報與量測依頻率排好，點一下留紀錄", p: "isms工作觀/isms工作地圖_系統體驗", c: "#1098ad" },
+  { ic: "🏘️", t: "ISMS 資安小鎮", tag: "互動地圖", d: "點建築，阿拉蕾帶路認識各部門的 ISMS 工作與稽核準備度", p: "isms工作觀/isms資安小鎮", c: "#e8590c", x: 52, y: 28 },
+  { ic: "🎲", t: "ISMS 大富翁", tag: "桌遊 1～4 人", d: "擲骰子走完資安一年，蒐集紀錄卡、擋下事件，年底外部稽核拿驗證", p: "isms工作觀/isms大富翁遊戲", c: "#e03131", x: 70, y: 66, low: true },
+  { ic: "🏰", t: "實體安全大冒險", tag: "自由探索", d: "探索 16 個 A.7 實體安全控制項，區域安全與設備安全一次認識", p: "isms工作觀/實體安全大冒險", c: "#7048e8", x: 88, y: 30 }
+];
+const CASE_URL = "https://allanloplus.github.io/CASE/";
+const CASES = [
+  { id: "S115001", cat: "威脅情資", t: "總經理先看到新聞：PHP2Shell 情資應變的 48 小時", o: "PHP2Shell 重大漏洞外洩與緊急修補", tags: ["威脅情資", "漏洞管理", "資產盤點", "委外管理"] },
+  { id: "S111001", cat: "資訊保護", t: "倒數十天：艾倫建設的勒索軟體風暴", o: "上市公司遭勒索軟體攻擊，海量資料遭洩", tags: ["勒索軟體", "雙重勒索", "備份與復原", "重大訊息"] },
+  { id: "S111002", cat: "資訊保護", t: "補丁之後：艾倫普拉斯科技的 Log4j 供應鏈風暴", o: "Log4j 重大資安漏洞揭露半年後仍不可大意", tags: ["Log4Shell", "軟體供應鏈", "修補管理", "SBOM"] },
+  { id: "S111003", cat: "資訊保護", t: "沒收回的那把鑰匙：艾倫普拉斯傳媒的跨年直播危機", o: "離職員工偷刪前東家資料，該當何罪？", tags: ["離職管理", "帳號註銷", "雲端金鑰", "共用帳號"] },
+  { id: "S111004", cat: "資訊保護", t: "畫面不能重拍：曦光傳媒的片庫歸零事件", o: "電視台新聞片庫慘遭協力廠商刪除", tags: ["委外管理", "備份與復原", "RPO／RTO", "變更管理"] },
+  { id: "S111005", cat: "資訊保護", t: "起飛之前：艾倫普拉斯科技的營業秘密保衛戰", o: "離職時請別帶走公司的營業秘密", tags: ["營業秘密", "內部威脅", "離職管理", "日誌監控"] }
+];
+const THINKTANK = "isms智庫";   /* Allan's ISMS智庫（每月一期） */
+const AICASE = [
+  { ic: "🧭", t: "總覽：AI 系統安全檢測個案", d: "一套上線系統從盤點、檢測到報告的完整案例", p: "ai寫的個案/ai開發系統之安全檢測個案/總覽ai系統安全檢測個案" },
+  { ic: "🧾", t: "XBOM 對話教學", d: "XBOM 是什麼、怎麼做、能證明什麼，對應 SSDLC 與 ISO 27001", p: "ai寫的個案/ai開發系統之安全檢測個案/xbom-對話教學" },
+  { ic: "🔬", t: "安全檢測對話教學", d: "源碼檢測、存取控制測試、滲透測試各自證明什麼", p: "ai寫的個案/ai開發系統之安全檢測個案/安全檢測對話教學" },
+  { ic: "📑", t: "解讀第三方檢測報告", d: "先看的五件事、逐節讀法與品質判斷", p: "ai寫的個案/ai開發系統之安全檢測個案/解讀第三方檢測報告" },
+  { ic: "🧑‍🏫", t: "延伸：安全檢測顧問輔導實務", d: "顧問如何帶客戶從接案做到移交", p: "ai寫的個案/ai開發系統之安全檢測個案/延伸安全檢測顧問輔導實務" },
+  { ic: "🖥️", t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", p: "https://pms.medsigtw.com/" }
+];
+const NEWS_URL = "https://allanloplus.github.io/case_isnews/";
+const NEWS = [
+  { slug: "2026-10-synology-c3rb3r", sev: "重大", date: "2026-10-30", src: "iThome 新聞", t: "群暉 NAS 遭 C3RB3R 勒索軟體攻擊：被遺忘的更新與備份", d: "鎖定未更新的群暉 NAS 加密勒索；「沒更新、對外曝露、備份放同一台」是共同破口。附互動式勒索攻防模擬器。", tp: ["勒索軟體", "備份與復原", "漏洞管理"] },
+  { slug: "2026-10-91app-breach", sev: "重大", date: "2026-10-30", src: "今周刊", t: "91APP 資料庫遭 AI 代理攻擊：一個未更新的內部工具，波及 1,329 個品牌", d: "內部工具未更新被 AI 自主滲透工具打入，再從 GitLab 取得資料庫金鑰；SaaS 供應鏈與個資責任一次看。", tp: ["個資保護", "供應鏈", "AI 資安"] },
+  { slug: "2026-10-php2shell", sev: "緊急", date: "2026-10-29", src: "非凡商業台", t: "AI 揪出潛藏十多年的 PHP 漏洞：PHP2Shell 與資安雙面刃", d: "全球約七成網站使用的 PHP 爆出免登入 RCE 漏洞，攻擊早於修補，日本與歐洲大量預防性關站。", tp: ["漏洞管理", "事件應變", "AI 資安"] }
+];
+const ARCADE = [
+  { ic: "📖", t: "ALLAN 家族說故事劇場", d: "第一號作品《花草派》：2010 年手繪繪本，由 Allan 家族重新配音演出", u: "https://allanloplus.github.io/picture-book99/", c: "#ff8cf5" },
+  { ic: "⛰️", t: "跟著 Allan 走一趟特富野古道", d: "Allan 當領隊：鄒族獵徑、運材鐵道、交通路線與古道小遊戲", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/", c: "#69db7c" },
+  { ic: "🃏", t: "Allan 與阿拉蕾的橋牌桌", d: "四人合約橋牌：和阿拉蕾搭檔，對抗駭客小黑與釣魚怪", u: "https://allanloplus.github.io/bridge/", c: "#4dabf7" },
+  { ic: "🐷", t: "Allan 的拱豬夜市", d: "夜市開桌拱豬：♠Q 是勒索豬，♦J 是資安預算羊", u: "https://allanloplus.github.io/Gong_Zhu/", c: "#ffa94d" },
+  { ic: "🎴", t: "Allan's 資安大老二", d: "環島攻防戰：出一張牌走一站，先回台北 101 拿資安認證；鐵支＝零時差攻擊", u: "https://allanloplus.github.io/big2/", c: "#ff6b6b" },
+  { ic: "🧋", t: "Allan's 資安大富翁－快樂遊台灣", d: "22 縣市環島大富翁：吃在地美食、認養縣市當資安守護者，把韌性指數推到 100%", u: "https://allanloplus.github.io/Monopoly/", c: "#38d9a9" },
+  { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "選心情、看天氣、挑飯友，阿拉蕾從 373 道台灣美食幫你挑", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" },
+  { ic: "🌴", t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天：357 篇日誌、台北⇄檳城航線地圖與南洋奇幻之旅勳章", u: "https://allanloplus.github.io/AllanWentToNayang/", c: "#a9e34b" },
+  { ic: "🏯", t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖：嘉義市、嘉義縣、雲林縣、臺南市，語音導覽、老地圖時光機與文資護照", u: "https://cultural.123hi.org/guide/", c: "#e8a87c" },
+  { ic: "🚉", t: "Allan's 文化知識學習：影片導讀", d: "嘉義與臺南車站：同一位建築師，一座風華再現、一座風華再見？", u: "https://allanlo-g.github.io/Train_Station/", c: "#74c0fc" }
+];
+const COURSES = [
+  { big: "ISO<br>27001", badge: "互動教材", name: "ISO27001 完整線上互動教材", p: "課程動畫/iso27001完整線上互動教材", img: "allan-point", bg: "linear-gradient(160deg,#1d4ed8,#14213d)" },
+  { big: "ISO<br>27701", badge: "隱私管理", name: "ISO27701 完整線上課程", p: "課程動畫/iso27701完整線上課程", img: "arale-explain", bg: "linear-gradient(160deg,#9c36b5,#5f3dc4)" },
+  { big: "ISO<br>42001", badge: "AI 管理", name: "ISO42001 完整線上課程", p: "課程動畫/iso42001完整線上課程", img: "arale-wow", bg: "linear-gradient(160deg,#f76707,#c92a2a)" },
+  { big: "TISAX", badge: "汽車產業", name: "TISAX 要求完整解說", p: "課程動畫/tisax要求完整解說", img: "allan-think", bg: "linear-gradient(160deg,#495057,#212529)" },
+  { big: "3<br>MIN", badge: "快速入門", name: "3 分鐘和 ISO27001", p: "課程動畫/3分鐘和iso27001", img: "arale-laugh", bg: "linear-gradient(160deg,#37b24d,#087f5b)" },
+  { big: "MIND<br>MAP", badge: "心智圖", name: "用心智圖了解 ISO27001", p: "課程動畫/用心智圖了解iso27001", img: "arale-think", bg: "linear-gradient(160deg,#fab005,#e67700)" },
+  { big: "資安<br>宣導", badge: "年度必修", name: "Allan 的年度資安宣導", p: "課程動畫/allan的年度資安宣導", img: "allan-laugh", bg: "linear-gradient(160deg,#15aabf,#1864ab)" },
+  { big: "TISAX<br>EN", badge: "English", name: "ISA 2027 for TISAX — Requirements Explained", p: "課程動畫/tisax要求完整解說_英文版", img: "allan-smile", bg: "linear-gradient(160deg,#1864ab,#212529)" },
+  { big: "資安法", badge: "事件通報", name: "資通安全法－資安事件通報", p: "課程動畫/資通安全法-資安事件通報", img: "allan-surprised", bg: "linear-gradient(160deg,#e03131,#862e9c)" }
+];
+const FLOWS = [["治理", "🏛️"], ["人員安全", "👥"], ["資訊保護", "🔐"], ["資產管理", "📦"], ["存取管理", "🔑"], ["保全組態", "⚙️"], ["實體安全", "🏢"],
+  ["威脅與弱點管理", "🛡️"], ["應用程式安全", "🧩"], ["系統與網路安全", "🌐"], ["供應者安全管理", "🤝"], ["資安事件管理", "🚨"], ["持續性", "♻️"], ["資訊安全保證", "✅"], ["遵循性", "📜"]];
+const QUIZ = [["📋 ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["🧠 資安課程課後測驗", "課後測驗專區/資安課程課後測驗"], ["🕵️ ISMS Auditor 知識測驗", "課後測驗專區/isms-auditor知識測驗"], ["💻 Allan's IT 知識測驗", "課後測驗專區/allans-it知識測驗"]];
+const RES = [
+  ["27001", "ISO27001 教學資源", "教學網站", "https://sites.google.com/123hi.org/iso27001/", "#1d4ed8"],
+  ["27701", "ISO27701 教學資源", "條文解說簡報", "https://sites.google.com/view/allanlo-iso27701/iso27701%E6%A2%9D%E6%96%87%E8%A7%A3%E8%AA%AA%E7%B0%A1%E5%A0%B1", "#9c36b5"],
+  ["TX", "TISAX 教學資源", "汽車產業資安", "https://sites.google.com/123hi.org/tisax/", "#495057"],
+  ["展示", "ISMS 系統化展示", "系統實作範例", "https://sites.google.com/view/allantest001/", "#0b7285"],
+  ["▶", "YouTube－AllanLo", "上課影音", "https://www.youtube.com/channel/UCnsy7Lewl-4BIw4T5J2vV4Q", "#e03131"],
+  ["iT", "iT 邦幫忙文章", "Allan 的技術文章", "https://ithelp.ithome.com.tw/users/20151950/articles", "#2b8a3e"],
+  ["影音", "資安教學影音整理", "分類影音資源", "教學資源/allan的資安教學分類影音資源整理", "#e67700"],
+  ["地圖", "內外部情資地圖", "資安情資", "資安情資/內外部情資地圖", "#c92a2a"]
+];
+const SRC = [
+  ["NICS", "國家資通安全研究院", "漏洞新聞、漏洞公告", "https://www.nics.nat.gov.tw/", "#1d4ed8"],
+  ["TW", "TWCERT/CC", "資安新聞、通報", "https://www.twcert.org.tw/", "#0f766e"],
+  ["H", "H-ISAC", "衛福部資安分享中心", "https://hisac.nat.gov.tw/", "#be123c"],
+  ["F", "F-ISAC", "金融資安分享", "https://www.fisac.tw/", "#a16207"],
+  ["iT", "iThome 資安", "資安日報、週報", "https://www.ithome.com.tw/security", "#c2410c"],
+  ["TN", "TechNews 資安", "科技新報資安快報", "https://infosecu.technews.tw/", "#334155"],
+  ["TM", "趨勢科技研究", "威脅研究報告", "https://www.trendmicro.com/zh_tw/research.html", "#dc2626"],
+  ["月報", "政府機關資安月報", "數位發展部資安署", "https://moda.gov.tw/ACS/press/report/670", "#4338ca"]
+];
+
+/* 八個分類：c 主色、face/d 面板標題、talk 為舞台上的對話（[誰, 表情, 台詞]） */
+const TABS = [
+  { id: "intel", e: "📡", t: "資安情資", s: "每月下載", c: "#ee4f38", face: "arale-wave", d: "客戶每月必下載，留存作為 ISO/IEC 27001:2022 A.5.7 威脅情資紀錄",
+    talk: [["a", "allan-point", "每月情資都整理好了，Excel 一鍵下載！"], ["b", "arale-thumb", "留存下來，就是 A.5.7 威脅情資的佐證 👍"], ["a", "allan-think", "遇到高風險漏洞，記得走 A.8.8 修補流程。"]] },
+  { id: "courses", e: "🎬", t: "課程動畫", s: "9 門課", c: "#2f6fe0", face: "arale-explain", d: "Allan 與阿拉蕾主演的完整線上課程與互動教材",
+    talk: [["b", "arale-explain", "阿拉蕾幫腔上課囉！九門課任你挑～"], ["a", "allan-smile", "27001、27701、42001、TISAX 都有完整動畫。"]] },
+  { id: "flows", e: "🗺️", t: "ISMS 流程", s: "A01–A15", c: "#0e9d97", face: "arale-mini", d: "15 個運作流程，一站一支動畫，看懂整個 ISMS",
+    talk: [["b", "arale-cheer", "跟我走完 A01 到 A15，一站一支動畫！"], ["a", "allan-point", "十五個流程串起來，就是整個 ISMS。"]] },
+  { id: "park", e: "🎡", t: "主題樂園", s: "ISMS 工作觀", c: "#2f9e44", face: "allan-laugh", d: "ISMS 工作觀：用動畫、地圖和遊戲，玩出對 ISMS 的整體感",
+    talk: [["a", "allan-laugh", "歡迎光臨 ISMS 主題樂園！"], ["b", "arale-wow", "有小鎮、有大富翁，邊玩邊懂 ISMS！"], ["a", "allan-point", "工作地圖多了系統體驗版，點一下就留紀錄。"]] },
+  { id: "cases", e: "🕵️", t: "個案研究", s: "一起辦案", c: "#a0612b", face: "allan-think", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 開發系統的安全檢測個案",
+    talk: [["a", "allan-think", "每一則資安新聞，都是一堂管理課。"], ["b", "arale-confused", "如果是我們公司遇到，該怎麼辦？"], ["a", "allan-wink", "進研究室，一起辦案就知道！"], ["b", "arale-explain", "新上架：AI 開發系統的安全檢測個案！"]] },
+  { id: "quiz", e: "📝", t: "課後測驗", s: "4 份測驗", c: "#e8590c", face: "allan-point", d: "上完課了嗎？來檢查學習成果",
+    talk: [["a", "allan-point", "上完課了嗎？來挑戰一下！"], ["b", "arale-cheer", "答對就送你一個阿拉蕾的讚 💪"]] },
+  { id: "res", e: "📚", t: "教學資源", s: "網站與來源", c: "#5b54d6", face: "allan-smile", d: "教學網站、影音文章，以及常用的外部情資來源",
+    talk: [["a", "allan-smile", "教學網站、影音、文章都收在這裡。"], ["b", "arale-think", "外部情資來源也幫你列好了～"]] },
+  { id: "arcade", e: "🕹️", t: "AI 遊樂場", s: "下課時間", c: "#c2379b", face: "arale-laugh", d: "下課時間！Allan 用 AI 做的遊戲與小作品",
+    talk: [["b", "arale-laugh", "下課時間！來玩 Allan 用 AI 做的遊戲～"], ["a", "allan-oops", "有幾款偷偷藏了資安梗，別說是我講的。"]] }
+];
+
+/* ================= 共用 ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const siteUrl = p => /^(https?:|#)/.test(p) ? p : SITE + p.split("/").map(encodeURIComponent).join("/");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const row = (href, ic, t, d, c, icCls = "") => `<a class="row" ${c ? `style="--c:${c}"` : ""} href="${esc(href)}" rel="noopener"><span class="ic ${icCls}">${ic}</span><span class="tx">${t}${d ? `<small>${d}</small>` : ""}</span></a>`;
+
+/* ================= 面板內容 ================= */
+$("#lvs").innerHTML = LEVELS.map((l, i) => row(siteUrl(l.p), l.ic, `<span class="tg">Lv.${i + 1}</span>${esc(l.t)}`, "", l.c)).join("");
+
+$("#courses").innerHTML = COURSES.map(c => `<a class="row" href="${esc(siteUrl(c.p))}" rel="noopener"><span class="ic txt wide" style="background:${c.bg}">${c.big}</span><span class="tx">${esc(c.name)}<small>${esc(c.badge)}</small></span></a>`).join("");
+
+$("#flows").innerHTML = FLOWS.map(([f, ic], i) => {
+  const no = String(i + 1).padStart(2, "0");
+  return `<a class="tile" href="${esc(siteUrl(`課程動畫/isms運作流程課程解說/a${no}_${f}流程`))}" rel="noopener"><span class="e">${ic}</span><small>A${no}</small><b>${esc(f)}</b></a>`;
+}).join("");
+
+$("#park").innerHTML = PARK.map(a => row(siteUrl(a.p), a.ic, `<span class="tg">${esc(a.tag)}</span>${esc(a.t)}`, esc(a.d), a.c)).join("");
+
+$("#files").innerHTML = CASES.map(c => `<article class="case"><span class="no">CASE ${esc(c.id)} · ${esc(c.cat)}</span><b>${esc(c.t)}</b><small>改編自：${esc(c.o)}</small>
+  <div class="acts"><a class="btn sm sun" href="${CASE_URL}#${esc(c.id)}-read" rel="noopener">📖 開始閱讀</a><a class="btn sm" href="${CASE_URL}#${esc(c.id)}-discuss" rel="noopener">💬 討論互動</a></div></article>`).join("");
+$("#news").innerHTML = NEWS.map(n => `<a class="case" style="text-decoration:none" href="${NEWS_URL}cases/${esc(n.slug)}/" rel="noopener"><span class="no"><span class="tg sev ${n.sev === "緊急" ? "urgent" : ""}">${esc(n.sev)}</span>${esc(n.date.replace(/-/g, "/"))} · ${esc(n.src)}</span><b>${esc(n.t)}</b><small>${esc(n.d)}</small></a>`).join("");
+$("#aicase").innerHTML = AICASE.map(a => row(siteUrl(a.p), a.ic, esc(a.t), esc(a.d))).join("");
+$("#heroThink").href = siteUrl(THINKTANK);
+$("#caseRoom").href = siteUrl("ai寫的個案/資安個案研究室");
+$("#newsAll").href = siteUrl("ai寫的個案/從新聞看個案");
+$("#seg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  $("#seg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  ["files", "news", "aicase"].forEach(v => $("#" + v).hidden = b.dataset.v !== v);
+});
+
+$("#quiz").innerHTML = QUIZ.map(([t, p]) => { const [ic, ...rest] = t.split(" "); return row(siteUrl(p), ic, esc(rest.join(" ")), ""); }).join("");
+const lk = ([ic, t, d, u, c]) => row(siteUrl(u), esc(ic), esc(t), esc(d), c, "txt");
+$("#resList").innerHTML = RES.map(lk).join("");
+$("#srcList").innerHTML = SRC.map(lk).join("");
+$("#arcade").innerHTML = ARCADE.map(g => `<a class="tile" style="--c:${g.c}" href="${esc(g.u)}" rel="noopener"><span class="e">${g.ic}</span><b>${esc(g.t)}</b><span class="d clamp">${esc(g.d)}</span></a>`).join("");
+
+TABS.forEach(t => $(`#p-${t.id} .phead`).innerHTML = `<img src="assets/img/${t.face}.webp" alt=""><div><h2>${t.e} ${esc(t.t)}</h2><p>${esc(t.d)}</p></div>`);
+
+/* ================= 舞台對話：切換分類時，Allan 與阿拉蕾輪流介紹 ================= */
+const who = { a: ["Allan", $("#whoA")], b: ["阿拉蕾", $("#whoB")] };
+let talk = TABS[0].talk, ti = 0, typeTimer, loopTimer;
+function speak() {
+  const [w, face, text] = talk[ti++ % talk.length], [name, el] = who[w];
+  $("#bubble").className = "bubble from-" + w;
+  $("#bFace").src = `assets/img/${face}.webp`; $("#bName").textContent = name;
+  Object.values(who).forEach(([, x]) => x.classList.remove("talk"));
+  void el.offsetWidth; el.classList.add("talk");
+  clearTimeout(typeTimer); clearTimeout(loopTimer);
+  const say = $("#bSay");
+  if (reduce) say.textContent = text;
+  else { let n = 0; say.textContent = ""; (function step() { say.textContent = text.slice(0, ++n); if (n < text.length) typeTimer = setTimeout(step, 45); })(); }
+  loopTimer = setTimeout(speak, 4600);
+}
+/* 點角色：讓他／她說下一句 */
+Object.entries(who).forEach(([w, [, el]]) => el.addEventListener("click", () => {
+  for (let k = 0; k < talk.length; k++) if (talk[(ti + k) % talk.length][0] === w) { ti += k; break; }
+  speak();
+}));
+
+/* ================= 分類切換 ================= */
+const tabsEl = $("#tabs");
+tabsEl.innerHTML = TABS.map(t => `<button class="tab" role="tab" id="t-${t.id}" aria-controls="p-${t.id}" aria-selected="false" style="--c:${t.c}"><span class="e">${t.e}</span>${esc(t.t)}<small>${esc(t.s)}</small></button>`).join("");
+let cur = -1;
+function show(i, byUser) {
+  i = (i + TABS.length) % TABS.length;
+  const t = TABS[i]; cur = i;
+  TABS.forEach((x, k) => {
+    $(`#p-${x.id}`).hidden = k !== i;
+    const b = $(`#t-${x.id}`); b.setAttribute("aria-selected", k === i); b.tabIndex = k === i ? 0 : -1;
+  });
+  $("#panel").style.setProperty("--tc", t.c);
+  const n = TABS[(i + 1) % TABS.length];
+  $("#nextBtn").textContent = `下一站：${n.e} ${n.t} →`;
+  talk = t.talk; ti = 0; speak();
+  if (byUser) {
+    history.replaceState(null, "", "#" + t.id);
+    /* 手機：分類列捲到畫面頂端，內容就在下方；桌機則只在分類列被捲出畫面時才捲回 */
+    const top = tabsEl.getBoundingClientRect().top;
+    if (top < 0 || (innerWidth <= 700 && top > 12)) tabsEl.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }
+}
+tabsEl.addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) show(TABS.findIndex(t => "t-" + t.id === b.id), true); });
+tabsEl.addEventListener("keydown", e => {
+  const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!d) return;
+  e.preventDefault(); show(cur + d, true); $(`#t-${TABS[cur].id}`).focus();
+});
+$("#nextBtn").addEventListener("click", () => show(cur + 1, true));
+const fromHash = () => Math.max(0, TABS.findIndex(t => "#" + t.id === location.hash));
+addEventListener("hashchange", () => show(fromHash()));
+show(fromHash());
+
+const fab = $("#fab");
+new IntersectionObserver(([e]) => fab.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.top < 0)).observe(tabsEl);
+fab.addEventListener("click", () => tabsEl.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }));
+
+/* ================= 情資：每月下載與焦點（讀取情資蒐集紀錄網站，邏輯同 home-classic.html） ================= */
+const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59) : new Date(); })();
+$("#btnXlsx").href = $("#btnOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
+
+/* 以中文檔名下載（跨網域連結無法指定檔名，所以先抓成 blob）；失敗就直接開啟原連結 */
+function bindDownload(a, url, name) {
+  a.href = url; a.hidden = false;
+  a.onclick = async e => {
+    if (a.dataset.busy) return e.preventDefault();
+    e.preventDefault(); a.dataset.busy = 1;
+    try {
+      const blob = await (await fetch(url)).blob(), t = document.createElement("a");
+      t.href = URL.createObjectURL(blob); t.download = name; t.target = "_self";
+      document.body.appendChild(t); t.click(); t.remove(); setTimeout(() => URL.revokeObjectURL(t.href), 4000);
+    } catch (err) { window.open(url, "_blank", "noopener"); }
+    delete a.dataset.busy;
+  };
+}
+const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
+
+(async () => {
+  const fail = () => { $("#focusList").innerHTML = `<div class="ph">請點「查詢與下載專區」查看最新情資。</div>`; };
+  let idx;
+  try { idx = await (await fetch(`${INTEL}data/index.json`, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const nowKey = TODAY.getFullYear() * 12 + TODAY.getMonth();
+  const months = Object.entries(idx.years || {}).flatMap(([y, v]) => (v.months || []).map(m => ({ ...m, year: +y })))
+    .filter(m => m.count > 0 && m.year * 12 + m.month - 1 <= nowKey).sort((a, b) => b.year * 12 + b.month - (a.year * 12 + a.month));
+  if (!months.length) return fail();
+  const latest = months[0];
+  const isThisMonth = latest.year === TODAY.getFullYear() && latest.month === TODAY.getMonth() + 1;
+
+  /* 主要下載＝客戶要留存的「完整月份」：每月 1–15 日是上個月，16 日起換成本月（累計中）；另一個月份放在旁邊 */
+  const full = months.find(m => m.year * 12 + m.month - 1 < nowKey), prog = isThisMonth ? latest : null;
+  const main = (prog && (TODAY.getDate() > 15 || !full)) ? prog : (full || latest), side = main === prog ? full : prog;
+  const yr = m => m.year === TODAY.getFullYear() ? "" : `${m.year} 年 `;
+  const label = m => m === prog ? `${yr(m)}${m.month} 月 Excel（本月累計中）` : `${yr(m)}${m.month} 月 Excel（完整月份）`;
+  $("#fileYear").textContent = `${main.year}年${main.month}月`;
+  $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
+  bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
+  const other = $("#btnOther");
+  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
+
+  let recs;
+  try { recs = await (await fetch(INTEL + latest.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const items = recs.map(r => ({ ...r, d: ymd(r.date) })).filter(x => x.title && x.d && x.d <= TODAY).sort((a, b) => b.d - a.d);
+  if (!items.length) return fail();
+  const last = items[0].d, high = items.filter(x => x.severity === "高").length, kev = items.filter(x => x.kev === "是").length;
+  $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${latest.year}年${latest.month}月）`;
+  $("#monthLabel").textContent = `🗓️ ${latest.year}年${latest.month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  if (high || kev) { $("#riskPill").hidden = false; $("#riskPill").textContent = `🚨 威脅程度高 ${high} 筆 · KEV ${kev} 筆`; }
+  TABS[0].talk[0][2] = `${latest.month} 月情資已整理 ${items.length} 筆，Excel 一鍵下載！`;
+  const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
+  const badge = x => (x.kev === "是" ? `<span class="bd kev">KEV</span>` : "") + (x.severity === "高" ? `<span class="bd">高</span>` : "");
+  $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.d.getMonth() + 1}/${x.d.getDate()} · ${esc(x.source)}${badge(x)}</small>${esc(x.title)}`)).join("");
+})();
+</script>
+<script>
+/* 「📥 前往情資下載」：打開資安情資分類並捲到下載區，下載區閃一下提示位置 */
+$("#goIntel").addEventListener("click", e => {
+  e.preventDefault(); show(0); history.replaceState(null, "", "#intel");
+  const d = document.querySelector("#p-intel .dl");
+  setTimeout(() => { d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); d.classList.remove("dlflash"); void d.offsetWidth; d.classList.add("dlflash"); }, 60);
+});
+</script>
+</body>
+</html>

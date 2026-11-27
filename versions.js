@@ -1,11 +1,11 @@
 /* 首頁版本清單＋切換列（每頁最上方，Allan 指定要醒目、不低調）。
    ・順序就是切換列由左到右的順序，經典版固定放最後。
-   ・每日輪替（Allan 指定）：首頁 index.html 依星期幾轉到當天的版本——星期一到星期日依序是清單由左到右的前七個（daily:false 的經典版不納入）。
-     貼紙漫畫版就是 index.html 本身；切換列連到它時帶 ?style=sticker，才不會又被轉走。測試星期幾可加 ?day=1～7（7＝星期日）。
+   ・每日輪替（Allan 指定）：首頁 index.html 只是轉向頁，依星期幾轉到當天的版本——星期一到星期日依序是清單由左到右的前七個（daily:false 的經典版不納入）。
+     index.html?style=<id>（例如 ?style=sticker）會轉到指定版本。測試星期幾可加 ?day=1～7（7＝星期日）。
    ・頁面在頁尾放 <div id="verSwitch" data-current="版本 id"></div> 並載入本檔：切換列畫在頁面最上方、這個框隱藏，並在它的位置加上頁尾署名「創意設計：Allan Lo」。
    新增版本、調整順序的注意事項見 CLAUDE.md「首頁版本」。 */
 window.HOME_VERSIONS = [
-  { id: "sticker", emo: "🎨", name: "貼紙漫畫版", file: "./?style=sticker" },
+  { id: "sticker", emo: "🎨", name: "貼紙漫畫版", file: "home-sticker.html" },
   { id: "taiwan", emo: "🚆", name: "台灣環島版", file: "home-taiwan.html" },
   { id: "sakura", emo: "🌸", name: "賞櫻風格版", file: "home-sakura.html" },
   { id: "poem", emo: "🖌️", name: "詩情畫意版", file: "home-poem.html" },
