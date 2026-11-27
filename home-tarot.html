@@ -279,6 +279,9 @@ footer{max-width:1100px;margin:48px auto 0;padding:0 16px 30px;font-size:14px;te
   footer{padding-bottom:70px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.say .tx span{opacity:1}}
+
+.dlflash{animation:dlflash 2.2s ease-out}
+@keyframes dlflash{0%,100%{box-shadow:none}20%,55%{box-shadow:0 0 0 4px rgba(255,200,60,.9),0 0 34px rgba(255,200,60,.65)}}
 </style>
 </head>
 <body>
@@ -302,7 +305,7 @@ footer{max-width:1100px;margin:48px auto 0;padding:0 16px 30px;font-size:14px;te
 <!-- ================= 本月資安神諭：情資下載（Allan 指定要醒目） ================= -->
 <section class="odl" aria-label="本月資安情資下載">
   <div class="l"><span class="ic" aria-hidden="true">🔮</span><div><b>本月資安神諭<em>Monthly Oracle</em></b><small id="heroMeta">資安內外部情資蒐集紀錄・每日更新・留存作為 A.5.7 稽核佐證</small></div></div>
-  <div class="r"><a class="btn gold dl" id="heroXlsx" href="#">⬇️ 下載本月情資 Excel</a><span class="sm2"><a class="btn sm" id="heroOther" href="#" hidden></a><a class="btn sm" id="heroOpen" href="#">🔎 查詢與下載專區</a></span></div>
+  <div class="r"><a class="btn gold dl" id="heroXlsx" href="#p-intel" target="_self">📥 前往本月情資下載</a></div>
 </section>
 
 <!-- ================= 牌桌：八張大阿爾克那 ================= -->
@@ -721,7 +724,7 @@ $("#drawBtn").addEventListener("click", drawThree);
 
 /* ================= 情資：每月下載與焦點（讀取情資蒐集紀錄網站，邏輯同其他版首頁） ================= */
 const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59) : new Date(); })();
-$("#btnXlsx").href = $("#btnOpen").href = $("#heroXlsx").href = $("#heroOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
+$("#btnXlsx").href = $("#btnOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
 
 /* 以中文檔名下載（跨網域連結無法指定檔名，所以先抓成 blob）；失敗就直接開啟原連結 */
 function bindDownload(a, url, name) {
@@ -758,9 +761,9 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   $("#fileYear").textContent = `${main.year}年${main.month}月`;
   $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
   bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
-  $("#heroXlsx").textContent = `⬇️ 下載 ${label(main)}`; bindDownload($("#heroXlsx"), INTEL + main.xlsx, main.xlsxName);
+  $("#heroXlsx").textContent = `📥 前往下載 ${main.year === TODAY.getFullYear() ? "" : main.year + " 年 "}${main.month} 月情資`;   /* 頁首情資列：跳到下載區 */
   const other = $("#btnOther");
-  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); $("#heroOther").textContent = `⬇️ ${side.month} 月${side === prog ? "（累計中）" : "（完整月份）"}`; bindDownload($("#heroOther"), INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
+  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
 
   let recs;
   try { recs = await (await fetch(INTEL + latest.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
@@ -775,6 +778,17 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
   const badge = x => (x.kev === "是" ? `<span class="bd kev">KEV</span>` : "") + (x.severity === "高" ? `<span class="bd">高</span>` : "");
   $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.d.getMonth() + 1}/${x.d.getDate()} · ${esc(x.source)}${badge(x)}</small>${esc(x.title)}`)).join("");
+})();
+</script>
+<script>
+/* 頁首的情資列：不直接下載，打開「資安情資」分類並捲到下載區（Allan 指定），下載區閃一下提示位置 */
+(function () {
+  const a = document.getElementById("heroXlsx"); if (!a) return;
+  a.addEventListener("click", e => {
+    e.preventDefault(); show(0);
+    const t = document.querySelector("#p-intel .ticket") || document.getElementById("panel");
+    setTimeout(() => { t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" }); t.classList.remove("dlflash"); void t.offsetWidth; t.classList.add("dlflash"); }, 60);
+  });
 })();
 </script>
 </body>

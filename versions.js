@@ -1,6 +1,6 @@
-/* 首頁版本切換（頁尾）。每個首頁版本放一行；目前的預設首頁 file 寫 "./"（它就是 index.html）。
-   頁面只要放 <div id="verSwitch" data-current="版本 id"></div> 並載入本檔，就會出現切換列。
-   換預設首頁、新增版本的步驟見 CLAUDE.md「首頁版本」。 */
+/* 首頁版本切換列（每頁最上方，Allan 指定要醒目、不低調）。每個首頁版本放一行；目前的預設首頁 file 寫 "./"（它就是 index.html）。
+   頁面只要放 <div id="verSwitch" data-current="版本 id"></div>（位置不拘，本檔會把切換列畫在頁面最上方並隱藏這個框）並載入本檔。
+   換預設首頁、新增版本的步驟見 CLAUDE.md「首頁版本」。順序就是切換列的順序，經典版固定放最後。 */
 window.HOME_VERSIONS = [
   { id: "sticker", emo: "🎨", name: "貼紙漫畫版", file: "./" },
   { id: "taiwan", emo: "🚆", name: "台灣環島版", file: "home-taiwan.html" },
@@ -13,14 +13,27 @@ window.HOME_VERSIONS = [
 (function () {
   var box = document.getElementById("verSwitch"); if (!box) return;
   var cur = box.dataset.current, css = document.createElement("style");
-  css.textContent = "#verSwitch{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:14px 0 0;font-size:13px;line-height:1.3}" +
-    "#verSwitch a,#verSwitch b{display:inline-block;padding:4px 12px;border:1.5px solid currentColor;border-radius:999px;font-weight:700;text-decoration:none;color:inherit}" +
-    "#verSwitch a{opacity:.75}#verSwitch a:hover{opacity:1;background:rgba(127,127,127,.18)}" +
-    "#verSwitch b{background:rgba(127,127,127,.28)}";
+  css.textContent =
+    "#verBar{position:relative;z-index:60;display:flex;align-items:center;gap:10px;padding:7px 14px;background:linear-gradient(90deg,#1b1630,#2b2148 50%,#1b1630);color:#fff;font:600 13.5px/1.3 'Noto Sans TC',system-ui,-apple-system,'Microsoft JhengHei',sans-serif;box-shadow:0 2px 12px rgba(0,0,0,.28);border-bottom:2px solid #ffd166}" +
+    "#verBar .vl{flex:none;display:flex;align-items:center;gap:6px;letter-spacing:.08em;color:#ffd166;white-space:nowrap}" +
+    "#verBar .vl i{font-style:normal;font-size:16px}" +
+    "#verBar .vs{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:1px 0}" +
+    "#verBar .vs::-webkit-scrollbar{display:none}" +
+    "#verBar .vs>:first-child{margin-left:auto}#verBar .vs>:last-child{margin-right:auto}" +
+    "#verBar a,#verBar b{flex:none;display:inline-flex;align-items:center;gap:4px;padding:5px 13px;border:1px solid rgba(255,255,255,.35);border-radius:999px;white-space:nowrap;text-decoration:none;color:#fff;font-weight:700;transition:background .15s,border-color .15s}" +
+    "#verBar a:hover{background:rgba(255,255,255,.14);border-color:#fff}" +
+    "#verBar b{background:#ffd166;border-color:#ffd166;color:#1b1630}" +
+    "#verSwitch{display:none!important}" +
+    "@media (max-width:760px){#verBar{padding:6px 10px;gap:8px;font-size:12.5px}#verBar .vl span{display:none}#verBar a,#verBar b{padding:4px 11px}}";
   document.head.appendChild(css);
-  box.setAttribute("aria-label", "切換首頁風格");
-  box.innerHTML = "<span>首頁風格</span>" + window.HOME_VERSIONS.map(function (v) {
+  var bar = document.createElement("nav");
+  bar.id = "verBar"; bar.setAttribute("aria-label", "切換首頁風格");
+  bar.innerHTML = '<span class="vl"><i>🏠</i><span>首頁風格</span></span><div class="vs">' + window.HOME_VERSIONS.map(function (v) {
     var label = v.emo + " " + v.name;
-    return v.id === cur ? '<b aria-current="page">' + label + " ✓</b>" : '<a href="' + v.file + '" target="_self">' + label + "</a>";
-  }).join("");
+    return v.id === cur ? '<b aria-current="page">' + label + "</b>" : '<a href="' + v.file + '" target="_self">' + label + "</a>";
+  }).join("") + "</div>";
+  document.body.insertBefore(bar, document.body.firstChild);
+  /* 手機：切換列可左右滑動，先把目前這一版捲進畫面 */
+  var list = bar.querySelector(".vs"), on = bar.querySelector("b");
+  if (on && list.scrollWidth > list.clientWidth) list.scrollLeft = on.offsetLeft - list.clientWidth / 2 + on.offsetWidth / 2;
 })();
