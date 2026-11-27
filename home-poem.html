@@ -72,6 +72,15 @@ h1 i{font-style:normal;color:var(--zhu);font-weight:400}
 .tassel{transform-origin:500px 522px;animation:tas 4.5s ease-in-out infinite}
 @keyframes tas{50%{transform:rotate(5deg)}}
 .hint{text-align:center;margin:-4px 0 0;font-size:13.5px;color:var(--muted);letter-spacing:.3em}
+.hint b{font-weight:600;color:var(--zhu)}
+#tassel{cursor:pointer}
+#tassel:hover .bead,#tassel:focus .bead{fill:#a8322a}
+#tassel:focus{outline:none}
+.jinse{position:relative;display:flex;gap:16px;align-items:flex-start;max-width:660px;margin:14px auto 0;padding:18px 22px;border:1px solid #c9b48e;background:linear-gradient(180deg,#fbf6ea,#f4ead2);box-shadow:0 8px 22px rgba(80,60,30,.14);animation:leaf .7s ease-out}
+.jinse b{display:block;font-size:17px;letter-spacing:.2em;color:var(--zhu)}
+.jinse p{margin:6px 0 8px;font-size:18px;line-height:1.95;letter-spacing:.1em}
+.jinse small{display:block;font-size:13.5px;color:var(--muted)}
+.jinse .btn{position:absolute;right:12px;top:12px}
 
 /* ---------- 雅集：團扇對話 ---------- */
 .yaji{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px;max-width:900px;margin:18px auto 0}
@@ -235,7 +244,8 @@ footer{max-width:1100px;margin:44px auto 0;padding:0 16px 30px;font-size:14px}
   .cta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
   .cta .btn{padding:6px;font-size:13.5px}
   .fanbox{margin:4px -4px 0}
-  .hint{font-size:12px;letter-spacing:.15em;margin-top:-2px}
+  .hint{font-size:12px;letter-spacing:.1em;margin-top:-2px}
+  .jinse{margin:10px 2px 0;padding:14px 14px;gap:10px}.jinse p{font-size:15.5px;letter-spacing:.04em}
   .yaji{grid-template-columns:auto minmax(0,1fr);gap:10px;margin-top:10px}
   .tuan.b{display:none}
   .tuan .face{width:58px;height:58px}
@@ -283,7 +293,8 @@ footer{max-width:1100px;margin:44px auto 0;padding:0 16px 30px;font-size:14px}
 
 <!-- ================= 摺扇 ================= -->
 <div class="fanbox"><svg class="fan" id="fan" viewBox="0 0 1000 600" role="img" aria-label="摺扇：扇面是所選詩作的水墨畫與題詩"></svg></div>
-<p class="hint">點扇面或下方書冊，換一首詩</p>
+<p class="hint">點扇面或下方書冊，換一首詩・輕觸扇墜，聽一曲<b>〈錦瑟〉</b></p>
+<div class="jinse" id="jinse" hidden aria-live="polite"><span class="seal">瑟</span><div><b>李商隱〈錦瑟〉</b><p>錦瑟無端五十弦，一弦一柱思華年。<br>莊生曉夢迷蝴蝶，望帝春心託杜鵑。<br>滄海月明珠有淚，藍田日暖玉生煙。<br>此情可待成追憶，只是當時已惘然。</p><small>扇墜彩蛋｜一弦一柱，像一筆一筆的紀錄；當下留存，日後才追憶得回來。</small></div><button class="btn sm" id="jinseX" target="_self">收起</button></div>
 
 <!-- ================= 雅集：團扇對話 ================= -->
 <section class="yaji" aria-label="Allan 與阿拉蕾對話">
@@ -535,7 +546,11 @@ const COUPLETS = [
   ["勸君更盡一杯酒", "西出陽關無故人", "王維〈送元二使安西〉", "勸君更盡一杯酒，離職帳號當天收。"],
   ["身無彩鳳雙飛翼", "心有靈犀一點通", "李商隱〈無題〉", "身無彩鳳雙飛翼，帳號必開多因子。"],
   ["春蠶到死絲方盡", "蠟炬成灰淚始乾", "李商隱〈無題〉", "春蠶到死絲方盡，稽核年年證方新。"],
-  ["夕陽無限好", "只是近黃昏", "李商隱〈登樂遊原〉", "夕陽無限好，只是近稽核。"]
+  ["夕陽無限好", "只是近黃昏", "李商隱〈登樂遊原〉", "夕陽無限好，只是近稽核。"],
+  ["錦瑟無端五十弦", "一弦一柱思華年", "李商隱〈錦瑟〉", "錦瑟無端五十弦，一筆一筆留紀錄。"],
+  ["莊生曉夢迷蝴蝶", "望帝春心託杜鵑", "李商隱〈錦瑟〉", "莊生曉夢迷蝴蝶，釣魚郵件迷員工。"],
+  ["滄海月明珠有淚", "藍田日暖玉生煙", "李商隱〈錦瑟〉", "滄海月明珠有淚，資料外洩悔已遲。"],
+  ["此情可待成追憶", "只是當時已惘然", "李商隱〈錦瑟〉", "此情可待成追憶，日誌沒留已惘然。"]
 ];
 
 /* ================= 共用 ================= */
@@ -568,7 +583,7 @@ const P = {
   hut: (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})"><rect x="-38" y="-34" width="76" height="34" fill="#efe4cc" stroke="${INK(.7)}" stroke-width="1.4"/><path d="M-52,-30 L0,-66 L52,-30 Z" fill="rgba(138,90,43,.55)" stroke="${INK(.7)}" stroke-width="1.4" filter="url(#wash)"/><rect x="-10" y="-24" width="14" height="24" fill="${INK(.6)}"/><rect x="14" y="-26" width="16" height="12" fill="none" stroke="${INK(.6)}"/></g>`,
   figure: (x, y, s, cup) => `<g transform="translate(${x},${y}) scale(${s})" fill="${INK(.85)}"><circle cx="0" cy="-46" r="7"/><path d="M-4,-52 h8 l-2,-6 h-4 z"/><path d="M-9,-38 Q-20,-10 -16,0 L16,0 Q20,-12 9,-38 Z"/>${cup ? `<path d="M7,-36 L20,-56" stroke="${INK(.85)}" stroke-width="5" stroke-linecap="round"/><rect x="17" y="-64" width="7" height="7" rx="1"/>` : `<path d="M-9,-34 L-22,-18" stroke="${INK(.85)}" stroke-width="5" stroke-linecap="round"/>`}</g>`,
   boat: (x, y, s, sail) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M-46,0 Q0,16 46,-4 L38,-8 Q0,2 -40,-6 Z" fill="${INK(.85)}"/>${sail ? `<path d="M0,-6 L2,-120" stroke="${INK(.8)}" stroke-width="2.4"/><path d="M4,-116 Q46,-70 30,-14 L4,-14 Z" fill="#f6efdc" stroke="${INK(.7)}" stroke-width="1.4"/><path d="M6,-92 H34 M6,-66 H40 M6,-40 H38" stroke="${INK(.35)}"/>` : `<path d="M-10,-6 Q-4,-26 6,-8" fill="${INK(.6)}"/>`}</g>`,
-  waves: (y0, n) => Array.from({ length: n }, (_, i) => { const y = y0 + i * 26, x = -40 + (i % 2) * 40; let d = `M${x},${y}`; for (let k = 0; k < 14; k++) d += ` q30,-20 60,0 q-14,-6 -4,-14`; return `<path d="${d}" fill="none" stroke="rgba(44,93,124,${.65 - i * .08})" stroke-width="${2.4 - i * .25}" stroke-linecap="round"/>`; }).join(""),
+  waves: (y0, n) => Array.from({ length: n }, (_, i) => { const y = y0 + i * 26, x = -40 + (i % 2) * 40; let d = `M${x},${y}`; for (let k = 0; k < 14; k++) d += ` q30,-20 60,0 q-14,-6 -4,-14 m4,14`; return `<path d="${d}" fill="none" stroke="rgba(44,93,124,${.65 - i * .08})" stroke-width="${2.4 - i * .25}" stroke-linecap="round"/>`; }).join(""),
   fence: (x0, x1, y) => { let s = ""; for (let x = x0; x <= x1; x += 18) s += `<path d="M${x},${y} L${x + 2},${y - 60 - rnd() * 14}" stroke="rgba(138,90,43,.8)" stroke-width="3" stroke-linecap="round"/>`; return s + `<path d="M${x0 - 6},${y - 22} L${x1 + 8},${y - 26} M${x0 - 6},${y - 46} L${x1 + 8},${y - 50}" stroke="rgba(138,90,43,.75)" stroke-width="2.4"/>`; },
   chrys: (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M0,0 q-4,30 2,58" stroke="rgba(62,96,72,.8)" stroke-width="2" fill="none"/><ellipse cx="-10" cy="26" rx="12" ry="6" fill="rgba(62,96,72,.6)" transform="rotate(-30 -10 26)"/><ellipse cx="10" cy="40" rx="12" ry="6" fill="rgba(62,96,72,.55)" transform="rotate(25 10 40)"/>${Array.from({ length: 14 }, (_, i) => `<ellipse cx="0" cy="-9" rx="2.6" ry="9" fill="#d6a51c" opacity=".9" transform="rotate(${i * 360 / 14})"/>`).join("")}<circle r="4" fill="#9a6a12"/></g>`,
   rain: (x0, x1, y0, y1) => Array.from({ length: 70 }, () => { const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0); return `<path d="M${f1(x)},${f1(y)} l-6,22" stroke="${INK(.22)}" stroke-width="1"/>`; }).join(""),
@@ -582,6 +597,8 @@ const P = {
   rock: (x, y, s) => `<path d="M${x - 50 * s},${y} Q${x - 46 * s},${y - 40 * s} ${x - 6 * s},${y - 46 * s} Q${x + 40 * s},${y - 40 * s} ${x + 54 * s},${y} Z" fill="${INK(.45)}" filter="url(#wash)"/><path d="M${x - 20 * s},${y - 30 * s} q${10 * s},${10 * s} ${4 * s},${26 * s}" stroke="${INK(.6)}" fill="none"/>`,
   stream: () => `<path d="M80,560 C180,500 140,450 260,430 S360,380 400,360" fill="none" stroke="rgba(44,93,124,.35)" stroke-width="26" stroke-linecap="round" filter="url(#soft)"/><path d="M90,556 C180,500 150,452 262,430 S360,382 398,362" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-dasharray="14 10"/>`,
   cloud: (x, y, s) => `<g opacity=".9" filter="url(#soft)">${[[0, 0, 40], [34, -12, 30], [-32, -6, 28], [12, -26, 26]].map(([dx, dy, r]) => `<circle cx="${x + dx * s}" cy="${y + dy * s}" r="${r * s}" fill="#fbf7ec"/>`).join("")}</g><path d="M${x - 50 * s},${y + 8 * s} q${30 * s},${-30 * s} ${60 * s},${-8 * s} q${20 * s},${-24 * s} ${44 * s},${-2 * s}" stroke="${INK(.3)}" fill="none"/>`,
+  butterfly: (x, y, s) => `<g transform="translate(${x},${y}) scale(${s}) rotate(-15)"><ellipse cx="-11" cy="-8" rx="12" ry="8" fill="rgba(178,58,72,.45)" stroke="${INK(.7)}" transform="rotate(-30 -11 -8)"/><ellipse cx="11" cy="-8" rx="12" ry="8" fill="rgba(178,58,72,.45)" stroke="${INK(.7)}" transform="rotate(30 11 -8)"/><ellipse cx="-8" cy="7" rx="7" ry="5" fill="rgba(178,58,72,.35)" stroke="${INK(.6)}" transform="rotate(30 -8 7)"/><ellipse cx="8" cy="7" rx="7" ry="5" fill="rgba(178,58,72,.35)" stroke="${INK(.6)}" transform="rotate(-30 8 7)"/><path d="M0,-12 V12 M0,-12 q-4,-8 -8,-10 M0,-12 q4,-8 8,-10" stroke="${INK(.85)}" stroke-width="1.6" fill="none"/></g>`,
+  zither: (x, y, s) => `<g transform="translate(${x},${y}) scale(${s}) rotate(-14)"><path d="M-150,-14 Q0,-26 150,-14 L150,14 Q0,4 -150,14 Z" fill="rgba(138,90,43,.75)" stroke="${INK(.75)}" stroke-width="1.6"/>${Array.from({ length: 25 }, (_, i) => `<path d="M-140,${f1(-11 + i * .95)} L140,${f1(-11 + i * .95)}" stroke="rgba(246,234,210,.55)" stroke-width=".5"/>`).join("")}${Array.from({ length: 9 }, (_, i) => `<path d="M${-100 + i * 26},-12 l-4,22 h8 z" fill="#efe4cc" stroke="${INK(.5)}" stroke-width=".8"/>`).join("")}</g>`,
   dusk: () => `<rect x="0" y="0" width="1000" height="600" fill="url(#nightg)"/>`
 };
 /* 八幅扇面畫（座標同扇面 1000×600，右側留給題詩） */
@@ -593,6 +610,7 @@ const SCENES = {
   rain: () => P.dusk() + P.mount(0, 760, 240, 150, 4, .6) + P.mist(240, 50) + P.mount(0, 600, 330, 110, 3, .72) + P.window(300, 300) + P.rain(40, 720, 40, 470) + P.ripples(110, 380),
   sea: () => P.mount(420, 760, 210, 80, 2, .25) + P.waves(250, 7) + P.boat(300, 262, 1.25, true) + P.birds(170, 170, 3, 1.1),
   bamboo: () => P.mount(260, 720, 220, 100, 3, .25) + P.bamboo(150, 390, 270, 1) + P.bamboo(232, 350, 230, .85) + P.bamboo(610, 300, 170, .7) + P.rock(320, 316, .9) + P.books(430, 292),
+  jinse: () => P.dusk() + P.moon(450, 140, 46) + `<path d="M420,250 q30,-6 60,0" stroke="rgba(251,247,236,.8)" stroke-width="3"/>` + P.waves(300, 5) + `<circle cx="452" cy="232" r="6" fill="#fbf7ec" stroke="${INK(.4)}"/><circle cx="450" cy="230" r="2" fill="#fff"/>` + P.mist(190, 50) + P.cloud(150, 330, .7) + P.butterfly(270, 170, 1.4) + P.birds(600, 120, 1, 1.6) + P.zither(230, 330, .85),
   moon: () => P.dusk() + P.moon(450, 150, 54) + P.blossom(50, 380, 1.2) + P.mount(0, 760, 340, 50, 3, .4) + P.figure(340, 300, 1, true) + `<ellipse cx="312" cy="304" rx="52" ry="6" fill="${INK(.3)}"/>` + P.figure(258, 303, .66, false).replace(INK(.85), INK(.3))
 };
 
@@ -615,7 +633,7 @@ $("#fan").innerHTML = `<defs>
   <linearGradient id="stickg" x1="0" x2="1"><stop offset="0" stop-color="#7a5a32"/><stop offset=".5" stop-color="#c9a466"/><stop offset="1" stop-color="#7a5a32"/></linearGradient>
   <clipPath id="fanClip"><path id="clipP" d="${sector(R0, R, -A, -A + .01)}"/></clipPath>
   <mask id="reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="600"><g filter="url(#bleed)"><circle id="revC" cx="360" cy="380" r="0" fill="#fff"/></g></mask></defs>
-  <g class="tassel"><path d="M500,522 q-2,28 2,40" stroke="#a8322a" stroke-width="2" fill="none"/><circle cx="502" cy="566" r="6" fill="#4e7d62"/>${Array.from({ length: 9 }, (_, i) => `<path d="M${498 + i},570 q${(i - 4) * 1.5},18 ${(i - 4) * 2.4},30" stroke="#a8322a" stroke-width="1.6" fill="none"/>`).join("")}</g>
+  <g class="tassel" id="tassel" role="button" tabindex="0" aria-label="扇墜彩蛋：李商隱〈錦瑟〉"><circle cx="502" cy="568" r="26" fill="transparent"/><title>輕觸扇墜，聽一曲〈錦瑟〉</title><path d="M500,522 q-2,28 2,40" stroke="#a8322a" stroke-width="2" fill="none"/><circle class="bead" cx="502" cy="566" r="6" fill="#4e7d62"/>${Array.from({ length: 9 }, (_, i) => `<path d="M${498 + i},570 q${(i - 4) * 1.5},18 ${(i - 4) * 2.4},30" stroke="#a8322a" stroke-width="1.6" fill="none"/>`).join("")}</g>
   <g id="sticks">${ribs.map((a, k) => `<line class="rib" data-a="${a}" x1="${PX}" y1="${PY}" x2="${PX}" y2="${PY - (k === 0 || k === ribs.length - 1 ? R + 6 : R0 + 14)}" stroke="${k === 0 || k === ribs.length - 1 ? "#8a6a3e" : "#b48d55"}" stroke-width="${k === 0 || k === ribs.length - 1 ? 13 : 9}" stroke-linecap="round"/>`).join("")}</g>
   <g clip-path="url(#fanClip)">
     <path d="${sector(R0, R, -A, A)}" fill="#f4ecd8"/><path d="${sector(R0, R, -A, A)}" fill="#f4ecd8" filter="url(#paperf)"/>
@@ -713,12 +731,24 @@ Object.entries(who).forEach(([w, [, el]]) => el.addEventListener("click", () => 
 $("#say").addEventListener("click", speak);
 
 /* ================= 換冊：扇面換畫、題詩、冊頁 ================= */
-let cur = -1;
+let cur = -1, jinseOn = false;
+/* 扇墜彩蛋：李商隱〈錦瑟〉（Allan 最愛）。不換分類，只換扇面、題詩與對話 */
+const JINSE = { scene: "jinse", poet: "李商隱", title: "錦瑟", seal: "瑟", cols: ["錦瑟無端五十弦", "一弦一柱思華年", "此情可待成追憶", "只是當時已惘然"],
+  talk: [["a", "allan-smile", "錦瑟無端五十弦，一弦一柱思華年——這是我最愛的一首。"], ["b", "arale-wow", "滄海月明珠有淚，藍田日暖玉生煙……好美的畫面。"], ["a", "allan-think", "此情可待成追憶，只是當時已惘然。資安也一樣：紀錄要當下留，事後才追得回來。"]] };
+function jinse() {
+  jinseOn = true; paint(JINSE); inscribe(JINSE);
+  TABS.forEach((x, k) => $("#num" + k).classList.remove("on"));
+  $("#jinse").hidden = false; talk = JINSE.talk; ti = 0; speak();
+}
+$("#tassel").addEventListener("click", jinse);
+$("#tassel").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); jinse(); } });
+$("#jinseX").addEventListener("click", () => show(cur));
 function show(i, byUser) {
   i = (i + N) % N;
   const t = TABS[i], prev = TABS[(i - 1 + N) % N], nx = TABS[(i + 1) % N];
   TABS.forEach((x, k) => { const b = $(`#t-${x.id}`); b.setAttribute("aria-selected", k === i); b.tabIndex = k === i ? 0 : -1; $(`#p-${x.id}`).hidden = k !== i; $("#num" + k).classList.toggle("on", k === i); });
-  if (cur !== i) { paint(t); inscribe(t); }
+  if (cur !== i || jinseOn) { paint(t); inscribe(t); }
+  jinseOn = false; $("#jinse").hidden = true;
   cur = i;
   const leaf = $("#leaf"); leaf.classList.remove("open"); void leaf.offsetWidth; leaf.classList.add("open");
   $("#panel").style.setProperty("--tc", t.c);
