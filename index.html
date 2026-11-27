@@ -191,6 +191,10 @@ footer{max-width:1080px;margin:22px auto 0;padding:0 16px 28px;font-size:13.5px}
 }
 @media (max-width:370px){.who.b img{height:118px}.stage{grid-template-columns:68px minmax(0,1fr) 94px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* 前往情資下載（Allan 指定：舞台加一顆按鈕，跳到下載區，不直接下載） */
+.dlflash{animation:dlflash 2.2s ease-out}
+@keyframes dlflash{0%,100%{box-shadow:none}20%,55%{box-shadow:0 0 0 5px rgba(255,190,40,.95),0 0 30px rgba(255,190,40,.6)}}
 </style>
 </head>
 <body>
@@ -210,6 +214,7 @@ footer{max-width:1080px;margin:22px auto 0;padding:0 16px 28px;font-size:13.5px}
     <div><span class="nm" id="bName">Allan</span><span class="say" id="bSay">大家好，我是 Allan！</span></div>
   </div>
   <div class="cta">
+    <a class="btn sun" id="goIntel" href="#intel" target="_self">📥 前往情資下載</a>
     <a class="btn hot wig" id="heroThink" href="#">📚 ISMS智庫 月刊</a>
     <a class="btn sea" href="https://allanlo.123hi.org/isms_island/" rel="noopener">🏝️ 逛資安島</a>
   </div>
@@ -556,6 +561,14 @@ const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/
   const badge = x => (x.kev === "是" ? `<span class="bd kev">KEV</span>` : "") + (x.severity === "高" ? `<span class="bd">高</span>` : "");
   $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.d.getMonth() + 1}/${x.d.getDate()} · ${esc(x.source)}${badge(x)}</small>${esc(x.title)}`)).join("");
 })();
+</script>
+<script>
+/* 「📥 前往情資下載」：打開資安情資分類並捲到下載區，下載區閃一下提示位置 */
+$("#goIntel").addEventListener("click", e => {
+  e.preventDefault(); show(0); history.replaceState(null, "", "#intel");
+  const d = document.querySelector("#p-intel .dl");
+  setTimeout(() => { d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); d.classList.remove("dlflash"); void d.offsetWidth; d.classList.add("dlflash"); }, 60);
+});
 </script>
 </body>
 </html>
