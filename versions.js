@@ -7,6 +7,7 @@ window.HOME_VERSIONS = [
   { id: "sakura", emo: "🌸", name: "賞櫻風格版", file: "home-sakura.html" },
   { id: "poem", emo: "🖌️", name: "詩情畫意版", file: "home-poem.html" },
   { id: "tarot", emo: "🔮", name: "塔羅牌版", file: "home-tarot.html" },
+  { id: "greek", emo: "🏛️", name: "希臘神話版", file: "home-greek.html" },
   { id: "alien", emo: "👽", name: "外星人風格版", file: "home-alien.html" },
   { id: "classic", emo: "🌌", name: "經典版", file: "home-classic.html" }   /* Allan 指定：經典版放最後 */
 ];
