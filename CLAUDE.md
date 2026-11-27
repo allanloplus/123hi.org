@@ -39,6 +39,7 @@
 
 ## 更新前後檢查
 - 選單「Allan's Tools」底下的項目（Allan's AI Map、隨意畫流程圖、簽名工作坊、Allan Lo的今天和明天等）**不放進首頁與資安島**（Allan 指定）。
-- 新增連結前，先抓 https://sites.google.com/123hi.org/isms/ 的選單比對實際網址。
+- **知識庫連結一律用 123hi 網域**：各版首頁與兩座資安島的 `SITE` 都是 `https://www.123hi.org/`（Allan 指定，不再用 `sites.google.com/123hi.org/isms/`；兩者路徑相同，例如 `https://www.123hi.org/isms工作觀/isms大富翁遊戲`）。ISO27001、TISAX、ISO27701、系統化展示等是另外的 Google 網站，維持原網址。
+- 新增連結前，先抓 https://www.123hi.org/ 的選單比對實際網址。
 - 嵌入的 GitHub 作品可 clone `https://github.com/allanloplus/<repo>` 讀內容（預設分支多半是 `claude/...`，不是 `main`）。
 - 推送前確認：桌機／手機無橫向捲動、手機嵌入框（約 390×575）精簡卡片正常、站內連結都回應 200。

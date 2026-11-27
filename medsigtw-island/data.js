@@ -2,7 +2,7 @@
    內容複製自 isms_island/data.js：人物改為米數顧問／AI小助手，總部改連米數官網與資安業務信箱；
    連到外部頁面的資源名稱維持原樣。isms_island 新增資源時，這裡也要一起補上。 */
 
-export const SITE = "https://sites.google.com/123hi.org/isms/";
+export const SITE = "https://www.123hi.org/";
 /* 情資來源：每日自動蒐集的「資安內外部情資蒐集紀錄」（查詢與每月 Excel 下載），頁面嵌在知識庫網站 */
 const INTEL_PAGE = SITE + ["資安情資", "資安情資蒐集紀錄"].map(encodeURIComponent).join("/");
 const WARROOM = "https://allanloplus.github.io/intelligence/";
