@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISMS·普拉斯·AllanLo｜一扇一詩・詩書守安（詩情畫意版）</title>
+<meta name="description" content="Allan 幫客戶整理及分享的資安知識庫：每月資安內外部情資、課程動畫、課後測驗與教學資源。詩情畫意版：一柄摺扇、八首名詩（李白、蘇軾、陶淵明、王維、李商隱），一詩一畫，詩書守安。">
+<base target="_blank">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=Noto+Sans+TC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* 詩情畫意版首頁「一扇一詩・詩書守安」：
+   一柄摺扇（開頁時展開），扇面隨所選的詩換成一幅水墨畫，詩句沿扇骨以書法直書題在扇面右側；
+   扇下一排八冊線裝書＝八個分類，每冊配一首名詩（李白、蘇軾、陶淵明、王維、李商隱）；
+   Allan 與阿拉蕾在團扇裡對話；下方「冊頁」是內容面板；再往下是「雅趣・接下句」對詩小遊戲（答對解鎖資安打油詩）。
+   其他版本見 versions.js（頁尾可切換）；資料陣列與情資邏輯與各版首頁相同。 */
+:root{
+  --paper:#f2ead8; --paper2:#f8f3e7; --ink:#24201d; --ink2:#4a433d; --muted:#7a6f63; --line:#d8ccb4;
+  --zhu:#a8322a; --qing:#2c5d7c; --lv:#4e7d62; --zhe:#8a5a2b; --huang:#c99a1c; --tc:#2c5d7c;
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:var(--serif);font-weight:400;line-height:1.7;overflow-x:hidden;background:
+  radial-gradient(circle at 20% 30%,rgba(140,110,70,.07) 0 1px,transparent 1.6px) 0 0/19px 23px,
+  radial-gradient(circle at 70% 60%,rgba(140,110,70,.06) 0 1px,transparent 1.6px) 0 0/29px 17px,
+  linear-gradient(180deg,#efe6d1,#f4eddd 40%,#efe6d1)}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--zhu);outline-offset:3px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+.sans{font-family:"Noto Sans TC",system-ui,sans-serif}
+
+/* ---------- 遠山（背景） ---------- */
+.farhill{position:absolute;left:0;right:0;top:0;height:420px;z-index:-1;opacity:.5;pointer-events:none}
+.farhill svg{width:100%;height:100%}
+
+/* ---------- 標題 ---------- */
+.top{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:26px 0 6px}
+.top .eb{font-size:14px;letter-spacing:.5em;color:var(--zhu)}
+h1{margin:2px 0 0;font-weight:900;font-size:clamp(28px,4vw,44px);line-height:1.2;letter-spacing:.04em;white-space:nowrap}
+h1 i{font-style:normal;color:var(--zhu);font-weight:400}
+.top p{margin:4px 0 0;color:var(--muted);font-size:15px}
+.epi{flex:none;display:flex;align-items:center;gap:14px;padding:10px 16px;border:1px solid var(--line);background:rgba(248,243,231,.7)}
+.epi q{quotes:none;font-size:19px;letter-spacing:.18em;line-height:1.5}
+.epi small{display:block;margin-top:2px;font-size:12.5px;color:var(--muted);letter-spacing:.1em}
+.seal{display:inline-grid;place-items:center;flex:none;width:34px;height:34px;border-radius:3px;background:var(--zhu);color:#f8efe0;font-weight:900;font-size:15px;line-height:1;box-shadow:inset 0 0 0 2px rgba(248,239,224,.35);transform:rotate(-3deg)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 18px;border:1px solid var(--ink2);border-radius:2px;background:transparent;font-family:var(--serif);font-weight:600;font-size:15px;line-height:1.3;text-decoration:none;text-align:center;letter-spacing:.06em;transition:background .2s,color .2s}
+.btn:hover{background:var(--ink);color:var(--paper2)}
+.btn.ink{background:var(--ink);color:var(--paper2)}
+.btn.ink:hover{background:#000}
+.btn.zhu{background:var(--zhu);border-color:var(--zhu);color:#fbf3e6}
+.btn.zhu:hover{background:#8d241d}
+.btn.sm{padding:5px 12px;font-size:13.5px}
+
+/* ---------- 摺扇 ---------- */
+.fanbox{position:relative;max-width:980px;margin:6px auto 0}
+.fan{display:block;width:100%;height:auto;overflow:visible}
+.ch{opacity:0;animation:inksvg .6s ease-out forwards;stroke:rgba(36,32,29,.25);stroke-width:0}
+@keyframes inksvg{0%{opacity:0;stroke-width:5px}60%{opacity:.9;stroke-width:1.5px}100%{opacity:1;stroke-width:0}}
+@keyframes inkin{0%{opacity:0;filter:blur(3px)}60%{opacity:.95;filter:blur(.6px)}100%{opacity:1;filter:none}}
+.pn{fill:transparent;cursor:pointer;transition:fill .25s}
+.pn:hover{fill:rgba(255,255,255,.18)}
+.num circle{fill:rgba(248,243,231,.92);stroke:var(--ink2);stroke-width:1}
+.num text{font-size:15px;fill:var(--ink);font-family:var(--serif)}
+.num.on circle{fill:var(--zhu);stroke:var(--zhu)}
+.num.on text{fill:#fbf3e6}
+.tassel{transform-origin:500px 522px;animation:tas 4.5s ease-in-out infinite}
+@keyframes tas{50%{transform:rotate(5deg)}}
+.hint{text-align:center;margin:-4px 0 0;font-size:13.5px;color:var(--muted);letter-spacing:.3em}
+
+/* ---------- 雅集：團扇對話 ---------- */
+.yaji{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:18px;max-width:900px;margin:18px auto 0}
+.tuan{position:relative;display:flex;flex-direction:column;align-items:center;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
+.tuan .face{width:96px;height:96px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 40% 35%,#fbf6ea,#e9dcc0);box-shadow:0 0 0 3px #f8f3e7,0 0 0 5px #b79b6b,0 6px 14px rgba(80,60,30,.2);transition:box-shadow .3s}
+.tuan .face img{width:100%;height:140%;object-fit:cover;object-position:top}
+.tuan .stick{width:6px;height:30px;margin-top:-2px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,#8a6a3e,#c8a46a,#8a6a3e)}
+.tuan .tag{margin-top:2px;font-size:12.5px;color:var(--muted);letter-spacing:.2em}
+.tuan.on .face{box-shadow:0 0 0 3px #f8f3e7,0 0 0 5px var(--zhu),0 6px 18px rgba(168,50,42,.3)}
+.tuan.on .face img{animation:nod .5s ease-in-out 2}
+@keyframes nod{50%{transform:translateY(-4px)}}
+.say{position:relative;min-height:92px;padding:14px 22px;background:
+  repeating-linear-gradient(90deg,transparent 0 33px,rgba(168,50,42,.16) 33px 34px),var(--paper2);border:1px solid var(--line);box-shadow:0 4px 14px rgba(80,60,30,.08)}
+.say .nm{display:block;font-size:13px;color:var(--zhu);letter-spacing:.3em}
+.say .tx{display:block;font-size:18px;line-height:1.65;letter-spacing:.04em}
+.say .tx span{opacity:0;animation:inkin .4s ease-out forwards}
+
+/* ---------- 書架：八冊線裝書 ---------- */
+.shelf{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;max-width:1000px;margin:26px auto 0;padding:0 0 14px;border-bottom:10px solid #7a5a3a;box-shadow:0 10px 12px -10px rgba(60,40,20,.5)}
+.book{position:relative;display:flex;flex-direction:column;align-items:center;min-height:172px;padding:12px 14px 8px 8px;border:0;border-radius:2px 4px 4px 2px;background:linear-gradient(90deg,rgba(255,255,255,.06),transparent 20%),var(--cv);box-shadow:inset -14px 0 0 rgba(0,0,0,.1),0 4px 8px rgba(40,30,20,.25);color:#f3ead6;transition:transform .3s,box-shadow .3s;-webkit-tap-highlight-color:transparent}
+.book::after{content:"";position:absolute;right:4px;top:10px;bottom:10px;width:8px;background:
+  linear-gradient(#e8dcc0,#e8dcc0) 0 12%/100% 1.5px no-repeat,linear-gradient(#e8dcc0,#e8dcc0) 0 37%/100% 1.5px no-repeat,
+  linear-gradient(#e8dcc0,#e8dcc0) 0 63%/100% 1.5px no-repeat,linear-gradient(#e8dcc0,#e8dcc0) 0 88%/100% 1.5px no-repeat;border-left:1.5px solid rgba(232,220,192,.7)}
+.book .slip{flex:none;display:flex;justify-content:center;width:32px;padding:8px 0;background:#f6efdf;color:var(--ink);box-shadow:inset 0 0 0 1px #c9b89a,inset 0 0 0 3px #f6efdf,inset 0 0 0 4px #c9b89a}
+.book .slip b{writing-mode:vertical-rl;text-orientation:upright;font-weight:900;font-size:15px;letter-spacing:.1em;line-height:1}
+.book small{margin-top:auto;padding-top:4px;font-size:11.5px;line-height:1.35;text-align:center;opacity:.92}
+.book:hover{transform:translateY(-4px)}
+.book[aria-selected="true"]{transform:translateY(-12px);box-shadow:inset -14px 0 0 rgba(0,0,0,.1),0 14px 18px rgba(40,30,20,.35)}
+.book[aria-selected="true"] .slip{background:#fff8e8}
+.book[aria-selected="true"]::before{content:"閱";position:absolute;left:6px;top:8px;display:grid;place-items:center;width:20px;height:20px;border-radius:2px;background:var(--zhu);color:#fbf3e6;font-size:12px;font-weight:900}
+
+/* ---------- 冊頁（內容面板） ---------- */
+.album{margin:34px auto 0;padding:14px;max-width:1100px;background:
+  linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25% 75%,rgba(255,255,255,.25) 75%) 0 0/14px 14px,
+  linear-gradient(45deg,rgba(255,255,255,.25) 25%,transparent 25% 75%,rgba(255,255,255,.25) 75%) 7px 7px/14px 14px,#cfd6cf;box-shadow:0 10px 30px rgba(60,50,30,.15);scroll-margin-top:12px}
+.leaf{background:var(--paper2);box-shadow:inset 0 0 0 1px #b9ab90}
+.leaf.open{animation:leaf .6s ease-out}
+@keyframes leaf{from{opacity:.2;filter:blur(2px)}}
+.lh{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:22px 26px 18px;border-bottom:1px solid var(--line)}
+.lh small{display:block;font-size:13.5px;letter-spacing:.3em;color:var(--tc)}
+.lh h2{margin:2px 0 0;font-weight:900;font-size:clamp(26px,3.4vw,34px);line-height:1.25}
+.lh .d{margin:6px 0 0;font-family:"Noto Sans TC",sans-serif;font-size:14px;color:var(--muted)}
+.ti{position:relative;padding:12px 56px 12px 18px;border-left:3px solid var(--tc)}
+.ti .pm{margin:0;font-size:17px;line-height:1.85;letter-spacing:.08em}
+.ti .by{display:block;font-size:13px;color:var(--muted);letter-spacing:.15em}
+.ti .eye{margin:8px 0 0;font-size:14.5px;color:var(--tc)}
+.ti .seal{position:absolute;right:10px;top:12px}
+.nav{display:flex;justify-content:space-between;gap:10px;padding:8px 26px 0}
+.nb{border:0;background:none;padding:4px 0;font-size:14px;color:var(--muted);text-align:left;line-height:1.4}
+.nb b{display:block;font-size:15.5px;color:var(--ink)}
+.nb.next{text-align:right}
+.nb:hover b{color:var(--zhu)}
+.body{padding:14px 26px 28px}
+.sub{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:22px 0 10px;font-size:19px;font-weight:900}
+.sub::before{content:"";width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#4a433d,#1d1a17);align-self:center}
+.sub small{font-family:"Noto Sans TC",sans-serif;font-size:13px;font-weight:500;color:var(--muted)}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+
+.row,.tile,.case{position:relative;border:1px solid var(--line);background:rgba(255,255,255,.55);text-decoration:none;transition:border-color .2s,background .2s,box-shadow .2s}
+.row:hover,.tile:hover,a.case:hover{border-color:var(--ink2);background:#fffdf7;box-shadow:4px 4px 0 rgba(36,32,29,.12)}
+.row{display:flex;align-items:center;gap:12px;min-height:62px;padding:10px 12px}
+.row .ic{flex:none;min-width:44px;height:44px;padding:0 6px;border-radius:50%;display:grid;place-items:center;text-align:center;font-size:21px;background:color-mix(in srgb,var(--c,var(--tc)) 12%,#fffdf7);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c,var(--tc)) 35%,transparent)}
+.row .ic.txt{border-radius:2px;font-family:"Noto Sans TC",sans-serif;font-size:12px;font-weight:700;color:#fff;background:var(--c);line-height:1.15;box-shadow:none}
+.row .ic.wide{width:66px;height:46px}
+.row .tx{min-width:0;font-weight:600;font-size:15.5px;line-height:1.45}
+.row .tx small{display:block;font-family:"Noto Sans TC",sans-serif;font-weight:500;font-size:12.5px;color:var(--muted);line-height:1.45}
+.tg{display:table;margin-bottom:2px;padding:0 8px;border:1px solid color-mix(in srgb,var(--c,var(--tc)) 55%,transparent);color:color-mix(in srgb,var(--c,var(--tc)) 85%,#000);font-family:"Noto Sans TC",sans-serif;font-size:11.5px;font-weight:700}
+.clamp{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;text-align:center}
+.tile .e{font-size:28px;line-height:1.2}
+.tile small{font-size:13px;color:var(--c,var(--tc));letter-spacing:.1em}
+.tile b{font-size:14.5px;line-height:1.35}
+.tile .d{font-family:"Noto Sans TC",sans-serif;font-size:12px;color:var(--muted);line-height:1.45}
+
+/* 情資：書信 */
+.intel{display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
+.ticket{position:relative;padding:18px 20px;border:1px solid var(--line);background:
+  repeating-linear-gradient(90deg,transparent 0 29px,rgba(168,50,42,.1) 29px 30px),#fffbf2}
+.ticket .kind{display:flex;justify-content:space-between;gap:8px;font-size:14px;letter-spacing:.3em;color:var(--zhu);border-bottom:1px solid #e3cfc0;padding-bottom:6px;margin-bottom:10px}
+.ticket h3{margin:0 0 6px;font-size:clamp(19px,2.2vw,23px);font-weight:900;line-height:1.35}
+.ticket h3 span{display:inline-block;padding:0 10px;background:var(--ink);color:var(--paper2);font-size:.62em;vertical-align:3px;letter-spacing:.06em}
+.route{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;font-weight:600;font-size:14.5px}
+.route i{flex:1 1 20px;min-width:20px;height:0;border-top:1px solid var(--ink2)}
+.pill{display:inline-block;padding:1px 10px;border:1px solid var(--line);background:#fffdf7;font-family:"Noto Sans TC",sans-serif;font-size:12.5px;font-weight:700;margin:0 4px 6px 0}
+.pill.risk{border-color:#e0b7b0;background:#fbebe7;color:var(--zhu)}
+.ticket p{margin:0 0 12px;font-family:"Noto Sans TC",sans-serif;font-size:13.5px;color:var(--muted)}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.focus{padding:16px;border:1px solid var(--line);background:rgba(255,255,255,.55)}
+.focus h3{margin:0 0 6px;font-size:17px;font-weight:900;display:flex;align-items:center;gap:8px}
+.live{width:9px;height:9px;border-radius:50%;background:var(--zhu);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(168,50,42,.5)}70%,100%{box-shadow:0 0 0 10px rgba(168,50,42,0)}}
+.focus a,.focus .ph{display:block;padding:8px;text-decoration:none;font-family:"Noto Sans TC",sans-serif;font-size:14px;font-weight:700;line-height:1.45}
+.focus a+a{border-top:1px dotted var(--line)}
+.focus a:hover{background:#fffdf7}
+.focus small{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.focus .ph{color:var(--muted);font-weight:500}
+.bd{display:inline-block;margin-left:4px;padding:0 6px;border:1px solid #e0b7b0;color:var(--zhu);font-size:11px;font-weight:700}
+.bd.kev{background:var(--zhu);border-color:var(--zhu);color:#fff}
+
+/* 個案 */
+.seg{display:inline-flex;margin-bottom:14px;border:1px solid var(--ink2)}
+.seg button{border:0;background:transparent;padding:6px 16px;font-family:var(--serif);font-weight:600;font-size:14.5px}
+.seg button+button{border-left:1px solid var(--ink2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper2)}
+.case{display:flex;flex-direction:column;gap:4px;padding:13px 14px}
+.case .no{font-family:"Noto Sans TC",sans-serif;font-size:12px;font-weight:700;color:var(--zhe)}
+.case .no .tg{display:inline-block;margin:0 6px 0 0}
+.case b{font-size:15.5px;line-height:1.45}
+.case small{font-family:"Noto Sans TC",sans-serif;font-size:12.5px;color:var(--muted);line-height:1.45}
+.case .acts{margin-top:auto;padding-top:6px;gap:8px}
+.sev{border-color:#e8a978!important;color:#a14a0b!important}.sev.urgent{background:var(--zhu)!important;border-color:var(--zhu)!important;color:#fff!important}
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.foot .note{flex:1 1 260px;margin:0;font-family:"Noto Sans TC",sans-serif;font-size:12px;color:var(--muted)}
+
+/* ---------- 雅趣・接下句 ---------- */
+.duishi{max-width:900px;margin:40px auto 0;text-align:center}
+.duishi h3{margin:0;font-size:22px;font-weight:900;letter-spacing:.3em}
+.duishi .lead{margin:2px 0 14px;font-size:14px;color:var(--muted)}
+.q{position:relative;padding:22px 20px 18px;border:1px solid var(--line);background:var(--paper2);box-shadow:0 6px 18px rgba(80,60,30,.08)}
+.q .up{font-size:clamp(26px,4vw,36px);font-weight:900;letter-spacing:.3em}
+.q .src{min-height:1.6em;margin:4px 0 14px;font-size:13.5px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.opts button{padding:10px 8px;border:1px solid var(--ink2);background:#fffdf7;font-size:17px;letter-spacing:.12em;transition:background .2s,color .2s}
+.opts button:hover:not(:disabled){background:var(--ink);color:var(--paper2)}
+.opts button.ok{background:var(--lv);border-color:var(--lv);color:#fff}
+.opts button.no{background:#f3dcd8;border-color:#d9a79f;color:var(--zhu);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.parody{min-height:2.2em;margin:14px 0 0;font-size:16.5px;color:var(--zhu)}
+.qfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;font-size:14px;color:var(--muted)}
+
+/* ---------- 頁尾 ---------- */
+footer{max-width:1100px;margin:44px auto 0;padding:0 16px 30px;font-size:14px}
+.couplet{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:22px;align-items:start}
+.lian{writing-mode:vertical-rl;padding:16px 8px;background:#a8322a;color:#f4d98a;font-weight:900;font-size:22px;letter-spacing:.4em;box-shadow:0 6px 14px rgba(120,30,20,.25)}
+.mid{text-align:center}
+.heng{display:inline-block;padding:6px 22px;margin-bottom:14px;background:#a8322a;color:#f4d98a;font-weight:900;font-size:20px;letter-spacing:.5em;box-shadow:0 6px 14px rgba(120,30,20,.25)}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+.about>div{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);background:rgba(255,253,247,.7)}
+.about img{flex:none;width:50px;height:50px;border-radius:50%;background:#e9dcc0;object-fit:cover;object-position:top;box-shadow:0 0 0 2px #f8f3e7,0 0 0 3px #b79b6b}
+.about b{display:block;font-size:15.5px}
+.about small{font-family:"Noto Sans TC",sans-serif;color:var(--muted)}
+.contact{margin-top:14px;color:var(--muted)}
+.contact a{color:var(--ink);font-weight:600}
+#verSwitch{color:var(--ink2)}
+.fab{position:fixed;right:12px;bottom:12px;z-index:10;padding:7px 15px;border:1px solid var(--ink);background:var(--paper2);font-family:var(--serif);font-weight:600;font-size:14px;box-shadow:3px 3px 0 rgba(36,32,29,.25);opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s ease,transform .2s ease}
+.fab.show{opacity:1;pointer-events:auto;transform:none}
+
+/* ---------- 手機 ---------- */
+@media (max-width:900px){
+  .epi{display:none}
+  .g5{grid-template-columns:repeat(3,1fr)}.g3{grid-template-columns:repeat(2,1fr)}.g4{grid-template-columns:repeat(2,1fr)}
+  .shelf{grid-template-columns:repeat(4,1fr);gap:10px 12px}
+  .book{min-height:136px}
+}
+@media (max-width:760px){
+  .wrap{padding:0 10px}
+  .top{display:block;text-align:center;padding:14px 0 0}
+  .top .eb{font-size:12px}
+  .top p{display:none}
+  .cta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .cta .btn{padding:6px;font-size:13.5px}
+  .fanbox{margin:4px -4px 0}
+  .hint{font-size:12px;letter-spacing:.15em;margin-top:-2px}
+  .yaji{grid-template-columns:auto minmax(0,1fr);gap:10px;margin-top:10px}
+  .tuan.b{display:none}
+  .tuan .face{width:58px;height:58px}
+  .tuan .stick{height:16px}.tuan .tag{display:none}
+  .say{min-height:0;padding:10px 12px}
+  .say .tx{font-size:15.5px}
+  .shelf{gap:8px;margin-top:16px;border-bottom-width:8px}
+  .book{min-height:118px;padding:8px 10px 6px 6px}
+  .book .slip{width:26px;padding:6px 0}
+  .book .slip b{font-size:13px}
+  .book small{font-size:10px}
+  .book[aria-selected="true"]{transform:translateY(-7px)}
+  .album{padding:8px;margin-top:22px}
+  .lh{grid-template-columns:1fr;gap:12px;padding:16px 14px 14px}
+  .ti{padding:8px 46px 8px 12px}
+  .ti .pm{font-size:15.5px}
+  .nav{padding:6px 14px 0}
+  .body{padding:12px 12px 20px}
+  .intel,.g3,.g2.stack{grid-template-columns:1fr}
+  .acts .btn.wide{flex:1 1 100%}
+  .tile .d,.ticket p{display:none!important}
+  .opts{grid-template-columns:1fr}
+  .couplet{grid-template-columns:1fr;gap:12px}
+  .lian{display:none}
+  .about{grid-template-columns:1fr}
+  footer{padding-bottom:70px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.ch,.say .tx span{opacity:1}}
+</style>
+</head>
+<body>
+<div class="farhill" aria-hidden="true"><svg id="farhill" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMin slice"></svg></div>
+
+<div class="wrap">
+<!-- ================= 標題 ================= -->
+<header class="top">
+  <div>
+    <div class="eb">一扇一詩・詩書守安</div>
+    <h1>ISMS<i>·</i>普拉斯<i>·</i>AllanLo</h1>
+    <p>Allan 幫客戶整理及分享的資安知識庫｜八冊詩書，一冊一個主題</p>
+    <div class="cta"><a class="btn ink" id="heroThink" href="#">📚 ISMS智庫 月刊</a><a class="btn" href="https://allanlo.123hi.org/isms_island/" rel="noopener">🏝️ 逛資安島</a></div>
+  </div>
+  <div class="epi"><span class="seal">普</span><div><q>但願人長久　千里共嬋娟</q><small>— 蘇軾〈水調歌頭〉</small></div></div>
+</header>
+
+<!-- ================= 摺扇 ================= -->
+<div class="fanbox"><svg class="fan" id="fan" viewBox="0 0 1000 600" role="img" aria-label="摺扇：扇面是所選詩作的水墨畫與題詩"></svg></div>
+<p class="hint">點扇面或下方書冊，換一首詩</p>
+
+<!-- ================= 雅集：團扇對話 ================= -->
+<section class="yaji" aria-label="Allan 與阿拉蕾對話">
+  <button class="tuan a" id="whoA" aria-label="聽 Allan 說"><span class="face"><img src="assets/img/allan-smile.webp" alt="" id="faceA"></span><span class="stick"></span><span class="tag">主人 Allan</span></button>
+  <div class="say" id="say" aria-live="polite"><span class="nm" id="sayName">Allan</span><span class="tx" id="sayTx"></span></div>
+  <button class="tuan b" id="whoB" aria-label="聽阿拉蕾說"><span class="face"><img src="assets/img/arale-wave.webp" alt="" id="faceB"></span><span class="stick"></span><span class="tag">書僮 阿拉蕾</span></button>
+</section>
+
+<!-- ================= 書架：八冊 ================= -->
+<nav class="shelf" id="shelf" role="tablist" aria-label="八冊詩書：八個分類"></nav>
+
+<!-- ================= 冊頁 ================= -->
+<main class="album" id="panel">
+  <div class="leaf" id="leaf">
+  <div class="lh">
+    <div><small id="sNo"></small><h2 id="sTitle"></h2><p class="d" id="sDesc"></p></div>
+    <div class="ti"><p class="pm" id="sPoem"></p><span class="by" id="sBy"></span><p class="eye" id="sEye"></p><span class="seal" id="sSeal"></span></div>
+  </div>
+  <div class="nav"><button class="nb prev" id="prevBtn"></button><button class="nb next" id="nextBtn"></button></div>
+  <div class="body">
+  <section id="p-intel" role="tabpanel">
+    <div class="intel">
+      <div class="ticket">
+        <div class="kind"><span>家書・每月情資</span><span>每日更新</span></div>
+        <h3>資安內外部情資蒐集紀錄 <span id="fileYear">每月 Excel</span></h3>
+        <div class="route"><span>內外部情資</span><i></i><span>🖌️</span><i></i><span>A.5.7 稽核佐證</span></div>
+        <span class="pill" id="monthLabel">🗓️ 每日更新</span><span class="pill risk" id="riskPill" hidden></span>
+        <p>每日自動蒐集 TWCERT、NICS、iThome、TechNews 的漏洞與安全事件，並評估弱點處置期限；每月 Excel 下載留存，就是稽核佐證。</p>
+        <div class="acts">
+          <a class="btn zhu wide" id="btnXlsx" href="#">⬇️ 下載本月 Excel</a>
+          <a class="btn sm" id="btnOther" href="#" hidden></a>
+          <a class="btn sm ink" id="btnOpen" href="#">🔎 查詢與下載專區</a>
+          <a class="btn sm" href="https://allanloplus.github.io/intelligence/" rel="noopener">📊 情資戰情看板</a>
+        </div>
+      </div>
+      <div class="focus">
+        <h3><span class="live"></span><span id="focusTitle">本月焦點情資</span></h3>
+        <div id="focusList"><div class="ph">阿拉蕾正在研墨整理最新情資…</div></div>
+      </div>
+    </div>
+    <h3 class="sub">情資官養成之路 <small>下載只是第一步，四關從看懂到實戰</small></h3>
+    <div class="grid g4" id="lvs"></div>
+  </section>
+  <section id="p-courses" role="tabpanel" hidden><div class="grid g3" id="courses"></div></section>
+  <section id="p-flows" role="tabpanel" hidden><div class="grid g5" id="flows"></div></section>
+  <section id="p-park" role="tabpanel" hidden><div class="grid g2 stack" id="park"></div></section>
+  <section id="p-cases" role="tabpanel" hidden>
+    <div class="seg" id="seg">
+      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 安全檢測</button>
+    </div>
+    <div class="grid g3" id="files"></div>
+    <div class="grid g3" id="news" hidden></div>
+    <div class="grid g3" id="aicase" hidden></div>
+    <div class="foot">
+      <a class="btn sm ink" id="caseRoom" href="#">🔍 進入資安個案研究室 ↗</a>
+      <a class="btn sm" id="newsAll" href="#">📰 看全部新聞個案 ↗</a>
+      <p class="note">每案含動畫閱讀、討論互動、決策模擬與教學手冊（90 分鐘）。個案改編自公開資料，人物與公司名稱均為虛構，僅供教學討論。</p>
+    </div>
+  </section>
+  <section id="p-quiz" role="tabpanel" hidden><div class="grid g2 stack" id="quiz"></div></section>
+  <section id="p-res" role="tabpanel" hidden>
+    <h3 class="sub" style="margin-top:0">教學資源</h3>
+    <div class="grid g4" id="resList"></div>
+    <h3 class="sub">外部情資來源</h3>
+    <div class="grid g4" id="srcList"></div>
+  </section>
+  <section id="p-arcade" role="tabpanel" hidden><div class="grid g5" id="arcade"></div></section>
+  </div>
+  </div>
+</main>
+
+<!-- ================= 雅趣・接下句 ================= -->
+<section class="duishi" aria-labelledby="dsT">
+  <h3 id="dsT">雅趣・接下句</h3>
+  <p class="lead">李白、蘇軾、陶淵明、王維、李商隱的名句，接對了，阿拉蕾送你一句資安打油詩</p>
+  <div class="q">
+    <div class="up" id="qUp"></div>
+    <div class="src" id="qSrc">上句已出，請對下句</div>
+    <div class="opts" id="qOpts"></div>
+    <p class="parody" id="qPar" aria-live="polite"></p>
+    <div class="qfoot"><span id="qScore">對了 0／0</span><button class="btn sm" id="qNext" target="_self">換一句 ▶</button></div>
+  </div>
+</section>
+</div>
+
+<footer>
+  <div class="couplet">
+    <div class="lian" aria-hidden="true">明月松間照</div>
+    <div class="mid">
+      <div class="heng">詩書守安</div>
+      <div class="about">
+        <div><img src="assets/img/allan-wink.webp" alt=""><span><b>Allan Lo 顧問</b><small>ISMS／PIMS 輔導顧問 · 驗證機構稽核員 · 專長資安與企業 MIS 管理</small></span></div>
+        <div><img src="assets/img/arale-laugh.webp" alt=""><span><b>阿拉蕾 ARALE</b><small>AI 小助手 · 課程動畫搭檔 · 口頭禪「幫腔上課囉！」</small></span></div>
+      </div>
+      <div class="contact">🌐 <a href="https://www.123hi.org/">www.123hi.org</a> · ✉️ <a href="mailto:allanlo.plus@gmail.com">allanlo.plus@gmail.com</a></div>
+      <div id="verSwitch" data-current="poem"></div>
+    </div>
+    <div class="lian" aria-hidden="true">清泉石上流</div>
+  </div>
+</footer>
+<script src="versions.js"></script>
+<button class="fab" id="fab" aria-label="回到扇面">🪭 回到扇面 ↑</button>
+
+<script>
+/* ================= 資料（各版首頁相同；新增資源時 index.html、home-*.html 都要一起改） ================= */
+const INTEL = "https://allanloplus.github.io/intelligence/";
+const INTEL_PAGE = "資安情資/資安情資蒐集紀錄";
+
+const SITE = "https://sites.google.com/123hi.org/isms/";
+
+const LEVELS = [
+  { ic: "📺", t: "情資作業動畫解說", d: "13 段動畫簡報：情資蒐集、脆弱性識別、AI 風險排序到稽核證據", p: "資安情資/資安情資作業動畫解說", c: "#15aabf" },
+  { ic: "🗺️", t: "內外部情資地圖", d: "內部事件與外部來源一張圖掌握", p: "資安情資/內外部情資地圖", c: "#4c6ef5" },
+  { ic: "📊", t: "資安情資戰情室", d: "內外部情資、脆弱性與處置成效儀表板，阿拉蕾語音導覽", p: "資安情資/資安情資戰情室dashboard", c: "#7950f2" },
+  { ic: "🎮", t: "情資官特訓營", d: "7 個關卡＋稽核大魔王，過關領結訓證書", p: "資安情資/遊戲學習-情資官特訓營", c: "#f08c00" }
+];
+const PARK = [
+  { ic: "🗓️", t: "ISMS 的一年", tag: "動畫", d: "每天像刷牙、每月像量血壓、每年像全身健檢：ISMS 的工作節奏", p: "isms工作觀/isms工作的一年", c: "#1c7ed6", x: 13, y: 30 },
+  { ic: "🗺️", t: "ISMS 工作地圖", tag: "互動動畫", d: "時間、流程、工作類別三種視角，看紀錄如何一天天累積", p: "isms工作觀/isms工作地圖", c: "#0ca678", x: 32, y: 68, low: true },
+  { ic: "🧭", t: "ISMS 工作地圖－系統體驗", tag: "系統體驗", d: "把程序書變成每天做得完的工作：每日巡檢、情資、月報與量測依頻率排好，點一下留紀錄", p: "isms工作觀/isms工作地圖_系統體驗", c: "#1098ad" },
+  { ic: "🏘️", t: "ISMS 資安小鎮", tag: "互動地圖", d: "點建築，阿拉蕾帶路認識各部門的 ISMS 工作與稽核準備度", p: "isms工作觀/isms資安小鎮", c: "#e8590c", x: 52, y: 28 },
+  { ic: "🎲", t: "ISMS 大富翁", tag: "桌遊 1～4 人", d: "擲骰子走完資安一年，蒐集紀錄卡、擋下事件，年底外部稽核拿驗證", p: "isms工作觀/isms大富翁遊戲", c: "#e03131", x: 70, y: 66, low: true },
+  { ic: "🏰", t: "實體安全大冒險", tag: "自由探索", d: "探索 16 個 A.7 實體安全控制項，區域安全與設備安全一次認識", p: "isms工作觀/實體安全大冒險", c: "#7048e8", x: 88, y: 30 }
+];
+const CASE_URL = "https://allanloplus.github.io/CASE/";
+const CASES = [
+  { id: "S115001", cat: "威脅情資", t: "總經理先看到新聞：PHP2Shell 情資應變的 48 小時", o: "PHP2Shell 重大漏洞外洩與緊急修補", tags: ["威脅情資", "漏洞管理", "資產盤點", "委外管理"] },
+  { id: "S111001", cat: "資訊保護", t: "倒數十天：艾倫建設的勒索軟體風暴", o: "上市公司遭勒索軟體攻擊，海量資料遭洩", tags: ["勒索軟體", "雙重勒索", "備份與復原", "重大訊息"] },
+  { id: "S111002", cat: "資訊保護", t: "補丁之後：艾倫普拉斯科技的 Log4j 供應鏈風暴", o: "Log4j 重大資安漏洞揭露半年後仍不可大意", tags: ["Log4Shell", "軟體供應鏈", "修補管理", "SBOM"] },
+  { id: "S111003", cat: "資訊保護", t: "沒收回的那把鑰匙：艾倫普拉斯傳媒的跨年直播危機", o: "離職員工偷刪前東家資料，該當何罪？", tags: ["離職管理", "帳號註銷", "雲端金鑰", "共用帳號"] },
+  { id: "S111004", cat: "資訊保護", t: "畫面不能重拍：曦光傳媒的片庫歸零事件", o: "電視台新聞片庫慘遭協力廠商刪除", tags: ["委外管理", "備份與復原", "RPO／RTO", "變更管理"] },
+  { id: "S111005", cat: "資訊保護", t: "起飛之前：艾倫普拉斯科技的營業秘密保衛戰", o: "離職時請別帶走公司的營業秘密", tags: ["營業秘密", "內部威脅", "離職管理", "日誌監控"] }
+];
+const THINKTANK = "isms智庫";   /* Allan's ISMS智庫（每月一期） */
+const AICASE = [
+  { ic: "🧭", t: "總覽：AI 系統安全檢測個案", d: "一套上線系統從盤點、檢測到報告的完整案例", p: "ai寫的個案/ai開發系統之安全檢測個案/總覽ai系統安全檢測個案" },
+  { ic: "🧾", t: "XBOM 對話教學", d: "XBOM 是什麼、怎麼做、能證明什麼，對應 SSDLC 與 ISO 27001", p: "ai寫的個案/ai開發系統之安全檢測個案/xbom-對話教學" },
+  { ic: "🔬", t: "安全檢測對話教學", d: "源碼檢測、存取控制測試、滲透測試各自證明什麼", p: "ai寫的個案/ai開發系統之安全檢測個案/安全檢測對話教學" },
+  { ic: "📑", t: "解讀第三方檢測報告", d: "先看的五件事、逐節讀法與品質判斷", p: "ai寫的個案/ai開發系統之安全檢測個案/解讀第三方檢測報告" },
+  { ic: "🧑‍🏫", t: "延伸：安全檢測顧問輔導實務", d: "顧問如何帶客戶從接案做到移交", p: "ai寫的個案/ai開發系統之安全檢測個案/延伸安全檢測顧問輔導實務" },
+  { ic: "🖥️", t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", p: "https://pms.medsigtw.com/" }
+];
+const NEWS_URL = "https://allanloplus.github.io/case_isnews/";
+const NEWS = [
+  { slug: "2026-10-synology-c3rb3r", sev: "重大", date: "2026-10-30", src: "iThome 新聞", t: "群暉 NAS 遭 C3RB3R 勒索軟體攻擊：被遺忘的更新與備份", d: "鎖定未更新的群暉 NAS 加密勒索；「沒更新、對外曝露、備份放同一台」是共同破口。附互動式勒索攻防模擬器。", tp: ["勒索軟體", "備份與復原", "漏洞管理"] },
+  { slug: "2026-10-91app-breach", sev: "重大", date: "2026-10-30", src: "今周刊", t: "91APP 資料庫遭 AI 代理攻擊：一個未更新的內部工具，波及 1,329 個品牌", d: "內部工具未更新被 AI 自主滲透工具打入，再從 GitLab 取得資料庫金鑰；SaaS 供應鏈與個資責任一次看。", tp: ["個資保護", "供應鏈", "AI 資安"] },
+  { slug: "2026-10-php2shell", sev: "緊急", date: "2026-10-29", src: "非凡商業台", t: "AI 揪出潛藏十多年的 PHP 漏洞：PHP2Shell 與資安雙面刃", d: "全球約七成網站使用的 PHP 爆出免登入 RCE 漏洞，攻擊早於修補，日本與歐洲大量預防性關站。", tp: ["漏洞管理", "事件應變", "AI 資安"] }
+];
+const ARCADE = [
+  { ic: "📖", t: "ALLAN 家族說故事劇場", d: "第一號作品《花草派》：2010 年手繪繪本，由 Allan 家族重新配音演出", u: "https://allanloplus.github.io/picture-book99/", c: "#ff8cf5" },
+  { ic: "⛰️", t: "跟著 Allan 走一趟特富野古道", d: "Allan 當領隊：鄒族獵徑、運材鐵道、交通路線與古道小遊戲", u: "https://allanloplus.github.io/Tefuye_Historic_Trail/", c: "#69db7c" },
+  { ic: "🃏", t: "Allan 與阿拉蕾的橋牌桌", d: "四人合約橋牌：和阿拉蕾搭檔，對抗駭客小黑與釣魚怪", u: "https://allanloplus.github.io/bridge/", c: "#4dabf7" },
+  { ic: "🐷", t: "Allan 的拱豬夜市", d: "夜市開桌拱豬：♠Q 是勒索豬，♦J 是資安預算羊", u: "https://allanloplus.github.io/Gong_Zhu/", c: "#ffa94d" },
+  { ic: "🎴", t: "Allan's 資安大老二", d: "環島攻防戰：出一張牌走一站，先回台北 101 拿資安認證；鐵支＝零時差攻擊", u: "https://allanloplus.github.io/big2/", c: "#ff6b6b" },
+  { ic: "🧋", t: "Allan's 資安大富翁－快樂遊台灣", d: "22 縣市環島大富翁：吃在地美食、認養縣市當資安守護者，把韌性指數推到 100%", u: "https://allanloplus.github.io/Monopoly/", c: "#38d9a9" },
+  { ic: "🍜", t: "Allan 在哪裡？要吃甚麼？", d: "選心情、看天氣、挑飯友，阿拉蕾從 373 道台灣美食幫你挑", u: "https://allanloplus.github.io/What-to-eat/", c: "#ffd43b" },
+  { ic: "🌴", t: "Allan 下南洋（光榮徽章版）", d: "馬來西亞駐外 878 天：357 篇日誌、台北⇄檳城航線地圖與南洋奇幻之旅勳章", u: "https://allanloplus.github.io/AllanWentToNayang/", c: "#a9e34b" },
+  { ic: "🏯", t: "Allan Lo 和你逛文化", d: "臺灣文化資產知性旅遊地圖：嘉義市、嘉義縣、雲林縣、臺南市，語音導覽、老地圖時光機與文資護照", u: "https://cultural.123hi.org/guide/", c: "#e8a87c" },
+  { ic: "🚉", t: "Allan's 文化知識學習：影片導讀", d: "嘉義與臺南車站：同一位建築師，一座風華再現、一座風華再見？", u: "https://allanlo-g.github.io/Train_Station/", c: "#74c0fc" }
+];
+const COURSES = [
+  { big: "ISO<br>27001", badge: "互動教材", name: "ISO27001 完整線上互動教材", p: "課程動畫/iso27001完整線上互動教材", img: "allan-point", bg: "linear-gradient(160deg,#1d4ed8,#14213d)" },
+  { big: "ISO<br>27701", badge: "隱私管理", name: "ISO27701 完整線上課程", p: "課程動畫/iso27701完整線上課程", img: "arale-explain", bg: "linear-gradient(160deg,#9c36b5,#5f3dc4)" },
+  { big: "ISO<br>42001", badge: "AI 管理", name: "ISO42001 完整線上課程", p: "課程動畫/iso42001完整線上課程", img: "arale-wow", bg: "linear-gradient(160deg,#f76707,#c92a2a)" },
+  { big: "TISAX", badge: "汽車產業", name: "TISAX 要求完整解說", p: "課程動畫/tisax要求完整解說", img: "allan-think", bg: "linear-gradient(160deg,#495057,#212529)" },
+  { big: "3<br>MIN", badge: "快速入門", name: "3 分鐘和 ISO27001", p: "課程動畫/3分鐘和iso27001", img: "arale-laugh", bg: "linear-gradient(160deg,#37b24d,#087f5b)" },
+  { big: "MIND<br>MAP", badge: "心智圖", name: "用心智圖了解 ISO27001", p: "課程動畫/用心智圖了解iso27001", img: "arale-think", bg: "linear-gradient(160deg,#fab005,#e67700)" },
+  { big: "資安<br>宣導", badge: "年度必修", name: "Allan 的年度資安宣導", p: "課程動畫/allan的年度資安宣導", img: "allan-laugh", bg: "linear-gradient(160deg,#15aabf,#1864ab)" },
+  { big: "TISAX<br>EN", badge: "English", name: "ISA 2027 for TISAX — Requirements Explained", p: "課程動畫/tisax要求完整解說_英文版", img: "allan-smile", bg: "linear-gradient(160deg,#1864ab,#212529)" },
+  { big: "資安法", badge: "事件通報", name: "資通安全法－資安事件通報", p: "課程動畫/資通安全法-資安事件通報", img: "allan-surprised", bg: "linear-gradient(160deg,#e03131,#862e9c)" }
+];
+const FLOWS = [["治理", "🏛️"], ["人員安全", "👥"], ["資訊保護", "🔐"], ["資產管理", "📦"], ["存取管理", "🔑"], ["保全組態", "⚙️"], ["實體安全", "🏢"],
+  ["威脅與弱點管理", "🛡️"], ["應用程式安全", "🧩"], ["系統與網路安全", "🌐"], ["供應者安全管理", "🤝"], ["資安事件管理", "🚨"], ["持續性", "♻️"], ["資訊安全保證", "✅"], ["遵循性", "📜"]];
+const QUIZ = [["📋 ISMS 導入專案課後測驗", "課後測驗專區/isms導入專案課後測驗"], ["🧠 資安課程課後測驗", "課後測驗專區/資安課程課後測驗"], ["🕵️ ISMS Auditor 知識測驗", "課後測驗專區/isms-auditor知識測驗"], ["💻 Allan's IT 知識測驗", "課後測驗專區/allans-it知識測驗"]];
+const RES = [
+  ["27001", "ISO27001 教學資源", "教學網站", "https://sites.google.com/123hi.org/iso27001/", "#1d4ed8"],
+  ["27701", "ISO27701 教學資源", "條文解說簡報", "https://sites.google.com/view/allanlo-iso27701/iso27701%E6%A2%9D%E6%96%87%E8%A7%A3%E8%AA%AA%E7%B0%A1%E5%A0%B1", "#9c36b5"],
+  ["TX", "TISAX 教學資源", "汽車產業資安", "https://sites.google.com/123hi.org/tisax/", "#495057"],
+  ["展示", "ISMS 系統化展示", "系統實作範例", "https://sites.google.com/view/allantest001/", "#0b7285"],
+  ["▶", "YouTube－AllanLo", "上課影音", "https://www.youtube.com/channel/UCnsy7Lewl-4BIw4T5J2vV4Q", "#e03131"],
+  ["iT", "iT 邦幫忙文章", "Allan 的技術文章", "https://ithelp.ithome.com.tw/users/20151950/articles", "#2b8a3e"],
+  ["影音", "資安教學影音整理", "分類影音資源", "教學資源/allan的資安教學分類影音資源整理", "#e67700"],
+  ["地圖", "內外部情資地圖", "資安情資", "資安情資/內外部情資地圖", "#c92a2a"]
+];
+const SRC = [
+  ["NICS", "國家資通安全研究院", "漏洞新聞、漏洞公告", "https://www.nics.nat.gov.tw/", "#1d4ed8"],
+  ["TW", "TWCERT/CC", "資安新聞、通報", "https://www.twcert.org.tw/", "#0f766e"],
+  ["H", "H-ISAC", "衛福部資安分享中心", "https://hisac.nat.gov.tw/", "#be123c"],
+  ["F", "F-ISAC", "金融資安分享", "https://www.fisac.tw/", "#a16207"],
+  ["iT", "iThome 資安", "資安日報、週報", "https://www.ithome.com.tw/security", "#c2410c"],
+  ["TN", "TechNews 資安", "科技新報資安快報", "https://infosecu.technews.tw/", "#334155"],
+  ["TM", "趨勢科技研究", "威脅研究報告", "https://www.trendmicro.com/zh_tw/research.html", "#dc2626"],
+  ["月報", "政府機關資安月報", "數位發展部資安署", "https://moda.gov.tw/ACS/press/report/670", "#4338ca"]
+];
+
+
+
+/* 八冊詩書＝八個分類，每冊配一首名詩與一幅扇面畫（scene）。
+   cols：題在扇面的直行（不含標點）；full：冊頁上的完整詩句；eye：詩眼（詩句和這個分類的關係）；cv：書皮顏色。
+   talk：[誰, 表情, 台詞] */
+const TABS = [
+  { id: "intel", e: "📡", t: "資安情資", poet: "蘇軾", title: "題西林壁", scene: "lushan", cv: "#3d4a5c", c: "#2c5d7c", face: "arale-wave", seal: "察",
+    cols: ["橫看成嶺側成峰", "遠近高低各不同", "不識廬山真面目", "只緣身在此山中"], full: "橫看成嶺側成峰，遠近高低各不同。不識廬山真面目，只緣身在此山中。",
+    eye: "身在此山中，看不清全貌；外部情資，就是跳出山外看自己。", d: "客戶每月必下載，留存作為 ISO/IEC 27001:2022 A.5.7 威脅情資紀錄",
+    talk: [["a", "allan-point", "不識廬山真面目，只緣身在此山中——自家的風險，要從外面看。"], ["b", "arale-thumb", "所以每月整理內外部情資，下載留存就是 A.5.7 的佐證 📜"], ["a", "allan-think", "遇到高風險漏洞，記得走 A.8.8 修補流程。"]] },
+  { id: "courses", e: "🎬", t: "課程動畫", poet: "陶淵明", title: "移居", scene: "hut", cv: "#6b4a33", c: "#8a5a2b", face: "arale-explain", seal: "學",
+    cols: ["鄰曲時時來", "抗言談在昔", "奇文共欣賞", "疑義相與析"], full: "鄰曲時時來，抗言談在昔。奇文共欣賞，疑義相與析。",
+    eye: "奇文共欣賞，疑義相與析：課程動畫，一起看、一起討論。", d: "Allan 與阿拉蕾主演的完整線上課程與互動教材",
+    talk: [["a", "allan-smile", "奇文共欣賞，疑義相與析：九門課程動畫，一起看、一起討論。"], ["b", "arale-explain", "27001、27701、42001、TISAX 都有，看不懂就來問我～"]] },
+  { id: "flows", e: "🗺️", t: "ISMS 流程", poet: "王維", title: "終南別業", scene: "stream", cv: "#3f5e4f", c: "#4e7d62", face: "arale-mini", seal: "行",
+    cols: ["興來每獨往", "勝事空自知", "行到水窮處", "坐看雲起時"], full: "興來每獨往，勝事空自知。行到水窮處，坐看雲起時。",
+    eye: "行到水窮處，坐看雲起時：一個流程走完，下一輪 PDCA 又起。", d: "15 個運作流程，一站一支動畫，看懂整個 ISMS",
+    talk: [["a", "allan-point", "行到水窮處，坐看雲起時：一個流程走完，下一輪 PDCA 又起。"], ["b", "arale-cheer", "A01 到 A15，一個流程一支動畫！"]] },
+  { id: "park", e: "🎡", t: "主題樂園", poet: "陶淵明", title: "飲酒・其五", scene: "chrys", cv: "#7a5a24", c: "#a07a16", face: "allan-laugh", seal: "悠",
+    cols: ["採菊東籬下", "悠然見南山", "山氣日夕佳", "飛鳥相與還"], full: "採菊東籬下，悠然見南山。山氣日夕佳，飛鳥相與還。",
+    eye: "採菊東籬下，悠然見南山：在遊戲裡，悠然看懂 ISMS。", d: "ISMS 工作觀：用動畫、地圖和遊戲，玩出對 ISMS 的整體感",
+    talk: [["a", "allan-laugh", "採菊東籬下，悠然見南山：在遊戲裡，悠然看懂 ISMS。"], ["b", "arale-wow", "有小鎮、有大富翁，還有工作地圖系統體驗版！"]] },
+  { id: "cases", e: "🕵️", t: "個案研究", poet: "李商隱", title: "夜雨寄北", scene: "rain", cv: "#4f3a3a", c: "#7a4a4a", face: "allan-think", seal: "鑑",
+    cols: ["君問歸期未有期", "巴山夜雨漲秋池", "何當共剪西窗燭", "卻話巴山夜雨時"], full: "君問歸期未有期，巴山夜雨漲秋池。何當共剪西窗燭，卻話巴山夜雨時。",
+    eye: "卻話巴山夜雨時：把發生過的事件拿出來細說，就是個案研究。", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 開發系統的安全檢測個案",
+    talk: [["a", "allan-think", "何當共剪西窗燭，卻話巴山夜雨時：把發生過的事件拿出來細說，就是個案研究。"], ["b", "arale-confused", "如果是我們公司遇到，該怎麼辦呢？"], ["a", "allan-wink", "人物與公司都是虛構的，放心討論。"]] },
+  { id: "quiz", e: "📝", t: "課後測驗", poet: "李白", title: "行路難・其一", scene: "sea", cv: "#2f4a62", c: "#2c5d7c", face: "allan-point", seal: "帆",
+    cols: ["行路難行路難", "多歧路今安在", "長風破浪會有時", "直掛雲帆濟滄海"], full: "行路難！行路難！多歧路，今安在？長風破浪會有時，直掛雲帆濟滄海。",
+    eye: "長風破浪會有時，直掛雲帆濟滄海：測驗是一次揚帆，驗收所學。", d: "上完課了嗎？來檢查學習成果",
+    talk: [["a", "allan-point", "長風破浪會有時，直掛雲帆濟滄海：上完課，來測驗揚帆！"], ["b", "arale-cheer", "全對的話，我幫你蓋一方「及第」印 🎉"]] },
+  { id: "res", e: "📚", t: "教學資源", poet: "蘇軾", title: "和董傳留別", scene: "bamboo", cv: "#36503f", c: "#3f6a52", face: "allan-smile", seal: "書",
+    cols: ["粗繒大布裹生涯", "腹有詩書氣自華", "厭伴老儒烹瓠葉", "強隨舉子踏槐花"], full: "粗繒大布裹生涯，腹有詩書氣自華。厭伴老儒烹瓠葉，強隨舉子踏槐花。",
+    eye: "腹有詩書氣自華：多讀，資安素養自然有底氣。", d: "教學網站、影音文章，以及常用的外部情資來源",
+    talk: [["a", "allan-smile", "腹有詩書氣自華：多讀，資安素養自然有底氣。"], ["b", "arale-think", "教學網站、影音、文章，還有外部情資來源，都在這一冊。"]] },
+  { id: "arcade", e: "🕹️", t: "AI 遊樂場", poet: "李白", title: "月下獨酌・其一", scene: "moon", cv: "#5a3d4f", c: "#9a3b5a", face: "arale-laugh", seal: "樂",
+    cols: ["花間一壺酒", "獨酌無相親", "舉杯邀明月", "對影成三人"], full: "花間一壺酒，獨酌無相親。舉杯邀明月，對影成三人。",
+    eye: "舉杯邀明月，對影成三人：Allan、阿拉蕾，再加上 AI。", d: "下課時間！Allan 用 AI 做的遊戲與小作品",
+    talk: [["b", "arale-laugh", "舉杯邀明月，對影成三人：Allan、我，再加上 AI！"], ["a", "allan-oops", "下課時間，來玩我用 AI 做的遊戲，有幾款藏了資安梗。"]] }
+];
+/* 雅趣・接下句：[上句, 下句, 出處, 資安打油詩] */
+const COUPLETS = [
+  ["床前明月光", "疑是地上霜", "李白〈靜夜思〉", "床前明月光，密碼要夠長。"],
+  ["舉頭望明月", "低頭思故鄉", "李白〈靜夜思〉", "舉頭望日誌，低頭查異常。"],
+  ["天生我材必有用", "千金散盡還復來", "李白〈將進酒〉", "天生我材必有用，備份做好檔還來。"],
+  ["長風破浪會有時", "直掛雲帆濟滄海", "李白〈行路難〉", "長風破浪會有時，修補漏洞莫遲疑。"],
+  ["但願人長久", "千里共嬋娟", "蘇軾〈水調歌頭〉", "但願人長久，帳密不外流。"],
+  ["人有悲歡離合", "月有陰晴圓缺", "蘇軾〈水調歌頭〉", "人有悲歡離合，系統有修補更新。"],
+  ["不識廬山真面目", "只緣身在此山中", "蘇軾〈題西林壁〉", "不識風險真面目，只緣身在此系中——請外部稽核來看看。"],
+  ["竹外桃花三兩枝", "春江水暖鴨先知", "蘇軾〈惠崇春江晚景〉", "竹外桃花三兩枝，漏洞情資你先知。"],
+  ["採菊東籬下", "悠然見南山", "陶淵明〈飲酒〉", "採菊東籬下，悠然做備份。"],
+  ["少無適俗韻", "性本愛丘山", "陶淵明〈歸園田居〉", "少無適俗韻，性本愛資安。"],
+  ["明月松間照", "清泉石上流", "王維〈山居秋暝〉", "明月松間照，日誌石上流。"],
+  ["獨在異鄉為異客", "每逢佳節倍思親", "王維〈九月九日憶山東兄弟〉", "獨在異鄉為異客，每逢公用 Wi-Fi 倍小心。"],
+  ["勸君更盡一杯酒", "西出陽關無故人", "王維〈送元二使安西〉", "勸君更盡一杯酒，離職帳號當天收。"],
+  ["身無彩鳳雙飛翼", "心有靈犀一點通", "李商隱〈無題〉", "身無彩鳳雙飛翼，帳號必開多因子。"],
+  ["春蠶到死絲方盡", "蠟炬成灰淚始乾", "李商隱〈無題〉", "春蠶到死絲方盡，稽核年年證方新。"],
+  ["夕陽無限好", "只是近黃昏", "李商隱〈登樂遊原〉", "夕陽無限好，只是近稽核。"]
+];
+
+/* ================= 共用 ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const siteUrl = p => /^(https?:|#)/.test(p) ? p : SITE + p.split("/").map(encodeURIComponent).join("/");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const row = (href, ic, t, d, c, icCls = "") => `<a class="row" ${c ? `style="--c:${c}"` : ""} href="${esc(href)}" rel="noopener"><span class="ic ${icCls}">${ic}</span><span class="tx">${t}${d ? `<small>${d}</small>` : ""}</span></a>`;
+
+
+/* ================= 水墨小筆（扇面畫的元素） ================= */
+let seed = 31; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const INK = o => `rgba(36,32,29,${o})`;
+const f1 = n => n.toFixed(1);
+function ridge(x0, x1, base, h, n) {   /* 一道山脊：起伏的峰 */
+  let d = `M${x0},${base}`, x = x0; const step = (x1 - x0) / n;
+  for (let i = 0; i < n; i++) { const px = x + step * (.3 + rnd() * .4), py = base - h * (.45 + rnd() * .55); d += ` Q${f1(px)},${f1(py)} ${f1(x + step)},${f1(base - h * rnd() * .35)}`; x += step; }
+  return d + ` L${x1},${base + 60} L${x0},${base + 60} Z`;
+}
+const P = {
+  mount: (x0, x1, base, h, n, o) => `<path d="${ridge(x0, x1, base, h, n)}" fill="url(#mg)" opacity="${o}" filter="url(#wash)"/>`,
+  mist: (y, h) => `<rect x="-100" y="${y}" width="1200" height="${h}" fill="url(#mistg)" filter="url(#soft)"/>`,
+  moon: (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r * 2.1}" fill="${INK(.07)}" filter="url(#soft)"/><circle cx="${x}" cy="${y}" r="${r}" fill="#fbf7ec" stroke="${INK(.2)}"/>`,
+  sun: (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#c8553d" opacity=".55" filter="url(#soft)"/>`,
+  birds: (x, y, n, s = 1) => Array.from({ length: n }, (_, i) => { const bx = x + i * 26 * s + rnd() * 14, by = y + (rnd() - .5) * 22 + i * 4; return `<path d="M${f1(bx - 7 * s)},${f1(by)} q${3.5 * s},${-5 * s} ${7 * s},0 q${3.5 * s},${-5 * s} ${7 * s},0" fill="none" stroke="${INK(.8)}" stroke-width="${1.6 * s}"/>`; }).join(""),
+  pine: (x, y, s) => `<path d="M${x},${y} q${-8 * s},${-50 * s} ${6 * s},${-110 * s} q${10 * s},${-40 * s} ${-4 * s},${-70 * s}" stroke="${INK(.85)}" stroke-width="${7 * s}" fill="none" stroke-linecap="round" filter="url(#wash)"/>` +
+    [[-40, -150, 38], [30, -120, 34], [-20, -90, 30], [10, -185, 30], [45, -70, 26]].map(([dx, dy, w]) => `<ellipse cx="${x + dx * s}" cy="${y + dy * s}" rx="${w * s}" ry="${9 * s}" fill="${INK(.78)}" filter="url(#wash)"/>`).join(""),
+  willow: (x, y, s) => `<path d="M${x},${y} q${-6 * s},${-60 * s} ${4 * s},${-120 * s}" stroke="${INK(.8)}" stroke-width="${6 * s}" fill="none" stroke-linecap="round"/>` +
+    Array.from({ length: 16 }, (_, i) => { const sx = x + (i - 8) * 6 * s, sy = y - 118 * s + Math.abs(i - 8) * 3 * s; return `<path d="M${f1(sx)},${f1(sy)} q${f1((rnd() - .5) * 20 * s)},${f1(40 * s)} ${f1((rnd() - .3) * 14 * s)},${f1((70 + rnd() * 40) * s)}" stroke="rgba(78,125,98,.55)" stroke-width="${1.4 * s}" fill="none"/>`; }).join(""),
+  hut: (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})"><rect x="-38" y="-34" width="76" height="34" fill="#efe4cc" stroke="${INK(.7)}" stroke-width="1.4"/><path d="M-52,-30 L0,-66 L52,-30 Z" fill="rgba(138,90,43,.55)" stroke="${INK(.7)}" stroke-width="1.4" filter="url(#wash)"/><rect x="-10" y="-24" width="14" height="24" fill="${INK(.6)}"/><rect x="14" y="-26" width="16" height="12" fill="none" stroke="${INK(.6)}"/></g>`,
+  figure: (x, y, s, cup) => `<g transform="translate(${x},${y}) scale(${s})" fill="${INK(.85)}"><circle cx="0" cy="-46" r="7"/><path d="M-4,-52 h8 l-2,-6 h-4 z"/><path d="M-9,-38 Q-20,-10 -16,0 L16,0 Q20,-12 9,-38 Z"/>${cup ? `<path d="M7,-36 L20,-56" stroke="${INK(.85)}" stroke-width="5" stroke-linecap="round"/><rect x="17" y="-64" width="7" height="7" rx="1"/>` : `<path d="M-9,-34 L-22,-18" stroke="${INK(.85)}" stroke-width="5" stroke-linecap="round"/>`}</g>`,
+  boat: (x, y, s, sail) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M-46,0 Q0,16 46,-4 L38,-8 Q0,2 -40,-6 Z" fill="${INK(.85)}"/>${sail ? `<path d="M0,-6 L2,-120" stroke="${INK(.8)}" stroke-width="2.4"/><path d="M4,-116 Q46,-70 30,-14 L4,-14 Z" fill="#f6efdc" stroke="${INK(.7)}" stroke-width="1.4"/><path d="M6,-92 H34 M6,-66 H40 M6,-40 H38" stroke="${INK(.35)}"/>` : `<path d="M-10,-6 Q-4,-26 6,-8" fill="${INK(.6)}"/>`}</g>`,
+  waves: (y0, n) => Array.from({ length: n }, (_, i) => { const y = y0 + i * 26, x = -40 + (i % 2) * 40; let d = `M${x},${y}`; for (let k = 0; k < 14; k++) d += ` q30,-20 60,0 q-14,-6 -4,-14`; return `<path d="${d}" fill="none" stroke="rgba(44,93,124,${.65 - i * .08})" stroke-width="${2.4 - i * .25}" stroke-linecap="round"/>`; }).join(""),
+  fence: (x0, x1, y) => { let s = ""; for (let x = x0; x <= x1; x += 18) s += `<path d="M${x},${y} L${x + 2},${y - 60 - rnd() * 14}" stroke="rgba(138,90,43,.8)" stroke-width="3" stroke-linecap="round"/>`; return s + `<path d="M${x0 - 6},${y - 22} L${x1 + 8},${y - 26} M${x0 - 6},${y - 46} L${x1 + 8},${y - 50}" stroke="rgba(138,90,43,.75)" stroke-width="2.4"/>`; },
+  chrys: (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M0,0 q-4,30 2,58" stroke="rgba(62,96,72,.8)" stroke-width="2" fill="none"/><ellipse cx="-10" cy="26" rx="12" ry="6" fill="rgba(62,96,72,.6)" transform="rotate(-30 -10 26)"/><ellipse cx="10" cy="40" rx="12" ry="6" fill="rgba(62,96,72,.55)" transform="rotate(25 10 40)"/>${Array.from({ length: 14 }, (_, i) => `<ellipse cx="0" cy="-9" rx="2.6" ry="9" fill="#d6a51c" opacity=".9" transform="rotate(${i * 360 / 14})"/>`).join("")}<circle r="4" fill="#9a6a12"/></g>`,
+  rain: (x0, x1, y0, y1) => Array.from({ length: 70 }, () => { const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0); return `<path d="M${f1(x)},${f1(y)} l-6,22" stroke="${INK(.22)}" stroke-width="1"/>`; }).join(""),
+  window: (x, y) => `<g transform="translate(${x},${y})"><rect x="-60" y="-60" width="120" height="90" fill="url(#candle)"/><rect x="-60" y="-60" width="120" height="90" fill="none" stroke="${INK(.85)}" stroke-width="5"/><path d="M0,-60 V30 M-60,-15 H60 M-30,-60 V30 M30,-60 V30" stroke="${INK(.55)}" stroke-width="1.6"/><rect x="-5" y="2" width="10" height="20" fill="#f2e6c9" stroke="${INK(.5)}"/><ellipse cx="0" cy="-6" rx="4" ry="9" fill="#e8962c"/></g>`,
+  ripples: (x, y) => [0, 1, 2].map(i => `<ellipse cx="${x + i * 40}" cy="${y + i * 10}" rx="${24 + i * 10}" ry="${5 + i * 2}" fill="none" stroke="${INK(.25)}"/>`).join(""),
+  bamboo: (x, y, h, s) => { let g = ""; for (let k = 0; k < h; k += 46 * s) g += `<rect x="${x - 4 * s}" y="${y - k - 44 * s}" width="${8 * s}" height="${42 * s}" rx="2" fill="rgba(52,86,64,.75)" filter="url(#wash)"/>`;
+    for (let k = 1; k < 5; k++) { const yy = y - h * k / 5; g += [-1, 1].map(dir => Array.from({ length: 3 }, (_, j) => `<path d="M${x},${yy} q${dir * (20 + j * 10) * s},${(-8 + j * 10) * s} ${dir * (46 + j * 8) * s},${(4 + j * 14) * s} q${-dir * 26 * s},${-2 * s} ${-dir * (46 + j * 8) * s},${-(4 + j * 14) * s}" fill="rgba(36,60,44,.72)"/>`).join("")).join(""); } return g; },
+  books: (x, y) => `<g transform="translate(${x},${y})"><rect x="-70" y="-6" width="150" height="10" fill="rgba(138,90,43,.7)"/>${[0, 1, 2].map(i => `<rect x="${-58 + i * 4}" y="${-22 - i * 15}" width="96" height="15" fill="#3d4a5c" stroke="${INK(.6)}"/><rect x="${-10 + i * 4}" y="${-20 - i * 15}" width="16" height="11" fill="#f2ead8"/>`).join("")}<path d="M50,-14 q20,-30 6,-46" stroke="${INK(.7)}" stroke-width="2" fill="none"/><rect x="40" y="-24" width="40" height="16" rx="8" fill="#efe4cc" stroke="${INK(.6)}"/></g>`,
+  blossom: (x, y, s) => `<path d="M${x},${y} q${60 * s},${-20 * s} ${110 * s},${-70 * s} q${20 * s},${-20 * s} ${60 * s},${-26 * s} M${x + 70 * s},${y - 30 * s} q${10 * s},${-40 * s} ${50 * s},${-60 * s}" stroke="${INK(.85)}" stroke-width="${5 * s}" fill="none" stroke-linecap="round" filter="url(#wash)"/>` +
+    Array.from({ length: 22 }, () => { const t = rnd(), bx = x + 30 * s + t * 150 * s + (rnd() - .5) * 30 * s, by = y - 20 * s - t * 80 * s + (rnd() - .5) * 40 * s; return `<circle cx="${f1(bx)}" cy="${f1(by)}" r="${f1((4 + rnd() * 4) * s)}" fill="rgba(178,58,72,${(.55 + rnd() * .35).toFixed(2)})"/><circle cx="${f1(bx)}" cy="${f1(by)}" r="${f1(1.4 * s)}" fill="#f3d98a"/>`; }).join(""),
+  rock: (x, y, s) => `<path d="M${x - 50 * s},${y} Q${x - 46 * s},${y - 40 * s} ${x - 6 * s},${y - 46 * s} Q${x + 40 * s},${y - 40 * s} ${x + 54 * s},${y} Z" fill="${INK(.45)}" filter="url(#wash)"/><path d="M${x - 20 * s},${y - 30 * s} q${10 * s},${10 * s} ${4 * s},${26 * s}" stroke="${INK(.6)}" fill="none"/>`,
+  stream: () => `<path d="M80,560 C180,500 140,450 260,430 S360,380 400,360" fill="none" stroke="rgba(44,93,124,.35)" stroke-width="26" stroke-linecap="round" filter="url(#soft)"/><path d="M90,556 C180,500 150,452 262,430 S360,382 398,362" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-dasharray="14 10"/>`,
+  cloud: (x, y, s) => `<g opacity=".9" filter="url(#soft)">${[[0, 0, 40], [34, -12, 30], [-32, -6, 28], [12, -26, 26]].map(([dx, dy, r]) => `<circle cx="${x + dx * s}" cy="${y + dy * s}" r="${r * s}" fill="#fbf7ec"/>`).join("")}</g><path d="M${x - 50 * s},${y + 8 * s} q${30 * s},${-30 * s} ${60 * s},${-8 * s} q${20 * s},${-24 * s} ${44 * s},${-2 * s}" stroke="${INK(.3)}" fill="none"/>`,
+  dusk: () => `<rect x="0" y="0" width="1000" height="600" fill="url(#nightg)"/>`
+};
+/* 八幅扇面畫（座標同扇面 1000×600，右側留給題詩） */
+const SCENES = {
+  lushan: () => P.mount(60, 760, 290, 220, 4, .4) + P.mist(250, 60) + P.mount(0, 660, 350, 170, 3, .62) + P.mist(330, 50) + P.mount(20, 520, 420, 140, 3, .85) + P.pine(215, 360, .55) + P.birds(440, 130, 4, .9),
+  hut: () => P.mount(200, 720, 230, 110, 3, .32) + P.mist(210, 50) + P.mount(0, 560, 330, 80, 3, .42) + P.willow(230, 360, .95) + P.willow(390, 230, .75) + P.hut(305, 300, 1) + P.figure(232, 352, .62) + P.figure(372, 292, .55, true),
+  stream: () => P.mount(260, 760, 250, 190, 3, .45) + P.cloud(520, 150, 1.1) + P.cloud(640, 185, .85) + P.mist(250, 50) + P.mount(0, 420, 360, 110, 2, .5) + `<path d="M40,400 C140,370 150,320 250,300 S390,250 450,222" fill="none" stroke="rgba(44,93,124,.4)" stroke-width="22" stroke-linecap="round" filter="url(#soft)"/><path d="M48,398 C140,368 152,322 252,300 S388,252 448,224" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-dasharray="14 10"/>` + P.rock(462, 232, .7) + P.figure(462, 200, .5) + P.pine(200, 330, .55),
+  chrys: () => P.sun(570, 140, 32) + P.mount(300, 760, 290, 200, 2, .42) + P.mist(270, 50) + P.birds(380, 120, 5) + P.mount(0, 420, 345, 50, 3, .3) + P.fence(90, 300, 334) + P.chrys(118, 292, .8) + P.chrys(178, 280, .95) + P.chrys(240, 290, .8) + P.chrys(292, 278, .9) + P.figure(352, 300, .8),
+  rain: () => P.dusk() + P.mount(0, 760, 240, 150, 4, .6) + P.mist(240, 50) + P.mount(0, 600, 330, 110, 3, .72) + P.window(300, 300) + P.rain(40, 720, 40, 470) + P.ripples(110, 380),
+  sea: () => P.mount(420, 760, 210, 80, 2, .25) + P.waves(250, 7) + P.boat(300, 262, 1.25, true) + P.birds(170, 170, 3, 1.1),
+  bamboo: () => P.mount(260, 720, 220, 100, 3, .25) + P.bamboo(150, 390, 270, 1) + P.bamboo(232, 350, 230, .85) + P.bamboo(610, 300, 170, .7) + P.rock(320, 316, .9) + P.books(430, 292),
+  moon: () => P.dusk() + P.moon(450, 150, 54) + P.blossom(50, 380, 1.2) + P.mount(0, 760, 340, 50, 3, .4) + P.figure(340, 300, 1, true) + `<ellipse cx="312" cy="304" rx="52" ry="6" fill="${INK(.3)}"/>` + P.figure(258, 303, .66, false).replace(INK(.85), INK(.3))
+};
+
+/* ================= 摺扇 ================= */
+const PX = 500, PY = 520, R = 488, R0 = 200, A = 75;
+const pt = (r, deg) => { const a = deg * Math.PI / 180; return [PX + r * Math.sin(a), PY - r * Math.cos(a)]; };
+const sector = (r1, r2, a1, a2) => { const [x1, y1] = pt(r1, a1), [x2, y2] = pt(r2, a1), [x3, y3] = pt(r2, a2), [x4, y4] = pt(r1, a2), big = a2 - a1 > 180 ? 1 : 0;
+  return `M${f1(x1)},${f1(y1)} L${f1(x2)},${f1(y2)} A${r2},${r2} 0 ${big} 1 ${f1(x3)},${f1(y3)} L${f1(x4)},${f1(y4)} A${r1},${r1} 0 ${big} 0 ${f1(x1)},${f1(y1)} Z`; };
+const N = TABS.length, FOLD = 2 * A / (N * 2), NUMS = "一二三四五六七八";
+const ribs = Array.from({ length: N * 2 + 1 }, (_, k) => -A + k * FOLD);
+$("#fan").innerHTML = `<defs>
+  <filter id="wash" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="6"/><feGaussianBlur stdDeviation=".6"/></filter>
+  <filter id="soft"><feGaussianBlur stdDeviation="8"/></filter>
+  <filter id="paperf"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .3  0 0 0 .07 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+  <filter id="bleed"><feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="3" seed="9"/><feDisplacementMap in="SourceGraphic" scale="70"/></filter>
+  <linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#24201d" stop-opacity=".95"/><stop offset=".55" stop-color="#24201d" stop-opacity=".35"/><stop offset="1" stop-color="#24201d" stop-opacity="0"/></linearGradient>
+  <linearGradient id="mistg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6efdd" stop-opacity="0"/><stop offset=".5" stop-color="#f6efdd" stop-opacity=".7"/><stop offset="1" stop-color="#f6efdd" stop-opacity="0"/></linearGradient>
+  <linearGradient id="nightg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2a33" stop-opacity=".55"/><stop offset="1" stop-color="#2c2a33" stop-opacity=".1"/></linearGradient>
+  <radialGradient id="candle"><stop offset="0" stop-color="#f6c66a" stop-opacity=".95"/><stop offset="1" stop-color="#d9893a" stop-opacity=".35"/></radialGradient>
+  <linearGradient id="stickg" x1="0" x2="1"><stop offset="0" stop-color="#7a5a32"/><stop offset=".5" stop-color="#c9a466"/><stop offset="1" stop-color="#7a5a32"/></linearGradient>
+  <clipPath id="fanClip"><path id="clipP" d="${sector(R0, R, -A, -A + .01)}"/></clipPath>
+  <mask id="reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="600"><g filter="url(#bleed)"><circle id="revC" cx="360" cy="380" r="0" fill="#fff"/></g></mask></defs>
+  <g class="tassel"><path d="M500,522 q-2,28 2,40" stroke="#a8322a" stroke-width="2" fill="none"/><circle cx="502" cy="566" r="6" fill="#4e7d62"/>${Array.from({ length: 9 }, (_, i) => `<path d="M${498 + i},570 q${(i - 4) * 1.5},18 ${(i - 4) * 2.4},30" stroke="#a8322a" stroke-width="1.6" fill="none"/>`).join("")}</g>
+  <g id="sticks">${ribs.map((a, k) => `<line class="rib" data-a="${a}" x1="${PX}" y1="${PY}" x2="${PX}" y2="${PY - (k === 0 || k === ribs.length - 1 ? R + 6 : R0 + 14)}" stroke="${k === 0 || k === ribs.length - 1 ? "#8a6a3e" : "#b48d55"}" stroke-width="${k === 0 || k === ribs.length - 1 ? 13 : 9}" stroke-linecap="round"/>`).join("")}</g>
+  <g clip-path="url(#fanClip)">
+    <path d="${sector(R0, R, -A, A)}" fill="#f4ecd8"/><path d="${sector(R0, R, -A, A)}" fill="#f4ecd8" filter="url(#paperf)"/>
+    <g id="paint" mask="url(#reveal)"></g>
+    <g>${ribs.slice(0, -1).map((a, k) => `<path d="${sector(R0, R, a, a + FOLD)}" fill="${k % 2 ? "rgba(255,255,255,.08)" : "rgba(60,40,20,.035)"}"/>`).join("")}</g>
+    <g id="insc"></g>
+    <path d="${sector(R0, R, -A, A)}" fill="none" stroke="rgba(120,90,50,.55)" stroke-width="2"/>
+  </g>
+  <g id="hits">${TABS.map((t, i) => { const a1 = -A + i * FOLD * 2, mid = a1 + FOLD; const [nx, ny] = pt(R0 + 26, mid);
+    return `<path class="pn" data-i="${i}" d="${sector(R0, R, a1, a1 + FOLD * 2)}"><title>${NUMS[i]}・${t.t}（${t.poet}〈${t.title}〉）</title></path><g class="num" id="num${i}" pointer-events="none"><circle cx="${f1(nx)}" cy="${f1(ny)}" r="13"/><text x="${f1(nx)}" y="${f1(ny + 5)}" text-anchor="middle">${NUMS[i]}</text></g>`; }).join("")}</g>
+  <circle cx="${PX}" cy="${PY}" r="11" fill="#5a4026" stroke="#c9a466" stroke-width="3"/>`;
+
+/* 開扇：扇骨從左邊收攏處一根根展開，扇面跟著露出來 */
+function setOpen(e) {
+  document.querySelectorAll("#fan .rib").forEach(l => l.setAttribute("transform", `rotate(${f1(-A + (+l.dataset.a + A) * e)} ${PX} ${PY})`));
+  $("#clipP").setAttribute("d", sector(R0, R, -A, -A + 2 * A * e + .01));
+}
+if (reduce) setOpen(1);
+else { setOpen(0); const t0 = performance.now(); (function open(now) { const k = Math.max(0, Math.min(1, (now - t0) / 1300)), e = 1 - Math.pow(1 - k, 3); setOpen(e); if (k < 1) requestAnimationFrame(open); })(t0); }
+
+/* 題詩：每一行沿著扇骨直書，由右往左；字一個個像墨暈開般出現 */
+function inscribe(t) {
+  const cs = 24; let html = "", n = 0;
+  const col = (str, ang, r0, size, color, weight) => Array.from(str).forEach((ch, i) => { const [x, y] = pt(r0 - i * (size + 3.5), ang);
+    html += `<text class="ch" x="${f1(x)}" y="${f1(y)}" font-size="${size}" font-weight="${weight}" fill="${color}" text-anchor="middle" dominant-baseline="central" transform="rotate(${f1(ang)} ${f1(x)} ${f1(y)})" style="animation-delay:${(n++ * 70 + 500)}ms">${ch}</text>`; });
+  t.cols.forEach((c, i) => col(c, 68.5 - i * 7.6, .94 * R, cs, "#24201d", 600));
+  const ang = 68.5 - t.cols.length * 7.6 + 1.8;
+  col(`${t.poet}〈${t.title.replace(/・.*/, "")}〉`, ang, .9 * R, 16, "#5a4f45", 400);
+  const [sx, sy] = pt(.9 * R - (Array.from(t.poet + t.title.replace(/・.*/, "")).length + 2) * 19.5 - 8, ang);
+  html += `<g class="ch" style="animation-delay:${n * 70 + 600}ms" transform="rotate(${f1(ang)} ${f1(sx)} ${f1(sy)})"><rect x="${f1(sx - 12)}" y="${f1(sy - 12)}" width="24" height="24" rx="2" fill="#a8322a"/><text x="${f1(sx)}" y="${f1(sy + 1)}" font-size="15" font-weight="900" fill="#f6ead2" text-anchor="middle" dominant-baseline="central">${t.seal}</text></g>`;
+  $("#insc").innerHTML = html;
+}
+/* 換畫：墨色從中央暈開 */
+let revT;
+function paint(t) {
+  seed = 31 + TABS.indexOf(t) * 17;
+  $("#paint").innerHTML = SCENES[t.scene]();
+  const c = $("#revC"); cancelAnimationFrame(revT);
+  if (reduce) return c.setAttribute("r", 900);
+  const t0 = performance.now();
+  (function grow(now) { const k = Math.max(0, Math.min(1, (now - t0) / 1500)); c.setAttribute("r", f1(900 * (1 - Math.pow(1 - k, 2.2)))); if (k < 1) revT = requestAnimationFrame(grow); })(t0);
+}
+
+/* 書架 */
+$("#shelf").innerHTML = TABS.map((t, i) => `<button class="book" role="tab" id="t-${t.id}" aria-controls="p-${t.id}" aria-selected="false" style="--cv:${t.cv}"><span class="slip"><b>${esc(t.t)}</b></span><small>${t.poet}<br>〈${t.title.replace(/・.*/, "")}〉</small></button>`).join("");
+
+/* 背景遠山 */
+seed = 5;
+$("#farhill").innerHTML = `<defs><linearGradient id="fh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8f8a" stop-opacity=".55"/><stop offset="1" stop-color="#8a8f8a" stop-opacity="0"/></linearGradient></defs><path d="${ridge(-40, 1240, 300, 160, 6)}" fill="url(#fh)"/><path d="${ridge(-40, 1240, 380, 110, 5)}" fill="url(#fh)" opacity=".7"/>`;
+
+/* ================= 面板內容 ================= */
+$("#lvs").innerHTML = LEVELS.map((l, i) => row(siteUrl(l.p), l.ic, `<span class="tg">Lv.${i + 1}</span>${esc(l.t)}`, "", l.c)).join("");
+$("#courses").innerHTML = COURSES.map(c => `<a class="row" href="${esc(siteUrl(c.p))}" rel="noopener"><span class="ic txt wide" style="background:${c.bg}">${c.big}</span><span class="tx">${esc(c.name)}<small>${esc(c.badge)}</small></span></a>`).join("");
+$("#flows").innerHTML = FLOWS.map(([f, ic], i) => {
+  const no = String(i + 1).padStart(2, "0");
+  return `<a class="tile" href="${esc(siteUrl(`課程動畫/isms運作流程課程解說/a${no}_${f}流程`))}" rel="noopener"><span class="e">${ic}</span><small>A${no}</small><b>${esc(f)}</b></a>`;
+}).join("");
+$("#park").innerHTML = PARK.map(a => row(siteUrl(a.p), a.ic, `<span class="tg">${esc(a.tag)}</span>${esc(a.t)}`, esc(a.d), a.c)).join("");
+$("#files").innerHTML = CASES.map(c => `<article class="case"><span class="no">CASE ${esc(c.id)} · ${esc(c.cat)}</span><b>${esc(c.t)}</b><small>改編自：${esc(c.o)}</small>
+  <div class="acts"><a class="btn sm gold" href="${CASE_URL}#${esc(c.id)}-read" rel="noopener">📖 開始閱讀</a><a class="btn sm" href="${CASE_URL}#${esc(c.id)}-discuss" rel="noopener">💬 討論互動</a></div></article>`).join("");
+$("#news").innerHTML = NEWS.map(n => `<a class="case" href="${NEWS_URL}cases/${esc(n.slug)}/" rel="noopener"><span class="no"><span class="tg sev ${n.sev === "緊急" ? "urgent" : ""}">${esc(n.sev)}</span>${esc(n.date.replace(/-/g, "/"))} · ${esc(n.src)}</span><b>${esc(n.t)}</b><small>${esc(n.d)}</small></a>`).join("");
+$("#aicase").innerHTML = AICASE.map(a => row(siteUrl(a.p), a.ic, esc(a.t), esc(a.d))).join("");
+$("#heroThink").href = siteUrl(THINKTANK);
+$("#caseRoom").href = siteUrl("ai寫的個案/資安個案研究室");
+$("#newsAll").href = siteUrl("ai寫的個案/從新聞看個案");
+$("#seg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  $("#seg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  ["files", "news", "aicase"].forEach(v => $("#" + v).hidden = b.dataset.v !== v);
+});
+$("#quiz").innerHTML = QUIZ.map(([t, p]) => { const [ic, ...rest] = t.split(" "); return row(siteUrl(p), ic, esc(rest.join(" ")), ""); }).join("");
+const lk = ([ic, t, d, u, c]) => row(siteUrl(u), esc(ic), esc(t), esc(d), c, "txt");
+$("#resList").innerHTML = RES.map(lk).join("");
+$("#srcList").innerHTML = SRC.map(lk).join("");
+$("#arcade").innerHTML = ARCADE.map(g => `<a class="tile" style="--c:${g.c}" href="${esc(g.u)}" rel="noopener"><span class="e">${g.ic}</span><b>${esc(g.t)}</b><span class="d clamp">${esc(g.d)}</span></a>`).join("");
+
+
+
+/* ================= 雅集對話（團扇） ================= */
+const who = { a: ["主人 Allan", $("#whoA"), $("#faceA")], b: ["書僮 阿拉蕾", $("#whoB"), $("#faceB")] };
+let talk = TABS[0].talk, ti = 0, loopTimer;
+function speak() {
+  const [w, face, text] = talk[ti++ % talk.length], [name, el, img] = who[w];
+  img.src = `assets/img/${face}.webp`;
+  if (matchMedia("(max-width:760px)").matches) $("#faceA").src = `assets/img/${face}.webp`;
+  Object.values(who).forEach(([, x]) => x.classList.remove("on")); void el.offsetWidth; el.classList.add("on");
+  $("#sayName").textContent = name;
+  $("#sayTx").innerHTML = Array.from(text).map((ch, i) => `<span style="animation-delay:${i * 35}ms">${esc(ch)}</span>`).join("");
+  clearTimeout(loopTimer); loopTimer = setTimeout(speak, 6500);
+}
+Object.entries(who).forEach(([w, [, el]]) => el.addEventListener("click", () => {
+  for (let k = 0; k < talk.length; k++) if (talk[(ti + k) % talk.length][0] === w) { ti += k; break; }
+  speak();
+}));
+$("#say").addEventListener("click", speak);
+
+/* ================= 換冊：扇面換畫、題詩、冊頁 ================= */
+let cur = -1;
+function show(i, byUser) {
+  i = (i + N) % N;
+  const t = TABS[i], prev = TABS[(i - 1 + N) % N], nx = TABS[(i + 1) % N];
+  TABS.forEach((x, k) => { const b = $(`#t-${x.id}`); b.setAttribute("aria-selected", k === i); b.tabIndex = k === i ? 0 : -1; $(`#p-${x.id}`).hidden = k !== i; $("#num" + k).classList.toggle("on", k === i); });
+  if (cur !== i) { paint(t); inscribe(t); }
+  cur = i;
+  const leaf = $("#leaf"); leaf.classList.remove("open"); void leaf.offsetWidth; leaf.classList.add("open");
+  $("#panel").style.setProperty("--tc", t.c);
+  $("#sNo").textContent = `第${NUMS[i]}冊・${t.poet}〈${t.title}〉`;
+  $("#sTitle").textContent = `${t.e} ${t.t}`; $("#sDesc").textContent = t.d;
+  $("#sPoem").textContent = t.full; $("#sBy").textContent = `— ${t.poet}〈${t.title}〉`; $("#sEye").textContent = `詩眼｜${t.eye}`; $("#sSeal").textContent = t.seal;
+  $("#prevBtn").innerHTML = `◀ 第${NUMS[(i - 1 + N) % N]}冊<b>${esc(prev.t)}</b>`;
+  $("#nextBtn").innerHTML = `第${NUMS[(i + 1) % N]}冊 ▶<b>${esc(nx.t)}</b>`;
+  talk = t.talk; ti = 0; speak();
+  if (byUser) history.replaceState(null, "", "#" + t.id);
+}
+$("#shelf").addEventListener("click", e => { const b = e.target.closest(".book"); if (b) show(TABS.findIndex(t => "t-" + t.id === b.id), true); });
+$("#shelf").addEventListener("keydown", e => {
+  const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
+  e.preventDefault(); show(cur + d, true); $(`#t-${TABS[cur].id}`).focus();
+});
+$("#fan").addEventListener("click", e => { const p = e.target.closest(".pn"); if (p) show(+p.dataset.i, true); });
+$("#prevBtn").addEventListener("click", () => show(cur - 1, true));
+$("#nextBtn").addEventListener("click", () => show(cur + 1, true));
+const fromHash = () => Math.max(0, TABS.findIndex(t => "#" + t.id === location.hash));
+addEventListener("hashchange", () => show(fromHash()));
+show(fromHash());
+
+const fab = $("#fab");
+new IntersectionObserver(([e]) => fab.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.top < 0)).observe($("#fan"));
+fab.addEventListener("click", () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
+
+/* ================= 雅趣・接下句 ================= */
+let qi = -1, qOk = 0, qAll = 0, qDone = false;
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(v => v[1]);
+function nextQ() {
+  let k; do k = Math.floor(Math.random() * COUPLETS.length); while (k === qi); qi = k; qDone = false;
+  const [up, down] = COUPLETS[k], len = Array.from(down).length;
+  const pool = shuffle(COUPLETS.filter((c, j) => j !== k && Array.from(c[1]).length === len)).slice(0, 2).map(c => c[1]);
+  while (pool.length < 2) pool.push(shuffle(COUPLETS.filter((c, j) => j !== k && !pool.includes(c[1])))[0][1]);
+  $("#qUp").textContent = up; $("#qSrc").textContent = "上句已出，請對下句"; $("#qPar").textContent = "";
+  $("#qOpts").innerHTML = shuffle([down, ...pool]).map(o => `<button type="button" data-o="${esc(o)}">${esc(o)}</button>`).join("");
+}
+$("#qOpts").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b || qDone) return;
+  const [, down, src, par] = COUPLETS[qi]; qDone = true; qAll += 1;
+  $("#qOpts").querySelectorAll("button").forEach(x => { x.disabled = true; if (x.dataset.o === down) x.classList.add("ok"); });
+  if (b.dataset.o === down) { qOk += 1; $("#qPar").textContent = `✓ 對了！阿拉蕾的資安版：「${par}」`; }
+  else { b.classList.add("no"); $("#qPar").textContent = `差一點～ 資安版是：「${par}」`; }
+  $("#qSrc").textContent = `— ${src}`; $("#qScore").textContent = `對了 ${qOk}／${qAll}`;
+});
+$("#qNext").addEventListener("click", nextQ);
+nextQ();
+
+/* ================= 情資：每月下載與焦點（讀取情資蒐集紀錄網站，邏輯同其他版首頁） ================= */
+const TODAY = (() => { const m = location.search.match(/[?&]today=(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3], 23, 59) : new Date(); })();
+$("#btnXlsx").href = $("#btnOpen").href = siteUrl(INTEL_PAGE);   /* 讀不到資料時，按鈕都帶到查詢與下載專區 */
+
+/* 以中文檔名下載（跨網域連結無法指定檔名，所以先抓成 blob）；失敗就直接開啟原連結 */
+function bindDownload(a, url, name) {
+  a.href = url; a.hidden = false;
+  a.onclick = async e => {
+    if (a.dataset.busy) return e.preventDefault();
+    e.preventDefault(); a.dataset.busy = 1;
+    try {
+      const blob = await (await fetch(url)).blob(), t = document.createElement("a");
+      t.href = URL.createObjectURL(blob); t.download = name; t.target = "_self";
+      document.body.appendChild(t); t.click(); t.remove(); setTimeout(() => URL.revokeObjectURL(t.href), 4000);
+    } catch (err) { window.open(url, "_blank", "noopener"); }
+    delete a.dataset.busy;
+  };
+}
+const ymd = s => { const m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
+
+(async () => {
+  const fail = () => { $("#focusList").innerHTML = `<div class="ph">請點「查詢與下載專區」查看最新情資。</div>`; };
+  let idx;
+  try { idx = await (await fetch(`${INTEL}data/index.json`, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const nowKey = TODAY.getFullYear() * 12 + TODAY.getMonth();
+  const months = Object.entries(idx.years || {}).flatMap(([y, v]) => (v.months || []).map(m => ({ ...m, year: +y })))
+    .filter(m => m.count > 0 && m.year * 12 + m.month - 1 <= nowKey).sort((a, b) => b.year * 12 + b.month - (a.year * 12 + a.month));
+  if (!months.length) return fail();
+  const latest = months[0];
+  const isThisMonth = latest.year === TODAY.getFullYear() && latest.month === TODAY.getMonth() + 1;
+
+  /* 主要下載＝客戶要留存的「完整月份」：每月 1–15 日是上個月，16 日起換成本月（累計中）；另一個月份放在旁邊 */
+  const full = months.find(m => m.year * 12 + m.month - 1 < nowKey), prog = isThisMonth ? latest : null;
+  const main = (prog && (TODAY.getDate() > 15 || !full)) ? prog : (full || latest), side = main === prog ? full : prog;
+  const yr = m => m.year === TODAY.getFullYear() ? "" : `${m.year} 年 `;
+  const label = m => m === prog ? `${yr(m)}${m.month} 月 Excel（本月累計中）` : `${yr(m)}${m.month} 月 Excel（完整月份）`;
+  $("#fileYear").textContent = `${main.year}年${main.month}月`;
+  $("#btnXlsx").textContent = `⬇️ 下載 ${label(main)}`;
+  bindDownload($("#btnXlsx"), INTEL + main.xlsx, main.xlsxName);
+  const other = $("#btnOther");
+  if (side) { other.textContent = `⬇️ ${label(side)}`; bindDownload(other, INTEL + side.xlsx, side.xlsxName); } else other.hidden = true;
+
+  let recs;
+  try { recs = await (await fetch(INTEL + latest.data, { cache: "no-store" })).json(); } catch (e) { return fail(); }
+  const items = recs.map(r => ({ ...r, d: ymd(r.date) })).filter(x => x.title && x.d && x.d <= TODAY).sort((a, b) => b.d - a.d);
+  if (!items.length) return fail();
+  const last = items[0].d, high = items.filter(x => x.severity === "高").length, kev = items.filter(x => x.kev === "是").length;
+  $("#focusTitle").textContent = isThisMonth ? "本月焦點情資" : `最新情資（${latest.year}年${latest.month}月）`;
+  $("#monthLabel").textContent = `🗓️ ${latest.year}年${latest.month}月 · 已整理 ${items.length} 筆 · 最新 ${last.getMonth() + 1}/${last.getDate()}`;
+  if (high || kev) { $("#riskPill").hidden = false; $("#riskPill").textContent = `🚨 威脅程度高 ${high} 筆 · KEV ${kev} 筆`; }
+  TABS[0].talk[1][2] = `${latest.month} 月情資已整理 ${items.length} 筆，下載留存就是 A.5.7 的佐證 📜`;
+  const link = (x, inner) => /^https?:\/\//i.test(x.url) ? `<a href="${esc(x.url)}" rel="noopener">${inner}</a>` : `<div class="ph">${inner}</div>`;
+  const badge = x => (x.kev === "是" ? `<span class="bd kev">KEV</span>` : "") + (x.severity === "高" ? `<span class="bd">高</span>` : "");
+  $("#focusList").innerHTML = items.slice(0, 3).map(x => link(x, `<small>${x.d.getMonth() + 1}/${x.d.getDate()} · ${esc(x.source)}${badge(x)}</small>${esc(x.title)}`)).join("");
+})();
+</script>
+</body>
+</html>
+
