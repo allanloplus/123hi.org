@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="versions.js"></script>
+<script>
+/* 每日輪替（Allan 指定）：首頁依星期幾轉到當天的版本（星期一＝貼紙漫畫版，就留在本頁）。帶 ?style= 表示訪客指定要看這一版，不轉。分頁錨點與其他參數一併帶過去。 */
+(function () {
+  if (/[?&]style=/.test(location.search)) return;
+  var t = window.HOME_TODAY && window.HOME_TODAY();
+  if (t && t.id !== "sticker") location.replace(t.file + location.search + location.hash);
+})();
+</script>
 <title>ISMS·普拉斯·AllanLo</title>
 <meta name="description" content="Allan 幫客戶整理及分享的資安知識庫：每月資安內外部情資、課程動畫、課後測驗與教學資源。">
 <base target="_blank">
@@ -10,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-/* 貼紙漫畫版首頁：一個舞台＋八個分類分頁，內容不往下堆疊。其他版本見 versions.js（頁尾可切換） */
+/* 貼紙漫畫版首頁：一個舞台＋八個分類分頁，內容不往下堆疊。其他版本見 versions.js（頁首切換列；每日輪替） */
 :root{
   --ink:#1c2340; --muted:#5a6178; --paper:#fff7e6; --card:#fff; --sun:#ffd24a;
   --coral:#ee4f38; --teal:#0e9d97; --tc:#ee4f38;
@@ -293,7 +302,6 @@ footer{max-width:1080px;margin:22px auto 0;padding:0 16px 28px;font-size:13.5px}
   <div class="contact">🌐 <a href="https://www.123hi.org/">www.123hi.org</a> · ✉️ <a href="mailto:allanlo.plus@gmail.com">allanlo.plus@gmail.com</a></div>
   <div id="verSwitch" data-current="sticker"></div>
 </footer>
-<script src="versions.js"></script>
 
 <button class="fab" id="fab" aria-label="回到分類"><img src="assets/img/arale-cheer.webp" alt="">分類 ↑</button>
 
