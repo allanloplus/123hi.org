@@ -341,7 +341,7 @@ footer{max-width:1100px;margin:46px auto 0;padding:0 16px 30px;font-size:14px;te
   <section id="p-park" role="tabpanel" hidden><div class="grid g2 stack" id="park"></div></section>
   <section id="p-cases" role="tabpanel" hidden>
     <div class="seg" id="seg">
-      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 安全檢測</button>
+      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 協作開發・檢測</button>
     </div>
     <div class="grid g3" id="files"></div>
     <div class="grid g3" id="news" hidden></div>
@@ -420,7 +420,8 @@ const CASES = [
 ];
 const THINKTANK = "isms智庫";   /* Allan's ISMS智庫（每月一期） */
 const AICASE = [
-  { ic: "🧭", t: "總覽：AI 系統安全檢測個案", d: "一套上線系統從盤點、檢測到報告的完整案例", p: "ai寫的個案/ai開發系統之安全檢測個案/總覽ai系統安全檢測個案" },
+  { ic: "🤝", t: "上集：AI 協作開發過程紀錄", d: "ISMS 顧問與 AI 小助理約 49 小時，把一張心智圖變成上線系統", p: "ai寫的個案/ai協作開發系統個案" },
+  { ic: "🧭", t: "下集：AI 開發系統之安全檢測（總覽）", d: "同一套系統從盤點、檢測到報告的完整案例", p: "ai寫的個案/ai開發系統之安全檢測個案/總覽ai系統安全檢測個案" },
   { ic: "🧾", t: "XBOM 對話教學", d: "XBOM 是什麼、怎麼做、能證明什麼，對應 SSDLC 與 ISO 27001", p: "ai寫的個案/ai開發系統之安全檢測個案/xbom-對話教學" },
   { ic: "🔬", t: "安全檢測對話教學", d: "源碼檢測、存取控制測試、滲透測試各自證明什麼", p: "ai寫的個案/ai開發系統之安全檢測個案/安全檢測對話教學" },
   { ic: "📑", t: "解讀第三方檢測報告", d: "先看的五件事、逐節讀法與品質判斷", p: "ai寫的個案/ai開發系統之安全檢測個案/解讀第三方檢測報告" },
@@ -507,7 +508,7 @@ const TABS = [
     talk: [["a", "allan-laugh", "騎上飛馬佩加索斯，邊玩邊飛越 ISMS！"], ["b", "arale-wow", "有小鎮、有大富翁，還有工作地圖系統體驗版！"]] },
   { id: "cases", e: "🕵️", t: "個案研究", gl: "Ε", myth: "柏修斯與鏡盾", mythEn: "PERSEUS", con: "英仙座", conEn: "PERSEUS", motif: "shield", face: "allan-think", c: "#a8431f",
     acts: ["凡是直視梅杜莎雙眼的人，都會化為石頭。", "柏修斯只看雅典娜盾牌上的倒影，斬下了梅杜莎的頭。", "他和安朵美達一同升上天空，化為英仙座與仙女座。"],
-    moral: "不必親身經歷災難——從別人事件的倒影裡學到教訓，就是個案研究。", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 開發系統的安全檢測個案",
+    moral: "不必親身經歷災難——從別人事件的倒影裡學到教訓，就是個案研究。", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 協作開發與安全檢測系列個案（上下集）",
     stars: [[150, 30], [140, 70], [125, 105], [100, 140], [70, 170], [160, 110], [190, 140], [215, 175], [178, 58]], lines: [[0, 8], [8, 1], [1, 2], [2, 3], [3, 4], [2, 5], [5, 6], [6, 7]],
     talk: [["a", "allan-think", "柏修斯不直視梅杜莎，而是看盾牌上的倒影——從別人的事件學教訓。"], ["b", "arale-confused", "如果是我們公司遇到，該怎麼辦呢？"], ["a", "allan-wink", "人物與公司都是虛構的，放心討論。"]] },
   { id: "quiz", e: "📝", t: "課後測驗", gl: "Ζ", myth: "海克力斯十二試煉", mythEn: "TWELVE LABOURS", con: "武仙座", conEn: "HERCULES", motif: "club", face: "allan-point", c: "#1f4e79",
