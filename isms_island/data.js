@@ -125,6 +125,7 @@ export const ISLANDS = [
         ["延伸：安全檢測顧問輔導實務", "顧問如何帶客戶從接案做到移交", "延伸安全檢測顧問輔導實務"]
       ].map(([t, d, p]) => ({ t, d, tag: "AI 檢測", u: site("ai寫的個案/ai開發系統之安全檢測個案/" + p), std: ["27001"] })))
       .concat([{ t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", tag: "系統", u: "https://pms.medsigtw.com/", std: ["27001"] }])
+      .concat([{ t: "AI 開發個案：資安情資蒐集自動化", d: "會自我檢查的自動化：從一張表長成每日自動蒐集的情資網站", tag: "AI 開發", u: site("ai寫的個案/ai開發個案-資安情資蒐集自動化"), std: ["27001", "42001"] }])
   },
   {
     id: "park", t: "ISMS 主題樂園", en: "THEME PARK", ic: "🎡", c: "#2f9e44", row: 2, col: 1, kind: "park",

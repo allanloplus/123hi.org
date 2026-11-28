@@ -257,7 +257,7 @@ footer{max-width:1080px;margin:22px auto 0;padding:0 16px 28px;font-size:13.5px}
   <section id="p-cases" role="tabpanel" hidden>
     <div class="phead"></div>
     <div class="seg" id="seg">
-      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 協作開發・檢測</button>
+      <button aria-pressed="true" data-v="files">🗂️ 企業個案</button><button aria-pressed="false" data-v="news">📰 資安日報</button><button aria-pressed="false" data-v="aicase">🤖 AI 開發個案</button>
     </div>
     <div class="grid g3" id="files"></div>
     <div class="grid g3 news" id="news" hidden></div>
@@ -335,7 +335,8 @@ const AICASE = [
   { ic: "🔬", t: "安全檢測對話教學", d: "源碼檢測、存取控制測試、滲透測試各自證明什麼", p: "ai寫的個案/ai開發系統之安全檢測個案/安全檢測對話教學" },
   { ic: "📑", t: "解讀第三方檢測報告", d: "先看的五件事、逐節讀法與品質判斷", p: "ai寫的個案/ai開發系統之安全檢測個案/解讀第三方檢測報告" },
   { ic: "🧑‍🏫", t: "延伸：安全檢測顧問輔導實務", d: "顧問如何帶客戶從接案做到移交", p: "ai寫的個案/ai開發系統之安全檢測個案/延伸安全檢測顧問輔導實務" },
-  { ic: "🖥️", t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", p: "https://pms.medsigtw.com/" }
+  { ic: "🖥️", t: "本個案的 PMS 系統", d: "以 ISMS 為基礎的專案安全管理系統", p: "https://pms.medsigtw.com/" },
+  { ic: "📡", t: "AI 開發個案：資安情資蒐集自動化", d: "會自我檢查的自動化：從一張表長成每日自動蒐集的情資網站", p: "ai寫的個案/ai開發個案-資安情資蒐集自動化" },
 ];
 const NEWS_URL = "https://allanloplus.github.io/case_isnews/";
 const NEWS = [
@@ -400,7 +401,7 @@ const TABS = [
     talk: [["b", "arale-cheer", "跟我走完 A01 到 A15，一站一支動畫！"], ["a", "allan-point", "十五個流程串起來，就是整個 ISMS。"]] },
   { id: "park", e: "🎡", t: "主題樂園", s: "ISMS 工作觀", c: "#2f9e44", face: "allan-laugh", d: "ISMS 工作觀：用動畫、地圖和遊戲，玩出對 ISMS 的整體感",
     talk: [["a", "allan-laugh", "歡迎光臨 ISMS 主題樂園！"], ["b", "arale-wow", "有小鎮、有大富翁，邊玩邊懂 ISMS！"], ["a", "allan-point", "工作地圖多了系統體驗版，點一下就留紀錄。"]] },
-  { id: "cases", e: "🕵️", t: "個案研究", s: "一起辦案", c: "#a0612b", face: "allan-think", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 協作開發與安全檢測系列個案（上下集）",
+  { id: "cases", e: "🕵️", t: "個案研究", s: "一起辦案", c: "#a0612b", face: "allan-think", d: "真實事件改編的企業個案、新聞拆解的「資安日報」，以及 AI 開發個案（協作開發、安全檢測、情資蒐集自動化）",
     talk: [["a", "allan-think", "每一則資安新聞，都是一堂管理課。"], ["b", "arale-confused", "如果是我們公司遇到，該怎麼辦？"], ["a", "allan-wink", "進研究室，一起辦案就知道！"], ["b", "arale-explain", "新上架：AI 開發系統的安全檢測個案！"]] },
   { id: "quiz", e: "📝", t: "課後測驗", s: "4 份測驗", c: "#e8590c", face: "allan-point", d: "上完課了嗎？來檢查學習成果",
     talk: [["a", "allan-point", "上完課了嗎？來挑戰一下！"], ["b", "arale-cheer", "答對就送你一個阿拉蕾的讚 💪"]] },
